@@ -6,6 +6,13 @@ import {
 } from 'react-native';
 import Event from './Event';
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#243177',
+  },
+});
+
 export default class Events extends Component {
   render() {
     const { events } = this.props;
@@ -19,12 +26,5 @@ export default class Events extends Component {
       </View>
     );
   }
-
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#243177',
-  },
-});
