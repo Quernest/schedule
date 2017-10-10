@@ -1,0 +1,29 @@
+{
+  "expo": {
+    "name": "schedule",
+    "description": "An empty new project",
+    "slug": "schedule",
+    "privacy": "public",
+    "sdkVersion": "21.0.0",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "primaryColor": "#cccccc",
+    "android": {
+      "package": "com.quernest.schedule"
+    },
+    "androidStatusBar": {
+      "barStyle": "light-content",
+      "backgroundColor": "#334393"
+    },
+    "icon": "./assets/icons/app-icon.png",
+    "loading": {
+      "icon": "./assets/icons/app-icon.png"
+    },
+    "packagerOpts": {
+      "assetExts": ["ttf", "mp4"]
+    },
+    "ios": {
+      "supportsTablet": true
+    }
+  }
+}
