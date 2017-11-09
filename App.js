@@ -11,6 +11,11 @@ import {
 
 import Calendar from './app/components/Calendar';
 import Events from './app/components/Events';
+import {
+  APP_BACKGROUND_COLOR,
+  IOS_TOP_PADDING,
+  ANDROID_TOP_PADDING
+} from './app/helpers/constants';
 
 import moment from 'moment';
 import ru from 'moment/locale/ru';
@@ -20,7 +25,37 @@ export default class App extends React.Component {
 
   state = {
   //  events: filterEvents(moment()),
-    events: []
+    events: [
+      {
+      data: [
+          {
+            time: '8:00',
+            title: '1 пара',
+            description: 'Информация о 1 паре',
+            circleColor: '#27ae60',
+            lineColor: '#27ae60'
+          },
+          {
+            time: '9:25',
+            title: 'Перерыв',
+          },
+          {
+            time: '9:45',
+            title: '2 пара',
+            description: 'Информация о 2 паре'
+          },
+          {
+            time: '11:10',
+            title: 'Перерыв',
+          },
+          {
+            time: '11:35',
+            title: '3 пара',
+            description: 'Информация о 3 паре'
+          }
+        ]
+      }
+    ]
   };
 
   onSelectDate = (date) => {
@@ -48,7 +83,7 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: (Platform.OS === 'ios') ? 20 : 0,
-    backgroundColor: '#3F53B1',
+    paddingTop: (Platform.OS === 'ios') ? IOS_TOP_PADDING : ANDROID_TOP_PADDING,
+    backgroundColor: APP_BACKGROUND_COLOR
   },
 });

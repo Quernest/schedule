@@ -5,11 +5,14 @@ import {
   View,
 } from 'react-native';
 import Event from './Event';
+import {
+  EVENTS_BACKGROUND_COLOR,
+} from '../helpers/constants';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#243177',
+    backgroundColor: EVENTS_BACKGROUND_COLOR,
   },
 });
 

@@ -14,6 +14,24 @@ import {
   formatYear,
 } from '../helpers/helpers';
 
+import {
+  PADDING_VERTICAL,
+  PADDING_HORIZONTAL,
+  CALENDAR_COLOR,
+  CALENDAR_FONT_SIZE,
+} from '../helpers/constants';
+
+const styles = StyleSheet.create({
+  visibleMonthAndYear: {
+    paddingTop: PADDING_VERTICAL,
+    paddingBottom: PADDING_VERTICAL,
+    fontSize: CALENDAR_FONT_SIZE,
+    color: CALENDAR_COLOR,
+    paddingHorizontal: PADDING_HORIZONTAL,
+    textAlign: 'left',
+  },
+});
+
 const { width: screenWidth } = Dimensions.get('window');
 
 export default class Calendar extends PureComponent {
@@ -210,14 +228,3 @@ export default class Calendar extends PureComponent {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  visibleMonthAndYear: {
-    paddingTop: 7.5,
-    paddingBottom: 7.5,
-    fontSize: 20,
-    color: 'rgba(255, 255, 255, 0.5)',
-    paddingHorizontal: 15,
-    textAlign: 'left',
-  },
-});
