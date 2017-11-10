@@ -19,6 +19,7 @@ import {
   PADDING_HORIZONTAL,
   CALENDAR_COLOR,
   CALENDAR_FONT_SIZE,
+  BOLD,
 } from '../helpers/constants';
 
 const styles = StyleSheet.create({
@@ -28,7 +29,8 @@ const styles = StyleSheet.create({
     fontSize: CALENDAR_FONT_SIZE,
     color: CALENDAR_COLOR,
     paddingHorizontal: PADDING_HORIZONTAL,
-    textAlign: 'left',
+    textAlign: 'center',
+    fontFamily: BOLD
   },
 });
 

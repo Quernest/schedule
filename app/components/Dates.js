@@ -6,6 +6,12 @@ import {
 import Date from './Date';
 import moment from 'moment';
 
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+  },
+});
+
 export default class Dates extends PureComponent {
   render() {
     const {
@@ -32,9 +38,3 @@ export default class Dates extends PureComponent {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-  },
-});

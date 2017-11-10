@@ -12,7 +12,9 @@ import {
   DATE_FONT_SIZE,
   PADDING_HORIZONTAL,
   PADDING_VERTICAL,
-  BORDER_WIDTH_DEFAULT
+  BORDER_WIDTH_DEFAULT,
+  BOLD,
+  REGULAR,
 } from '../helpers/constants';
 
 const styles = {
@@ -27,9 +29,11 @@ const styles = {
   },
   day: {
     fontSize: DAY_FONT_SIZE,
+    fontFamily: REGULAR
   },
   date: {
     fontSize: DATE_FONT_SIZE,
+    fontFamily: REGULAR
   },
   text: {
     color: DATE_COLOR,
