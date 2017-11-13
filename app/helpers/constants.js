@@ -16,10 +16,6 @@ export const EVENT_LESSON_COLOR       = '#fff';
 export const EVENT_LESSON_TYPE_COLOR  = 'lightgrey';
 export const EVENT_LOCATION_COLOR     = 'lightgrey';
 
-// sizes
-export const IOS_TOP_PADDING      = 20;
-export const ANDROID_TOP_PADDING  = 0;
-
 // paddings
 export const PADDING_DEFAULT      = 15;
 export const PADDING_HORIZONTAL   = 15;

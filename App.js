@@ -1,5 +1,9 @@
 import React from 'react';
-import { Font } from 'expo';
+
+import { 
+  Font,
+  Constants
+} from 'expo';
 
 import {
   Platform,
@@ -21,14 +25,12 @@ import Events from './app/components/Events';
 
 import {
   APP_BACKGROUND_COLOR,
-  IOS_TOP_PADDING,
-  ANDROID_TOP_PADDING
 } from './app/helpers/constants';
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: (Platform.OS === 'ios') ? IOS_TOP_PADDING : ANDROID_TOP_PADDING,
+    paddingTop: (Platform.OS === 'ios') ? 0 : Constants.statusBarHeight,
     backgroundColor: APP_BACKGROUND_COLOR
   },
 });
