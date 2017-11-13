@@ -13,6 +13,7 @@ export const DATE_COLOR_ACTIVE        = '#fff';
 
 export const EVENT_TIME_COLOR         = 'lightgrey';
 export const EVENT_LESSON_COLOR       = '#fff';
+export const EVENT_LESSON_TYPE_COLOR  = 'lightgrey';
 export const EVENT_LOCATION_COLOR     = 'lightgrey';
 
 // sizes
@@ -29,14 +30,15 @@ export const BORDER_WIDTH_DEFAULT  = 2;
 export const BORDER_RADIUS_DEFAULT = 5;
 
 // fonts
-export const DAY_FONT_SIZE        = 12;
-export const DATE_FONT_SIZE       = 24;
+export const DAY_FONT_SIZE          = 12;
+export const DATE_FONT_SIZE         = 24;
 
-export const EVENT_TIME_SIZE      = 14;
-export const EVENT_LESSON_SIZE    = 16;
-export const EVENT_LOCATION_SIZE  = 14;
+export const EVENT_TIME_SIZE        = 14;
+export const EVENT_LESSON_SIZE      = 16;
+export const EVENT_LESSON_TYPE_SIZE = 12;
+export const EVENT_LOCATION_SIZE    = 14;
 
-export const CALENDAR_FONT_SIZE   = 14;
+export const CALENDAR_FONT_SIZE     = 14;
 
 // font types
 export const LIGHT   = 'RobotoCondensed-Light';

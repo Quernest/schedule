@@ -29,8 +29,8 @@ const styles = StyleSheet.create({
     fontSize: CALENDAR_FONT_SIZE,
     color: CALENDAR_COLOR,
     paddingHorizontal: PADDING_HORIZONTAL,
-    textAlign: 'center',
-    fontFamily: BOLD
+    fontFamily: BOLD,
+    textAlign: 'center'
   },
 });
 
@@ -215,7 +215,7 @@ export default class Calendar extends PureComponent {
           ref={scrollView => { this._scrollView = scrollView; }}
           horizontal={true}
           showsHorizontalScrollIndicator={false}
-          automaticallyAdjustContentInsets={false}
+          automaticallyAdjustContentInsets={true}
           scrollEventThrottle={100}
           onScroll={this.onScroll}
         >

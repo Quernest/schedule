@@ -7,6 +7,11 @@ import {
   Text,
   View
 } from 'react-native';
+
+import moment from 'moment';
+import ru from 'moment/locale/ru';
+moment.locale('ru');
+
 import {
   filterEvents
 } from './app/helpers/helpers';
@@ -20,10 +25,6 @@ import {
   ANDROID_TOP_PADDING
 } from './app/helpers/constants';
 
-import moment from 'moment';
-import ru from 'moment/locale/ru';
-moment.locale('ru');
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -35,8 +36,7 @@ const styles = StyleSheet.create({
 export default class App extends React.Component {
   state = {
     isReady: false,
-    events: [{}, {}, {}, {}, {}]
-   // events: filterEvents(moment()),
+    events: filterEvents(moment()),
   };
 
   async componentDidMount() {
@@ -51,8 +51,7 @@ export default class App extends React.Component {
   }
 
   onSelectDate = (date) => {
-    //this.setState({ events: filterEvents(date)});
-    this.setState({ events: []})
+    this.setState({ events: filterEvents(date)});
   };
 
   render() {
