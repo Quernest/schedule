@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import {
+  TouchableOpacity,
   ScrollView,
   StyleSheet,
   View,
+  Alert
 } from 'react-native';
 import Event from './Event';
 import {
@@ -17,6 +19,9 @@ const styles = StyleSheet.create({
 });
 
 export default class Events extends Component {
+
+  _onPressEvent(event) {}
+
   render() {
     const { events } = this.props;
 
@@ -24,7 +29,13 @@ export default class Events extends Component {
       <View style={styles.container}>
         <ScrollView>
           {events && events.map((event, index) =>
-            <Event event={event} key={index} />)}
+            <TouchableOpacity 
+              onPress={this._onPressEvent.bind(this, event)}
+              key={index}
+            >
+              <Event event={event} />
+            </TouchableOpacity>
+          )}
         </ScrollView>
       </View>
     );

@@ -17,7 +17,8 @@
     },
     "icon": "./assets/icons/app-icon.png",
     "loading": {
-      "icon": "./assets/icons/app-icon.png"
+      "backgroundColor": "#334393",
+      "icon": "./assets/icons/logo.png"
     },
     "packagerOpts": {
       "assetExts": ["ttf", "mp4"]
