@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default class Event extends Component {
+class Event extends Component {
   render() {
     const { event } = this.props;
 
@@ -130,4 +130,6 @@ export default class Event extends Component {
     );
   }
 }
+
+export default Event;
 

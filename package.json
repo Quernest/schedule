@@ -30,7 +30,8 @@
     "react-native-progress-bar": "^0.1.2",
     "react-native-svg": "^6.0.0-rc1",
     "react-native-timeline-listview": "^0.2.2",
-    "react-native-vector-icons": "^4.4.2"
+    "react-native-vector-icons": "^4.4.2",
+    "react-navigation": "^1.0.0-beta.19"
   },
   "devDependencies": {
     "eslint-config-airbnb-base": "^12.0.2",

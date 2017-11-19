@@ -16,6 +16,8 @@ export const EVENT_LESSON_COLOR       = '#fff';
 export const EVENT_LESSON_TYPE_COLOR  = 'lightgrey';
 export const EVENT_LOCATION_COLOR     = 'lightgrey';
 
+export const CIRCLE_PROGRESS_COLOR    = 'rgb(236, 240, 241)';
+
 // paddings
 export const PADDING_DEFAULT      = 15;
 export const PADDING_HORIZONTAL   = 15;

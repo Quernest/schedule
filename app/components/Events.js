@@ -18,19 +18,16 @@ const styles = StyleSheet.create({
   },
 });
 
-export default class Events extends Component {
-
-  _onPressEvent(event) {}
-
+class Events extends Component {
   render() {
-    const { events } = this.props;
+    const { navigate, events, selectedDate } = this.props;
 
     return (
       <View style={styles.container}>
         <ScrollView>
           {events && events.map((event, index) =>
-            <TouchableOpacity 
-              onPress={this._onPressEvent.bind(this, event)}
+            <TouchableOpacity
+              onPress={() => navigate("Third", { event, selectedDate })}
               key={index}
             >
               <Event event={event} />
@@ -42,3 +39,4 @@ export default class Events extends Component {
   }
 }
 
+export default Events;
