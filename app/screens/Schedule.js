@@ -2,7 +2,7 @@ import React, { PureComponent } from 'react';
 
 import { 
   Font,
-  Constants
+  AppLoading
 } from 'expo';
 
 import {
@@ -23,22 +23,35 @@ import Events from '../components/Events';
 import test from '../../API/it-14-1.json'; // testing JSON
 
 const filterEvents = (date) => {
-  const startOfSemester = moment(test.startOfSemester, 'DD/MM/YYYY');
-  const currentDate = moment(date, 'DD/MM/YYYY');
-  const day = 1; // Monday
+  const {
+    startOfSemester,
+    firstWeekType,
+    schedule,
+  } = test;
+  const start = moment(startOfSemester, 'DD/MM/YYYY');
+  const selectedDate = moment(date, 'DD/MM/YYYY');
+  const days = []
+  const day = 1;
+  const current = start.clone();
+  const odd  = '*';
+  const even = '/';
 
-  const days = [];
-  const current = startOfSemester.clone();
-  
-  let weekNumber = 0;
-  
-  while (current.day(7 + day).isBefore(currentDate)) {
-    weekNumber++;
+  let currentWeek;
+  let i = 1;
+
+  while (current.day(7 + day).isBefore(selectedDate)) {
+    i++;
     days.push(current.clone());
   }
 
-  return test.schedule[weekNumber % 2 === 0 ? test.firstWeekType : '/'].filter(lesson => {
-    return lesson.day.toLowerCase() === date.format('dddd');
+  if (i % 2 !== 0) {
+    currentWeek = firstWeekType === odd ? odd : even;
+  } else {
+    currentWeek = firstWeekType === even ? odd : even;
+  }
+
+  return schedule[currentWeek].filter(_ => {
+    return _.day.toLowerCase() === date.format('dddd');
   });
 };
 
@@ -48,20 +61,12 @@ class Schedule extends PureComponent {
   };
 
   state = {
-    isFontsLoaded: false,
+    isReady: false,
     events: filterEvents(moment()),
     selectedDate: moment(),
   };
 
-  async componentDidMount() {
-    await Font.loadAsync({
-      'RobotoCondensed-Regular': require('../../assets/fonts/RobotoCondensed-Regular.ttf'),
-      'RobotoCondensed-Bold': require('../../assets/fonts/RobotoCondensed-Bold.ttf'),
-      'RobotoCondensed-Light': require('../../assets/fonts/RobotoCondensed-Light.ttf')
-    }).then(() => this.setState({ isFontsLoaded: true }))
-  }
-
-  onSelectDate = (date) => {
+  _onSelectDate = (date) => {
     this.setState({
       events: filterEvents(date),
       selectedDate: date
@@ -69,15 +74,34 @@ class Schedule extends PureComponent {
   };
 
   render() {
-    const { isFontsLoaded, events, selectedDate } = this.state;
-    const { navigate } = this.props.navigation;
+    const {
+      selectedDate,
+      isReady,
+      events,
+    } = this.state;
+
+    const {
+      navigation: {
+        navigate
+      },
+    } = this.props;
+
+    if (!isReady) {
+      return (
+        <AppLoading
+         startAsync={this._loadFontsAsync}
+         onFinish={() => this.setState({ isReady: true })}
+         onError={console.warn}
+        />
+      );
+    }
 
     return (
-      isFontsLoaded && <View style={styles.container}>
+      <View style={styles.container}>
         <StatusBar hidden={true} />
         <Calendar
           showDaysAfterCurrent={13}
-          onSelectDate={this.onSelectDate} 
+          onSelectDate={this._onSelectDate} 
         />
         <Events
           events={events}
@@ -86,6 +110,14 @@ class Schedule extends PureComponent {
         />
       </View>
     );
+  }
+
+  async _loadFontsAsync() {
+    await Font.loadAsync({
+      'RobotoCondensed-Regular': require('../../assets/fonts/RobotoCondensed-Regular.ttf'),
+      'RobotoCondensed-Bold': require('../../assets/fonts/RobotoCondensed-Bold.ttf'),
+      'RobotoCondensed-Light': require('../../assets/fonts/RobotoCondensed-Light.ttf')
+    })
   }
 }
 
