@@ -17,16 +17,33 @@ import moment from 'moment';
 import ru from 'moment/locale/ru';
 moment.locale('ru');
 
-import {
-  filterEvents
-} from '../helpers/helpers';
-
 import Calendar from '../components/Calendar';
 import Events from '../components/Events';
 
+import test from '../../API/it-14-1.json'; // testing JSON
+
+const filterEvents = (date) => {
+  const startOfSemester = moment(test.startOfSemester, 'DD/MM/YYYY');
+  const currentDate = moment(date, 'DD/MM/YYYY');
+  const day = 1; // Monday
+
+  const days = [];
+  const current = startOfSemester.clone();
+  
+  let weekNumber = 0;
+  
+  while (current.day(7 + day).isBefore(currentDate)) {
+    weekNumber++;
+    days.push(current.clone());
+  }
+
+  return test.schedule[weekNumber % 2 === 0 ? test.firstWeekType : '/'].filter(lesson => {
+    return lesson.day.toLowerCase() === date.format('dddd');
+  });
+};
+
 class Schedule extends PureComponent {
   static navigationOptions = {
-    title: 'Second Screen',
     header: null
   };
 

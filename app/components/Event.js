@@ -6,15 +6,10 @@ import {
   Dimensions,
 } from 'react-native';
 import {
-  checkCurrentDay,
-  checkCurrentLesson,
-  checkPastLesson,
-  compare
-} from '../helpers/helpers';
-import {
   Ionicons 
 } from '@expo/vector-icons';
 import moment from 'moment';
+import Timer from '../helpers/Timer';
 import * as Progress from 'react-native-progress';
 
 const { width } = Dimensions.get('window');
@@ -48,8 +43,8 @@ class Event extends Component {
       type
     } = event;
 
-    const isCurrentLesson = checkCurrentLesson(start, end, currentTime) && currentTime.isSame(selectedDate, 'day');
-    const isPastLesson = checkPastLesson(end, currentTime) && currentTime.isSame(selectedDate, 'day') || selectedDate.isBefore(currentTime, 'day');
+    const isCurrentLesson = Timer.checkCurrentLesson(start, end, currentTime) && currentTime.isSame(selectedDate, 'day');
+    const isPastLesson = Timer.checkPastLesson(end, currentTime) && currentTime.isSame(selectedDate, 'day') || selectedDate.isBefore(currentTime, 'day');
 
     return (
       <View style={[styles.container, isCurrentLesson && styles.containerActive, isPastLesson && styles.containerDeactive]}>

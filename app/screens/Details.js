@@ -9,17 +9,9 @@ import {
   StatusBar,
 } from 'react-native';
 
-import {
-  calcCurrentLessonProgress,
-  calcRemainingTime,
-  checkCurrentDay,
-  checkCurrentLesson,
-  calcTimeDifference,
-} from '../helpers/helpers';
-
 import moment from 'moment';
-
 import * as Progress from 'react-native-progress';
+import Timer from '../helpers/Timer';
 
 const {
   width
@@ -75,7 +67,7 @@ class Details extends Component {
       type
     } = event;
 
-    const isVisibleProgress = checkCurrentLesson(start, end, currentTime) && currentTime.isSame(selectedDate, 'day');
+    const isVisibleProgress = Timer.checkCurrentLesson(start, end, currentTime) && currentTime.isSame(selectedDate, 'day');
   
     return (
       <View style={styles.container}>
@@ -91,7 +83,7 @@ class Details extends Component {
 
           <View style={styles.duration}>
             <Text style={[styles.text, styles.label]}>Время и длительность пары:</Text>
-            <Text style={styles.text}>С {start} до {end} ({calcTimeDifference(start, end).minutes} мин.)</Text>
+            <Text style={styles.text}>С {start} до {end} ({Timer.calcTimeDifference(start, end).minutes} мин.)</Text>
           </View>
 
           <View style={styles.location}>
@@ -103,11 +95,11 @@ class Details extends Component {
         {isVisibleProgress && <View style={styles.circle}>
           <Progress.Circle
             size={width * .65}
-            progress={calcCurrentLessonProgress(start, calcTimeDifference(start, end).minutes, 1)}
+            progress={Timer.calcCurrentLessonProgress(start, Timer.calcTimeDifference(start, end).minutes, 1)}
             color={'rgb(236, 240, 241)'}
             unfilledColor={'#3F53B1'}
             showsText={true}
-            formatText={() => calcRemainingTime(end, currentTime).join(':')}
+            formatText={() => Timer.calcRemainingTime(end, currentTime).join(':')}
             borderWidth={0}
             thickness={10}
             animated={false}
