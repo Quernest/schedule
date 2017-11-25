@@ -7,16 +7,6 @@ import {
   Alert
 } from 'react-native';
 import Event from './Event';
-import {
-  EVENTS_BACKGROUND_COLOR,
-} from '../helpers/constants';
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: EVENTS_BACKGROUND_COLOR,
-  },
-});
 
 class Events extends Component {
   render() {
@@ -27,10 +17,10 @@ class Events extends Component {
         <ScrollView>
           {events && events.map((event, index) =>
             <TouchableOpacity
-              onPress={() => navigate("Third", { event, selectedDate })}
+              onPress={() => navigate("Details", { event, selectedDate })}
               key={index}
             >
-              <Event event={event} />
+              <Event event={event} selectedDate={selectedDate} />
             </TouchableOpacity>
           )}
         </ScrollView>
@@ -38,5 +28,12 @@ class Events extends Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#243177',
+  },
+});
 
 export default Events;

@@ -1,23 +1,19 @@
-import MainScreen from './app/screens/MainScreen';
-import SecondScreen from './app/screens/SecondScreen';
-import ThirdScreen from './app/screens/ThirdScreen';
+import {StackNavigator} from 'react-navigation';
 
-import {
-  StackNavigator
-} from 'react-navigation';
+import Selection from './app/screens/Selection';
+import Schedule  from './app/screens/Schedule';
+import Details   from './app/screens/Details';
 
-const Navigation = StackNavigator({
-  MainScreen: {
-    screen: MainScreen
+export default Navigation = StackNavigator({
+  Selection: {
+    screen: Selection
   },
-  Second: {
-    screen: SecondScreen
+  Schedule: {
+    screen: Schedule
   },
-  Third: {
-    screen: ThirdScreen
+  Details: {
+    screen: Details
   }
 }, {
-  initialRouteName: 'Second'
+  initialRouteName: 'Schedule'
 });
-
-export default Navigation;

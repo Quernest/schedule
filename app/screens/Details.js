@@ -6,19 +6,8 @@ import {
   Button,
   StyleSheet,
   Dimensions,
+  StatusBar,
 } from 'react-native';
-
-import {
-  APP_BACKGROUND_COLOR,
-  EVENTS_BACKGROUND_COLOR,
-  PADDING_DEFAULT,
-  CIRCLE_PROGRESS_COLOR,
-  REGULAR,
-  PADDING_VERTICAL,
-  BOLD,
-  LIGHT,
-  PADDING_HORIZONTAL,
-} from '../helpers/constants';
 
 import {
   calcCurrentLessonProgress,
@@ -32,69 +21,16 @@ import moment from 'moment';
 
 import * as Progress from 'react-native-progress';
 
-const { width } = Dimensions.get('window');
+const {
+  width
+} = Dimensions.get('window');
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: EVENTS_BACKGROUND_COLOR,
-    padding: PADDING_DEFAULT,
-  },
-  text: {
-    fontFamily: REGULAR,
-    color: '#FFF'
-  },
-  label: {
-    fontFamily: BOLD,
-    marginRight: PADDING_HORIZONTAL / 4,
-  },
-  heading: {
-    fontFamily: LIGHT,
-    fontSize: 20,
-    marginBottom: PADDING_VERTICAL,
-    // borderBottomColor: 'rgba(255, 255, 255, .25)',
-    // borderBottomWidth: StyleSheet.hairlineWidth,
-    color: '#FFF'
-  },
-
-  teacher: {
-    marginBottom: PADDING_VERTICAL
-  },
-  teaherName: {
-    fontFamily: REGULAR
-  },
-  teacherLabel: {
-    fontFamily: BOLD
-  },
-
-  duration: {
-    marginBottom: PADDING_VERTICAL,
-  },
-
-  location: {
-    flexDirection: 'row',
-    marginBottom: PADDING_VERTICAL,
-  },
-
-  circle: {
-    maxWidth: width,
-    justifyContent: 'center',
-    alignItems: 'center',
-    paddingTop: PADDING_VERTICAL
-  },
-  info: {
-    padding: PADDING_DEFAULT / 2,
-    // borderBottomColor: 'rgba(255, 255, 255, .25)',
-    // borderBottomWidth: StyleSheet.hairlineWidth,
-  }
-});
-
-class ThirdScreen extends Component {
+class Details extends Component {
   static navigationOptions = {
     title: 'Назад',
     headerTintColor: '#FFF',
     headerStyle: {
-      backgroundColor: APP_BACKGROUND_COLOR
+      backgroundColor: '#3F53B1'
     }
   };
 
@@ -139,17 +75,18 @@ class ThirdScreen extends Component {
       type
     } = event;
 
-    const isVisibleProgress = checkCurrentLesson(start, end, currentTime);
+    const isVisibleProgress = checkCurrentLesson(start, end, currentTime) && currentTime.isSame(selectedDate, 'day');
   
     return (
       <View style={styles.container}>
-        
-        <View style={styles.info}>
+        <StatusBar hidden={true} />
+        {/* fix it  */}
+        {start && end && <View style={styles.info}>
           <Text style={styles.heading}>{name}</Text>
-          
+
           <View style={styles.teacher}>
             <Text style={[styles.text, styles.label]}>Преподаватель:</Text>
-            <Text style={styles.text}>Тарасов Александр Фёдорович</Text>
+            <Text style={styles.text}>Не указан</Text>
           </View>
 
           <View style={styles.duration}>
@@ -161,15 +98,14 @@ class ThirdScreen extends Component {
             <Text style={[styles.text, styles.label]}>Аудитория:</Text>
             <Text style={styles.text}>{location}</Text>
           </View>
-
-        </View>
+        </View>}
 
         {isVisibleProgress && <View style={styles.circle}>
           <Progress.Circle
             size={width * .65}
             progress={calcCurrentLessonProgress(start, calcTimeDifference(start, end).minutes, 1)}
-            color={CIRCLE_PROGRESS_COLOR}
-            unfilledColor={APP_BACKGROUND_COLOR}
+            color={'rgb(236, 240, 241)'}
+            unfilledColor={'#3F53B1'}
             showsText={true}
             formatText={() => calcRemainingTime(end, currentTime).join(':')}
             borderWidth={0}
@@ -182,4 +118,55 @@ class ThirdScreen extends Component {
   }
 }
 
-export default ThirdScreen;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#243177',
+    padding: 15,
+  },
+  text: {
+    fontFamily: 'RobotoCondensed-Regular',
+    color: '#FFF'
+  },
+  label: {
+    fontFamily: 'RobotoCondensed-Bold',
+    marginRight: 3.75,
+  },
+  heading: {
+    fontFamily: 'RobotoCondensed-Light',
+    fontSize: 20,
+    marginBottom: 10,
+    color: '#FFF'
+  },
+
+  teacher: {
+    marginBottom: 10
+  },
+  teaherName: {
+    fontFamily: 'RobotoCondensed-Regular',
+  },
+  teacherLabel: {
+    fontFamily: 'RobotoCondensed-Bold',
+  },
+
+  duration: {
+    marginBottom: 10,
+  },
+
+  location: {
+    flexDirection: 'row',
+    marginBottom: 10,
+  },
+
+  circle: {
+    maxWidth: width,
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingTop: 10
+  },
+  info: {
+    padding: 7.5,
+  }
+});
+
+export default Details;

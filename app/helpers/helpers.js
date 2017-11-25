@@ -1,9 +1,6 @@
 import moment from 'moment';
 import test from '../../API/it-14-1.json';
 
-export const formatMonth = (date) => date.format('MMMM');
-export const formatYear = (date) => date.format('YYYY');
-
 const formatPattern = 'DD/MM/YYYY';
 const timeFormat = 'H:mm:ss';
 
@@ -60,9 +57,9 @@ export const checkCurrentLesson = (startTime, endTime, currentTime) => {
   return currentTime > moment(startTime, timeFormat) && currentTime < moment(endTime, timeFormat);
 };
 
-export const checkCurrentDay = (selectedDate, currentTime) => {
-  return selectedDate.format(timeFormat) === currentTime.format(timeFormat);
-}
+export const checkPastLesson = (endTime, currentTime) => {
+  return moment(endTime, timeFormat) < currentTime;
+};
 
 export const calcCurrentLessonProgress = (startTime, totalTime, maxValue) => {
   const timestamp = moment(startTime, timeFormat);

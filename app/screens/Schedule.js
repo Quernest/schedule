@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { PureComponent } from 'react';
 
 import { 
   Font,
@@ -9,7 +9,8 @@ import {
   Platform,
   StyleSheet,
   Text,
-  View
+  View,
+  StatusBar,
 } from 'react-native';
 
 import moment from 'moment';
@@ -23,26 +24,14 @@ import {
 import Calendar from '../components/Calendar';
 import Events from '../components/Events';
 
-import {
-  APP_BACKGROUND_COLOR,
-} from '../helpers/constants';
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: (Platform.OS === 'ios') ? 0 : Constants.statusBarHeight,
-    backgroundColor: APP_BACKGROUND_COLOR
-  },
-});
-
-export default class SecondScreen extends React.Component {
+class Schedule extends PureComponent {
   static navigationOptions = {
     title: 'Second Screen',
     header: null
   };
 
   state = {
-    isReady: false,
+    isFontsLoaded: false,
     events: filterEvents(moment()),
     selectedDate: moment(),
   };
@@ -50,24 +39,25 @@ export default class SecondScreen extends React.Component {
   async componentDidMount() {
     await Font.loadAsync({
       'RobotoCondensed-Regular': require('../../assets/fonts/RobotoCondensed-Regular.ttf'),
-      'RobotoCondensed-Bold'   : require('../../assets/fonts/RobotoCondensed-Bold.ttf'),
-      'RobotoCondensed-Light'  : require('../../assets/fonts/RobotoCondensed-Light.ttf'),
-      'RobotoCondensed-Italic' : require('../../assets/fonts/RobotoCondensed-Italic.ttf')
-    })
-
-    this.setState({ isReady: true });
+      'RobotoCondensed-Bold': require('../../assets/fonts/RobotoCondensed-Bold.ttf'),
+      'RobotoCondensed-Light': require('../../assets/fonts/RobotoCondensed-Light.ttf')
+    }).then(() => this.setState({ isFontsLoaded: true }))
   }
 
   onSelectDate = (date) => {
-    this.setState({ events: filterEvents(date), selectedDate: date });
+    this.setState({
+      events: filterEvents(date),
+      selectedDate: date
+    });
   };
 
   render() {
-    const { isReady, events, selectedDate } = this.state;
+    const { isFontsLoaded, events, selectedDate } = this.state;
     const { navigate } = this.props.navigation;
 
     return (
-      isReady && <View style={styles.container}>
+      isFontsLoaded && <View style={styles.container}>
+        <StatusBar hidden={true} />
         <Calendar
           showDaysAfterCurrent={13}
           onSelectDate={this.onSelectDate} 
@@ -81,3 +71,12 @@ export default class SecondScreen extends React.Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#3F53B1'
+  },
+});
+
+export default Schedule;

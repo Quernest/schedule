@@ -9,34 +9,19 @@ import {
 import Dates from './Dates';
 import moment from 'moment';
 
-import {
-  formatMonth,
-  formatYear,
-} from '../helpers/helpers';
+const {
+  width: screenWidth
+} = Dimensions.get('window');
 
-import {
-  PADDING_VERTICAL,
-  PADDING_HORIZONTAL,
-  CALENDAR_COLOR,
-  CALENDAR_FONT_SIZE,
-  BOLD,
-} from '../helpers/constants';
+const formatMonth = (date) => {
+  return date.format('MMMM');
+}
 
-const styles = StyleSheet.create({
-  visibleMonthAndYear: {
-    paddingTop: PADDING_VERTICAL,
-    paddingBottom: PADDING_VERTICAL,
-    fontSize: CALENDAR_FONT_SIZE,
-    color: CALENDAR_COLOR,
-    paddingHorizontal: PADDING_HORIZONTAL,
-    fontFamily: BOLD,
-    textAlign: 'center'
-  },
-});
+const formatYear = (date) => {
+  return date.format('YYYY');
+}
 
-const { width: screenWidth } = Dimensions.get('window');
-
-export default class Calendar extends PureComponent {
+class Calendar extends PureComponent {
   static defaultProps = {
     showDaysBeforeCurrent: 2,
     showDaysAfterCurrent: 5,
@@ -215,7 +200,7 @@ export default class Calendar extends PureComponent {
           ref={scrollView => { this._scrollView = scrollView; }}
           horizontal={true}
           showsHorizontalScrollIndicator={false}
-          automaticallyAdjustContentInsets={true}
+          automaticallyAdjustContentInsets={false}
           scrollEventThrottle={100}
           onScroll={this.onScroll}
         >
@@ -230,3 +215,16 @@ export default class Calendar extends PureComponent {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  visibleMonthAndYear: {
+    paddingTop: 10,
+    paddingBottom: 10,
+    fontSize: 16,
+    color: '#fff',
+    paddingHorizontal: 15,
+    fontFamily: 'RobotoCondensed-Bold'
+  },
+});
+
+export default Calendar;

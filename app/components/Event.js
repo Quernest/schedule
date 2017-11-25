@@ -3,86 +3,42 @@ import {
   StyleSheet,
   Text,
   View,
+  Dimensions,
 } from 'react-native';
 import {
-  EVENT_BACKGROUND_COLOR,
-  EVENT_TIME_COLOR,
-  EVENT_TIME_SIZE,
-  EVENT_LESSON_COLOR,
-  EVENT_LESSON_SIZE,
-  EVENT_LESSON_TYPE_COLOR,
-  EVENT_LESSON_TYPE_SIZE,
-  EVENT_LOCATION_COLOR,
-  EVENT_LOCATION_SIZE,
-  PADDING_DEFAULT,
-  PADDING_HORIZONTAL,
-  PADDING_VERTICAL,
-  BORDER_RADIUS_DEFAULT,
-  BOLD,
-  REGULAR,
-} from '../helpers/constants';
+  checkCurrentDay,
+  checkCurrentLesson,
+  checkPastLesson,
+  compare
+} from '../helpers/helpers';
 import {
   Ionicons 
 } from '@expo/vector-icons';
+import moment from 'moment';
+import * as Progress from 'react-native-progress';
 
-const styles = StyleSheet.create({
-  container: {
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: PADDING_DEFAULT,
-    marginTop: PADDING_VERTICAL,
-    marginLeft: PADDING_HORIZONTAL / 2,
-    marginRight: PADDING_HORIZONTAL / 2,
-    borderRadius: BORDER_RADIUS_DEFAULT,
-    backgroundColor: EVENT_BACKGROUND_COLOR,
-  },
-
-  timeContainer: {
-    marginRight: PADDING_HORIZONTAL,
-  },
-  time: {
-    fontFamily: BOLD,
-    fontSize: EVENT_TIME_SIZE,
-    color: EVENT_TIME_COLOR,
-  },
-
-  lessonContainer: {
-    flex: 1,
-  },
-  lessonDetails: {
-    alignItems: 'flex-end'
-  },
-  lessonType: {
-    fontFamily: BOLD,
-    fontSize: EVENT_LESSON_TYPE_SIZE,
-    textAlign: 'center',
-    color: EVENT_LESSON_TYPE_COLOR
-  },
-  lesson: {
-    fontFamily: REGULAR,
-    fontSize: EVENT_LESSON_SIZE,
-    textAlign: 'center',
-    color: EVENT_LESSON_COLOR
-  },
-
-  locationContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginLeft: PADDING_HORIZONTAL,
-  },
-  location: {
-    marginLeft: PADDING_HORIZONTAL / 2,
-    fontFamily: BOLD,
-    fontSize: EVENT_LOCATION_SIZE,
-    textAlign: 'center',
-    color: EVENT_LOCATION_COLOR
-  },
-});
+const { width } = Dimensions.get('window');
 
 class Event extends Component {
+  state = {
+    currentTime: moment()
+  }
+
+  componentDidMount() {
+    this.intervalId = setInterval(this.timeUpdate.bind(this), 1000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.intervalId);
+  }
+
+  timeUpdate() {
+    this.setState({ currentTime: moment() })
+  }
+
   render() {
-    const { event } = this.props;
+    const { event, selectedDate } = this.props;
+    const { currentTime } = this.state;
 
     const {
       start,
@@ -92,8 +48,11 @@ class Event extends Component {
       type
     } = event;
 
+    const isCurrentLesson = checkCurrentLesson(start, end, currentTime) && currentTime.isSame(selectedDate, 'day');
+    const isPastLesson = checkPastLesson(end, currentTime) && currentTime.isSame(selectedDate, 'day') || selectedDate.isBefore(currentTime, 'day');
+
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, isCurrentLesson && styles.containerActive, isPastLesson && styles.containerDeactive]}>
         <View style={styles.timeContainer}>
           <Text style={styles.time}>
             {start}
@@ -113,8 +72,8 @@ class Event extends Component {
           <View style={styles.locationContainer}>
             {location && <Ionicons 
               name="md-pin"
-              size={EVENT_LOCATION_SIZE}
-              color={EVENT_LOCATION_COLOR}
+              size={14}
+              color={'lightgrey'}
             />}
             <Text style={styles.location}>
               {location}
@@ -130,6 +89,68 @@ class Event extends Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 15,
+    marginTop: 10,
+    marginHorizontal: 7.5,
+    borderRadius: 5,
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+  },
+
+  containerActive: {
+    backgroundColor: 'green',
+    opacity: 1
+  },
+  containerDeactive: {
+    opacity: .35
+  },
+
+  timeContainer: {
+    marginRight: 15,
+  },
+  time: {
+    fontFamily: 'RobotoCondensed-Bold',
+    fontSize: 14,
+    color: 'lightgrey',
+  },
+
+  lessonContainer: {
+    flex: 1,
+  },
+  lessonDetails: {
+    alignItems: 'flex-end'
+  },
+  lessonType: {
+    fontFamily: 'RobotoCondensed-Bold',
+    fontSize: 12,
+    textAlign: 'center',
+    color: 'lightgrey'
+  },
+  lesson: {
+    fontFamily: 'RobotoCondensed-Regular',
+    fontSize: 16,
+    textAlign: 'center',
+    color: '#fff'
+  },
+
+  locationContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginLeft: 15,
+  },
+  location: {
+    marginLeft: 7.5,
+    fontFamily: 'RobotoCondensed-Bold',
+    fontSize: 14,
+    textAlign: 'center',
+    color: 'lightgrey'
+  },
+});
 
 export default Event;
 

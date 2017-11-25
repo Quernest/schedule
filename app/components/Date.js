@@ -5,45 +5,6 @@ import {
 } from 'react-native';
 import moment from 'moment';
 
-import {
-  DATE_COLOR,
-  DATE_COLOR_ACTIVE,
-  DAY_FONT_SIZE,
-  DATE_FONT_SIZE,
-  PADDING_HORIZONTAL,
-  PADDING_VERTICAL,
-  BORDER_WIDTH_DEFAULT,
-  BOLD,
-  REGULAR,
-} from '../helpers/constants';
-
-const styles = {
-  container: {
-    borderBottomColor: 'transparent',
-    borderBottomWidth: BORDER_WIDTH_DEFAULT,
-    paddingHorizontal: PADDING_HORIZONTAL,
-    paddingVertical: PADDING_VERTICAL,
-  },
-  containerActive: {
-    borderBottomColor: DATE_COLOR_ACTIVE,
-  },
-  day: {
-    fontSize: DAY_FONT_SIZE,
-    fontFamily: REGULAR
-  },
-  date: {
-    fontSize: DATE_FONT_SIZE,
-    fontFamily: REGULAR
-  },
-  text: {
-    color: DATE_COLOR,
-    textAlign: 'center',
-  },
-  textActive: {
-    color: DATE_COLOR_ACTIVE,
-  },
-};
-
 export default class Date extends PureComponent {
   getContainerStyle = () => ({
     ...styles.container,
@@ -85,3 +46,30 @@ export default class Date extends PureComponent {
     );
   }
 }
+
+const styles = {
+  container: {
+    borderBottomColor: 'transparent',
+    borderBottomWidth: 2,
+    paddingHorizontal: 15,
+    paddingVertical: 10,
+  },
+  containerActive: {
+    borderBottomColor: '#fff',
+  },
+  day: {
+    fontSize: 12,
+    fontFamily: 'RobotoCondensed-Regular'
+  },
+  date: {
+    fontSize: 24,
+    fontFamily: 'RobotoCondensed-Regular'
+  },
+  text: {
+    color: 'rgba(255,255,255,0.5)',
+    textAlign: 'center',
+  },
+  textActive: {
+    color: '#fff',
+  },
+};
