@@ -10,7 +10,7 @@ class Timer {
   static calcRemainingTime(endTime, currentTime) {
     let hours, minutes, seconds, group;
     
-    const then = moment(endTime, 'H:mm:ss');
+    const then = moment(endTime, timeFormat);
     const diff = moment.duration(then.diff(currentTime));
   
     hours   = diff.hours();
