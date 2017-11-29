@@ -10,8 +10,12 @@ import {
   StyleSheet,
   Text,
   View,
-  StatusBar,
+  Button
 } from 'react-native';
+
+import {
+  Actions,
+} from 'react-native-router-flux';
 
 import moment from 'moment';
 import ru from 'moment/locale/ru';
@@ -20,14 +24,12 @@ moment.locale('ru');
 import Calendar from '../components/Calendar';
 import Events from '../components/Events';
 
-import test from '../../API/it-14-1.json'; // testing JSON
-
-const filterEvents = (date) => {
+const filterEvents = (date, props) => {
   const {
     startOfSemester,
     firstWeekType,
     schedule,
-  } = test;
+  } = props;
   const start = moment(startOfSemester, 'DD/MM/YYYY');
   const selectedDate = moment(date, 'DD/MM/YYYY');
   const days = []
@@ -57,21 +59,32 @@ const filterEvents = (date) => {
 
 class Schedule extends PureComponent {
   static navigationOptions = {
-    header: null
+    title: 'Назад',
+    headerTintColor: '#FFF',
+    headerStyle: {
+      backgroundColor: '#3F53B1'
+    }
   };
-
   state = {
     isReady: false,
-    events: filterEvents(moment()),
+    events: filterEvents(moment(), this.props),
     selectedDate: moment(),
   };
 
   _onSelectDate = (date) => {
     this.setState({
-      events: filterEvents(date),
+      events: filterEvents(date, this.props),
       selectedDate: date
     });
   };
+
+  async componentDidMount() {
+    await Font.loadAsync({
+      'RobotoCondensed-Regular': require('../../assets/fonts/RobotoCondensed-Regular.ttf'),
+      'RobotoCondensed-Bold': require('../../assets/fonts/RobotoCondensed-Bold.ttf'),
+      'RobotoCondensed-Light': require('../../assets/fonts/RobotoCondensed-Light.ttf')
+    }).then(() => this.setState({ isReady: true }));
+  }
 
   render() {
     const {
@@ -80,44 +93,18 @@ class Schedule extends PureComponent {
       events,
     } = this.state;
 
-    const {
-      navigation: {
-        navigate
-      },
-    } = this.props;
-
-    if (!isReady) {
-      return (
-        <AppLoading
-         startAsync={this._loadFontsAsync}
-         onFinish={() => this.setState({ isReady: true })}
-         onError={console.warn}
-        />
-      );
-    }
-
     return (
-      <View style={styles.container}>
-        <StatusBar hidden={true} />
+      isReady && <View style={styles.container}>
         <Calendar
-          showDaysAfterCurrent={13}
+          showDaysAfterCurrent={14}
           onSelectDate={this._onSelectDate} 
         />
         <Events
           events={events}
-          navigate={navigate}
           selectedDate={selectedDate}
         />
       </View>
     );
-  }
-
-  async _loadFontsAsync() {
-    await Font.loadAsync({
-      'RobotoCondensed-Regular': require('../../assets/fonts/RobotoCondensed-Regular.ttf'),
-      'RobotoCondensed-Bold': require('../../assets/fonts/RobotoCondensed-Bold.ttf'),
-      'RobotoCondensed-Light': require('../../assets/fonts/RobotoCondensed-Light.ttf')
-    })
   }
 }
 

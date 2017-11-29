@@ -6,7 +6,6 @@ import {
   Button,
   StyleSheet,
   Dimensions,
-  StatusBar,
 } from 'react-native';
 
 import moment from 'moment';
@@ -71,7 +70,6 @@ class Details extends Component {
   
     return (
       <View style={styles.container}>
-        <StatusBar hidden={true} />
         {/* fix it  */}
         {start && end && <View style={styles.info}>
           <Text style={styles.heading}>{name}</Text>

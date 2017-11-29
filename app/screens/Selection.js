@@ -3,26 +3,53 @@ import {
   Text,
   View,
   Button,
-  StyleSheet,
-  StatusBar,
+  StyleSheet
 } from 'react-native';
+import {
+  Actions,
+} from 'react-native-router-flux';
+import API from '../services/API';
 
 class Selection extends Component {
-  static navigationOptions = {
-    header: null
+  state = {
+    data: {},
+    isLoading: true
   };
+
+  fetchData() {
+    return API.getData()
+    .then(res => {
+      this.setState({ isLoading: true });
+      return res.json();
+    })
+    .then(resJson =>
+      this.setState({
+        isLoading: false,
+        data: resJson
+      }))
+    .catch(err => {
+      this.setState({
+        isLoading: false,
+      })
+      return console.log(err);
+    })
+  }
+
+  componentDidMount() {
+    this.fetchData();  
+  }
 
   render() {
     const {
-      navigate
-    } = this.props.navigation;
+      isLoading,
+      data
+    } = this.state;
 
     return (
       <View style={styles.container}>
-        <StatusBar hidden={true} />
         <Button
-          title="Далее"
-          onPress={() => navigate('Schedule')}
+          onPress={() => Actions.schedule(!isLoading && data)}
+          title="IT-14-1"
         />
       </View>
     );

@@ -4,20 +4,26 @@ import {
   ScrollView,
   StyleSheet,
   View,
-  Alert
 } from 'react-native';
 import Event from './Event';
 
+import {
+  Actions,
+} from 'react-native-router-flux';
+
 class Events extends Component {
   render() {
-    const { navigate, events, selectedDate } = this.props;
+    const {
+      events,
+      selectedDate
+    } = this.props;
 
     return (
       <View style={styles.container}>
         <ScrollView>
           {events && events.map((event, index) =>
             <TouchableOpacity
-              onPress={() => navigate("Details", { event, selectedDate })}
+              onPress={() => Actions.details({ event, selectedDate })}
               key={index}
             >
               <Event event={event} selectedDate={selectedDate} />
