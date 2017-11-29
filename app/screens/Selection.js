@@ -8,7 +8,7 @@ import {
 import {
   Actions,
 } from 'react-native-router-flux';
-import API from '../services/API';
+import API from '../services/Api';
 
 class Selection extends Component {
   state = {
