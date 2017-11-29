@@ -16,6 +16,10 @@ class Selection extends Component {
     isLoading: true
   };
 
+  componentDidMount() {
+    this.fetchData();  
+  }
+
   fetchData() {
     return API.getData()
     .then(res => {
@@ -33,10 +37,6 @@ class Selection extends Component {
       })
       return console.log(err);
     })
-  }
-
-  componentDidMount() {
-    this.fetchData();  
   }
 
   render() {

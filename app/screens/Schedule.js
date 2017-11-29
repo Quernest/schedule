@@ -65,11 +65,27 @@ class Schedule extends PureComponent {
       backgroundColor: '#3F53B1'
     }
   };
+  
   state = {
-    isReady: false,
+    fontLoaded: false,
     events: filterEvents(moment(), this.props),
     selectedDate: moment(),
   };
+
+  async componentDidMount() {
+    await this._loadFontsAsync()
+      .then(() => {
+        this.setState({ fontLoaded: true })
+      });
+  }
+
+  _loadFontsAsync() {
+    return Font.loadAsync({
+      'RobotoCondensed-Regular': require('../../assets/fonts/RobotoCondensed-Regular.ttf'),
+      'RobotoCondensed-Bold': require('../../assets/fonts/RobotoCondensed-Bold.ttf'),
+      'RobotoCondensed-Light': require('../../assets/fonts/RobotoCondensed-Light.ttf')
+    });
+  }
 
   _onSelectDate = (date) => {
     this.setState({
@@ -78,23 +94,15 @@ class Schedule extends PureComponent {
     });
   };
 
-  async componentDidMount() {
-    await Font.loadAsync({
-      'RobotoCondensed-Regular': require('../../assets/fonts/RobotoCondensed-Regular.ttf'),
-      'RobotoCondensed-Bold': require('../../assets/fonts/RobotoCondensed-Bold.ttf'),
-      'RobotoCondensed-Light': require('../../assets/fonts/RobotoCondensed-Light.ttf')
-    }).then(() => this.setState({ isReady: true }));
-  }
-
   render() {
     const {
       selectedDate,
-      isReady,
+      fontLoaded,
       events,
     } = this.state;
 
     return (
-      isReady && <View style={styles.container}>
+      fontLoaded && <View style={styles.container}>
         <Calendar
           showDaysAfterCurrent={14}
           onSelectDate={this._onSelectDate} 
