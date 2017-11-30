@@ -2,7 +2,7 @@ const url = 'https://raw.githubusercontent.com/Quernest/Schedule/master/API/it-1
 
 class API {
   static getData() {
-    return fetch(url);
+    return fetch(url).then(res => res.json());
   }
 }
 
