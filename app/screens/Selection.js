@@ -1,3 +1,4 @@
+import { Font } from 'expo';
 import React, { Component } from 'react';
 import {
   View,
@@ -26,23 +27,24 @@ class Selection extends Component {
     groups: avilableGroups,
   };
 
-  componentDidMount() {
-    this.fetchData();
+  async componentDidMount() {
+    await this._loadFontsAsync()
+      .then(() => this.setState({ isLoading: false }));
   }
 
-  fetchData() {
-    return API.getData()
-    .then(resJson =>
+  fetchData(id) {
+    this.setState({ isLoading: true });
+
+    return API.getData(id).then(res => {
       this.setState({
+        data: res,
         isLoading: false,
-        data: resJson
-      }))
-    .catch(err => {
-      this.setState({
-        isLoading: false,
-      })
-      return console.log(err);
-    })
+      });
+      Actions.schedule(res);
+    }).catch(err => {
+      this.setState({ isLoading: false });
+      return console.error(err);
+    });
   }
 
   filterSearch(searchTerm) {
@@ -55,6 +57,14 @@ class Selection extends Component {
       groups: filteredGroups
     });
   }
+
+  _loadFontsAsync() {
+    return Font.loadAsync({
+      'RobotoCondensed-Regular': require('../../assets/fonts/RobotoCondensed-Regular.ttf'),
+      'RobotoCondensed-Bold': require('../../assets/fonts/RobotoCondensed-Bold.ttf'),
+      'RobotoCondensed-Light': require('../../assets/fonts/RobotoCondensed-Light.ttf')
+    });
+  }
   
   render() {
     const {
@@ -64,7 +74,7 @@ class Selection extends Component {
     } = this.state;
 
     return (
-      <View style={styles.container}>
+      !isLoading && <View style={styles.container}>
         <View>
           <TextInput
             style={styles.searchBar}
@@ -75,7 +85,7 @@ class Selection extends Component {
         </View>
         <ScrollView style={styles.groups}>
           {groups.map((g, i) => (
-            <TouchableOpacity key={i} onPress={() => Actions.schedule(!isLoading && data)}>
+            <TouchableOpacity key={i} onPress={() => this.fetchData(i + 1)}>
               <View style={styles.group}>
                 <Text style={styles.groupName}>{g}</Text>
               </View>
@@ -99,6 +109,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     marginBottom: 15,
     borderRadius: 3,
+    fontFamily: 'RobotoCondensed-Regular',
     backgroundColor: '#FFF',
     color: '#333',
   },
@@ -113,6 +124,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#3F53B1',
   },
   groupName: {
+    fontFamily: 'RobotoCondensed-Regular',
     color: '#fff'
   }
 });

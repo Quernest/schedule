@@ -1,10 +1,4 @@
 import React, { PureComponent } from 'react';
-
-import { 
-  Font,
-  AppLoading
-} from 'expo';
-
 import {
   Platform,
   StyleSheet,
@@ -41,21 +35,6 @@ class Schedule extends PureComponent {
     selectedDate: moment(),
   };
 
-  async componentDidMount() {
-    await this._loadFontsAsync()
-      .then(() => {
-        this.setState({ fontLoaded: true })
-      });
-  }
-
-  _loadFontsAsync() {
-    return Font.loadAsync({
-      'RobotoCondensed-Regular': require('../../assets/fonts/RobotoCondensed-Regular.ttf'),
-      'RobotoCondensed-Bold': require('../../assets/fonts/RobotoCondensed-Bold.ttf'),
-      'RobotoCondensed-Light': require('../../assets/fonts/RobotoCondensed-Light.ttf')
-    });
-  }
-
   _onSelectDate = (date) => {
     this.setState({
       events: filterEvents(date, this.props),
@@ -66,12 +45,11 @@ class Schedule extends PureComponent {
   render() {
     const {
       selectedDate,
-      fontLoaded,
       events,
     } = this.state;
 
     return (
-      fontLoaded && <View style={styles.container}>
+      <View style={styles.container}>
         <Calendar
           showDaysAfterCurrent={14}
           onSelectDate={this._onSelectDate} 
