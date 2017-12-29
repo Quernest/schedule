@@ -1,6 +1,23 @@
 class API {
-  static getData(id) {
-    return fetch(`https://raw.githubusercontent.com/Quernest/Schedule/master/API/it-14-${id}.json`).then(res => res.json());
+  static getJSON(url) {
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open('get', url);
+      xhr.responseType = 'json';
+      xhr.onload = () => {
+        const { status } = xhr;
+
+        if (status === 200) {
+          resolve(xhr.response);
+        } else {
+          reject(status);
+        }
+      };
+      xhr.send();
+    });
+  }
+  static getAllGroups() {
+    return this.getJSON('https://schedule-admin.herokuapp.com/api/groups');
   }
 }
 

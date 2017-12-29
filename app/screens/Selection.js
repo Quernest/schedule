@@ -1,4 +1,4 @@
-import { Font } from 'expo';
+import { Font, Constants } from 'expo';
 import React, { Component } from 'react';
 import {
   View,
@@ -13,48 +13,57 @@ import {
   Actions,
 } from 'react-native-router-flux';
 import API from '../services/Api';
-
-const avilableGroups = [
-  'ИТ-14-1',
-  'ИТ-14-2',
-];
+import Spinner from '../components/Spinner';
 
 class Selection extends Component {
   state = {
     data: {},
     isLoading: true,
     searchTerm: '',
-    groups: avilableGroups,
+    avilableGroups: [],
+    filteredGroups: [],
   };
 
   async componentDidMount() {
-    await this._loadFontsAsync()
-      .then(() => this.setState({ isLoading: false }));
+    await Promise.all([this._loadFontsAsync(), API.getAllGroups().then(res => {
+      console.log(res);
+      this.setState({
+        avilableGroups: res,
+        filteredGroups: res
+      });
+    })]).then(res => {
+      this.setState({ isLoading: false });
+    });
   }
 
   fetchData(id) {
     this.setState({ isLoading: true });
 
-    return API.getData(id).then(res => {
-      this.setState({
-        data: res,
-        isLoading: false,
+    return API.getJSON(`https://schedule-admin.herokuapp.com/api/group/${id}`)
+      .then(resolve => {
+        console.log(resolve);
+        this.setState({ data: resolve });
+
+        setTimeout(() => {
+          Actions.schedule(resolve);
+          this.setState({ isLoading: false });
+        });
+      })
+      .catch(reject => {
+        this.setState({ isLoading: false });
+        return console.error(reject);
       });
-      Actions.schedule(res);
-    }).catch(err => {
-      this.setState({ isLoading: false });
-      return console.error(err);
-    });
   }
 
   filterSearch(searchTerm) {
+    const { avilableGroups } = this.state;
     const filteredGroups = avilableGroups.filter(item => {
-      return item.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
+      return item.name.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
     });
 
     this.setState({
       searchTerm,
-      groups: filteredGroups
+      filteredGroups,
     });
   }
 
@@ -70,24 +79,32 @@ class Selection extends Component {
     const {
       isLoading,
       data,
-      groups
+      filteredGroups,
+      searchTerm,
     } = this.state;
 
+    if (isLoading) {
+      return (
+        <Spinner />
+      );
+    }
+
     return (
-      !isLoading && <View style={styles.container}>
+      <View style={styles.container}>
         <View>
           <TextInput
             style={styles.searchBar}
             onChangeText={(searchTerm) => this.filterSearch(searchTerm)}
+            value={searchTerm}
             underlineColorAndroid='transparent'
             placeholder="Поиск"
           />
         </View>
         <ScrollView style={styles.groups}>
-          {groups.map((g, i) => (
-            <TouchableOpacity key={i} onPress={() => this.fetchData(i + 1)}>
+          {filteredGroups.map((group, index) => (
+            <TouchableOpacity key={index} onPress={() => this.fetchData(group.id)}>
               <View style={styles.group}>
-                <Text style={styles.groupName}>{g}</Text>
+                <Text style={styles.groupName}>{group.name}</Text>
               </View>
             </TouchableOpacity>
           ))}

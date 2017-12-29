@@ -7,7 +7,7 @@
     "sdkVersion": "23.0.0",
     "version": "1.0.0",
     "orientation": "portrait",
-    "primaryColor": "#cccccc",
+    "primaryColor": "#333",
     "android": {
       "package": "com.quernest.schedule"
     },
@@ -21,7 +21,10 @@
       "icon": "./assets/icons/logo.png"
     },
     "packagerOpts": {
-      "assetExts": ["ttf", "mp4"]
-    },
+      "assetExts": [
+        "ttf",
+        "mp4"
+      ]
+    }
   }
 }

@@ -1,4 +1,5 @@
 import React, { PureComponent } from 'react';
+import { Constants } from 'expo';
 import {
   Platform,
   StyleSheet,
