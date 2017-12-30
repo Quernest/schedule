@@ -24,8 +24,9 @@ const filterEvents = (date, props) => {
     currentWeek = firstWeekType === even ? odd : even;
   }
 
-  return schedule[currentWeek].filter(_ =>
-    _.day.toLowerCase() === date.format('dddd'));
+  return schedule.filter((lesson) => {
+    return lesson.day.toLowerCase() === date.format('dddd') && lesson.weekType === currentWeek;
+  });
 };
 
 export {

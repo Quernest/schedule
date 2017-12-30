@@ -49,35 +49,35 @@ class Event extends Component {
     return (
       <View style={[styles.container, isCurrentLesson && styles.containerActive, isPastLesson && styles.containerDeactive]}>
         <View style={styles.timeContainer}>
-          <Text style={styles.time}>
+          {!!start && <Text style={styles.time}>
             {start}
-          </Text>
-          <Text style={styles.time}>
+          </Text>}
+          {!!end && <Text style={styles.time}>
             {end}
-          </Text>
+          </Text>}
         </View>
 
         <View style={styles.lessonContainer}>
-          <Text style={styles.lesson}>
+          {!!name && <Text style={styles.lesson}>
             {name}
-          </Text>
+          </Text>}
         </View>
 
         <View style={styles.lessonDetails}>
           <View style={styles.locationContainer}>
-            {location && <Ionicons 
+            <Ionicons 
               name="md-pin"
               size={14}
               color={'lightgrey'}
-            />}
-            <Text style={styles.location}>
+            />
+            {!!location && <Text style={styles.location}>
               {location}
-            </Text>
+            </Text>}
           </View>
           <View>
-            <Text style={styles.lessonType}>
+            {!!type && <Text style={styles.lessonType}>
               {type}
-            </Text>
+            </Text>}
           </View>
         </View>
       </View>
@@ -106,6 +106,7 @@ const styles = StyleSheet.create({
   },
 
   timeContainer: {
+    width: width * .1,
     marginRight: 15,
   },
   time: {
@@ -115,6 +116,7 @@ const styles = StyleSheet.create({
   },
 
   lessonContainer: {
+    width: width * .7,
     flex: 1,
   },
   lessonDetails: {
@@ -134,7 +136,9 @@ const styles = StyleSheet.create({
   },
 
   locationContainer: {
+    width: width * .1,
     flexDirection: 'row',
+    justifyContent: 'flex-end',
     alignItems: 'center',
     marginLeft: 15,
   },
@@ -142,7 +146,7 @@ const styles = StyleSheet.create({
     marginLeft: 7.5,
     fontFamily: 'RobotoCondensed-Bold',
     fontSize: 14,
-    textAlign: 'center',
+    textAlign: 'right',
     color: 'lightgrey'
   },
 });

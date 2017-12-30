@@ -3950,6 +3950,12 @@ react-native-elements@^0.18.4:
     opencollective "^1.0.3"
     prop-types "^15.5.8"
 
+react-native-flexbox-grid@^0.3.2:
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/react-native-flexbox-grid/-/react-native-flexbox-grid-0.3.2.tgz#8a770965360a22f50bc510aeabcd3a4e7b748ee5"
+  dependencies:
+    prop-types "^15.6.0"
+
 react-native-gesture-handler@1.0.0-alpha.30:
   version "1.0.0-alpha.30"
   resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-1.0.0-alpha.30.tgz#7f79c2da5a59cc8ce20cf04c11360409a53bef59"
