@@ -11,6 +11,7 @@ import {
 import moment from 'moment';
 import Timer from '../helpers/Timer';
 import * as Progress from 'react-native-progress';
+import { colorScheme } from '../config';
 
 const { width } = Dimensions.get('window');
 
@@ -48,22 +49,22 @@ class Event extends Component {
 
     return (
       <View style={[styles.container, isCurrentLesson && styles.containerActive, isPastLesson && styles.containerDeactive]}>
-        <View style={styles.timeContainer}>
-          {!!start && <Text style={styles.time}>
-            {start}
-          </Text>}
-          {!!end && <Text style={styles.time}>
-            {end}
-          </Text>}
-        </View>
-
         <View style={styles.lessonContainer}>
           {!!name && <Text style={styles.lesson}>
             {name}
           </Text>}
+          {!!location && <View style={styles.locationContainer}>
+            <Text style={styles.location}>
+              <Ionicons 
+                name="md-pin"
+                size={14}
+                color={'lightgrey'}
+              /> {location}
+            </Text>
+          </View>}
         </View>
 
-        <View style={styles.lessonDetails}>
+        {/* <View style={styles.lessonDetails}>
           <View style={styles.locationContainer}>
             <Ionicons 
               name="md-pin"
@@ -79,6 +80,14 @@ class Event extends Component {
               {type}
             </Text>}
           </View>
+        </View> */}
+        <View style={styles.timeContainer}>
+          {!!start && <Text style={[styles.time, styles.timeStart]}>
+            {start}
+          </Text>}
+          {!!end && <Text style={[styles.time, styles.timeEnd]}>
+            {end}
+          </Text>}
         </View>
       </View>
     );
@@ -93,12 +102,12 @@ const styles = StyleSheet.create({
     padding: 15,
     marginTop: 10,
     marginHorizontal: 7.5,
-    borderRadius: 5,
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    borderRadius: 1.5,
+    backgroundColor: '#fff',
   },
 
   containerActive: {
-    backgroundColor: 'green',
+    backgroundColor: '#CDE53F',
     opacity: 1
   },
   containerDeactive: {
@@ -106,17 +115,23 @@ const styles = StyleSheet.create({
   },
 
   timeContainer: {
-    width: width * .1,
-    marginRight: 15,
+    flexDirection: 'row',
   },
   time: {
-    fontFamily: 'RobotoCondensed-Bold',
-    fontSize: 14,
+    paddingVertical: 7.5,
+    paddingHorizontal: 15,
+    fontFamily: 'RobotoCondensed-Light',
+    fontSize: 16,
     color: 'lightgrey',
+  },
+  timeStart: {
+    backgroundColor: '#3E4A51',
+  },
+  timeEnd: {
+    backgroundColor: '#49545B'
   },
 
   lessonContainer: {
-    width: width * .7,
     flex: 1,
   },
   lessonDetails: {
@@ -130,24 +145,19 @@ const styles = StyleSheet.create({
   },
   lesson: {
     fontFamily: 'RobotoCondensed-Regular',
-    fontSize: 16,
-    textAlign: 'center',
-    color: '#fff'
+    fontSize: 21,
+    color: '#3E4A51'
   },
 
   locationContainer: {
-    width: width * .1,
     flexDirection: 'row',
-    justifyContent: 'flex-end',
     alignItems: 'center',
-    marginLeft: 15,
   },
   location: {
-    marginLeft: 7.5,
-    fontFamily: 'RobotoCondensed-Bold',
-    fontSize: 14,
-    textAlign: 'right',
-    color: 'lightgrey'
+    marginVertical: 5,
+    fontFamily: 'RobotoCondensed-Light',
+    fontSize: 16,
+    color: '#A4A4A4'
   },
 });
 

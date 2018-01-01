@@ -23,6 +23,7 @@
     "moment": "^2.18.1",
     "nodemon": "^1.12.1",
     "react": "16.0.0-alpha.12",
+    "axios": "^0.17.1",
     "react-create-class": "^1.0.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-23.0.0.tar.gz",
     "react-native-cli": "^2.0.1",

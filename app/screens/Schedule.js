@@ -51,6 +51,7 @@ class Schedule extends PureComponent {
 
     return (
       <View style={styles.container}>
+        <Button title='Settings' onPress={() => Actions.settings()}></Button>
         <Calendar
           showDaysAfterCurrent={14}
           onSelectDate={this._onSelectDate} 
@@ -66,8 +67,7 @@ class Schedule extends PureComponent {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#3F53B1'
+    flex: 1
   },
 });
 

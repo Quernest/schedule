@@ -13,11 +13,11 @@
     },
     "androidStatusBar": {
       "barStyle": "light-content",
-      "backgroundColor": "#334393"
+      "backgroundColor": "#1B1F22"
     },
     "icon": "./assets/icons/app-icon.png",
     "loading": {
-      "backgroundColor": "#334393",
+      "backgroundColor": "#1B1F22",
       "icon": "./assets/icons/logo.png"
     },
     "packagerOpts": {

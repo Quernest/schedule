@@ -220,10 +220,11 @@ const styles = StyleSheet.create({
   visibleMonthAndYear: {
     paddingTop: 10,
     paddingBottom: 10,
-    fontSize: 16,
+    fontSize: 21,
     color: '#fff',
     paddingHorizontal: 15,
-    fontFamily: 'RobotoCondensed-Bold'
+    fontFamily: 'RobotoCondensed-Bold',
+    backgroundColor: '#1B1F22'
   },
 });
 

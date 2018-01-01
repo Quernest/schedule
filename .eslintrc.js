@@ -1,5 +1,5 @@
 module.exports = {
-  "extends": ["airbnb-base", "plugin:react-native/all"],
+  "extends": ["airbnb-base", "plugin:react-native/all", "plugin:react/recommended"],
   "plugins": [
     "react",
     "react-native"

@@ -8,12 +8,14 @@ import {
   Text,
   TouchableOpacity,
   ScrollView,
+  AsyncStorage,
 } from 'react-native';
 import {
   Actions,
 } from 'react-native-router-flux';
-import API from '../services/Api';
 import Spinner from '../components/Spinner';
+import { colorScheme } from '../config';
+import API from '../services/api';
 
 class Selection extends Component {
   state = {
@@ -24,34 +26,31 @@ class Selection extends Component {
     filteredGroups: [],
   };
 
-  async componentDidMount() {
-    await Promise.all([this._loadFontsAsync(), API.getAllGroups().then(res => {
-      console.log(res);
+  componentDidMount() {
+    API.get('groups').then(res => {
+      const { data } = res;
+
       this.setState({
-        avilableGroups: res,
-        filteredGroups: res
+        avilableGroups: data,
+        filteredGroups: data,
+        isLoading: false,
       });
-    })]).then(res => {
-      this.setState({ isLoading: false });
-    });
+    }).catch((err) => this.setState({ isLoading: false }));
   }
 
-  fetchData(id) {
+  fetchData(id) { // TODO: rewrite this method
     this.setState({ isLoading: true });
 
-    return API.getJSON(`https://schedule-admin.herokuapp.com/api/group/${id}`)
-      .then(resolve => {
-        console.log(resolve);
-        this.setState({ data: resolve });
+    API.get('group', id)
+      .then((res) => {
+        const { data } = res;
+        this.setState({ data, isLoading: false });
 
-        setTimeout(() => {
-          Actions.schedule(resolve);
-          this.setState({ isLoading: false });
-        });
+        AsyncStorage.setItem('group', JSON.stringify(data));
+        Actions.schedule({ group: data });
       })
-      .catch(reject => {
-        this.setState({ isLoading: false });
-        return console.error(reject);
+      .catch((err) => {
+        console.log(err); // TODO: check this
       });
   }
 
@@ -64,14 +63,6 @@ class Selection extends Component {
     this.setState({
       searchTerm,
       filteredGroups,
-    });
-  }
-
-  _loadFontsAsync() {
-    return Font.loadAsync({
-      'RobotoCondensed-Regular': require('../../assets/fonts/RobotoCondensed-Regular.ttf'),
-      'RobotoCondensed-Bold': require('../../assets/fonts/RobotoCondensed-Bold.ttf'),
-      'RobotoCondensed-Light': require('../../assets/fonts/RobotoCondensed-Light.ttf')
     });
   }
   
@@ -119,7 +110,7 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 7.5,
     paddingVertical: 15,
-    backgroundColor: '#243177'
+    backgroundColor: colorScheme.white.background,
   },
   searchBar: {
     paddingHorizontal: 15,
@@ -127,7 +118,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     borderRadius: 3,
     fontFamily: 'RobotoCondensed-Regular',
-    backgroundColor: '#FFF',
+    backgroundColor: '#F6F6F6',
     color: '#333',
   },
   groups: {
@@ -138,7 +129,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     marginBottom: 7.5,
     borderRadius: 3,
-    backgroundColor: '#3F53B1',
+    backgroundColor: "#1B1F22",
   },
   groupName: {
     fontFamily: 'RobotoCondensed-Regular',

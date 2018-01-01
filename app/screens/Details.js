@@ -10,6 +10,7 @@ import {
 import moment from 'moment';
 import * as Progress from 'react-native-progress';
 import Timer from '../helpers/Timer';
+import { colorScheme } from '../config';
 
 const {
   width
@@ -18,9 +19,9 @@ const {
 class Details extends Component {
   static navigationOptions = {
     title: 'Назад',
-    headerTintColor: '#FFF',
+    headerTintColor: colorScheme.white.background,
     headerStyle: {
-      backgroundColor: '#3F53B1'
+      backgroundColor: "#1B1F22"
     }
   };
 
@@ -62,7 +63,8 @@ class Details extends Component {
       location,
       start,
       end,
-      type
+      type,
+      teacher
     } = event;
 
     const isVisibleProgress = Timer.checkCurrentLesson(start, end, currentTime) && currentTime.isSame(selectedDate, 'day');
@@ -75,7 +77,7 @@ class Details extends Component {
 
           <View style={styles.teacher}>
             <Text style={[styles.text, styles.label]}>Преподаватель:</Text>
-            <Text style={styles.text}>Не указан</Text>
+            <Text style={styles.text}>{teacher}</Text>
           </View>
 
           <View style={styles.duration}>
@@ -93,8 +95,8 @@ class Details extends Component {
           <Progress.Circle
             size={width * .65}
             progress={Timer.calcCurrentLessonProgress(start, Timer.calcTimeDifference(start, end).minutes, 1)}
-            color={'rgb(236, 240, 241)'}
-            unfilledColor={'#3F53B1'}
+            color={'#3E4A51'}
+            unfilledColor={'#CDE53F'}
             showsText={true}
             formatText={() => Timer.calcRemainingTime(end, currentTime).join(':')}
             borderWidth={0}
@@ -110,32 +112,33 @@ class Details extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#243177',
+    backgroundColor: colorScheme.white.background,
     padding: 15,
   },
   text: {
-    fontFamily: 'RobotoCondensed-Regular',
-    color: '#FFF'
+    fontSize: 18,
+    fontFamily: 'RobotoCondensed-Light',
+    color: '#3E4A51'
   },
   label: {
-    fontFamily: 'RobotoCondensed-Bold',
+    fontFamily: 'RobotoCondensed-Regular',
     marginRight: 3.75,
   },
   heading: {
     fontFamily: 'RobotoCondensed-Light',
-    fontSize: 20,
+    fontSize: 24,
     marginBottom: 10,
-    color: '#FFF'
+    color: '#3E4A51'
   },
 
   teacher: {
     marginBottom: 10
   },
   teaherName: {
-    fontFamily: 'RobotoCondensed-Regular',
+    fontFamily: 'RobotoCondensed-Light',
   },
   teacherLabel: {
-    fontFamily: 'RobotoCondensed-Bold',
+    fontFamily: 'RobotoCondensed-Regular',
   },
 
   duration: {

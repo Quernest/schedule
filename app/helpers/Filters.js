@@ -1,7 +1,7 @@
 import moment from 'moment';
 
 const filterEvents = (date, props) => {
-  const { startOfSemester, firstWeekType, schedule } = props;
+  const { startOfSemester, firstWeekType, schedule } = props.group;
   const start = moment(startOfSemester, 'DD/MM/YYYY');
   const selectedDate = moment(date, 'DD/MM/YYYY');
   const days = [];

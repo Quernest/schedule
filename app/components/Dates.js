@@ -36,6 +36,7 @@ class Dates extends PureComponent {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
+    backgroundColor: '#1B1F22',
   },
 });
 
