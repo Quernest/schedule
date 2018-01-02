@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { AppLoading, Font } from 'expo';
 import { AsyncStorage } from 'react-native';
 import { Scene, Router, Actions, Stack } from 'react-native-router-flux';
-
 import Selection from './app/screens/Selection';
 import Schedule from './app/screens/Schedule';
 import Details from './app/screens/Details';

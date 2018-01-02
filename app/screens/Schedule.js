@@ -16,6 +16,7 @@ import moment from 'moment';
 import ru from 'moment/locale/ru';
 moment.locale('ru');
 
+import Header from '../components/Header';
 import Calendar from '../components/Calendar';
 import Events from '../components/Events';
 
@@ -51,7 +52,7 @@ class Schedule extends PureComponent {
 
     return (
       <View style={styles.container}>
-        <Button title='Settings' onPress={() => Actions.settings()}></Button>
+        <Header />
         <Calendar
           showDaysAfterCurrent={14}
           onSelectDate={this._onSelectDate} 

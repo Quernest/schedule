@@ -58,12 +58,12 @@ const styles = {
     borderBottomColor: '#fff',
   },
   day: {
-    fontSize: 12,
-    fontFamily: 'RobotoCondensed-Regular'
+    fontSize: 14,
+    fontFamily: 'RobotoCondensed-Bold'
   },
   date: {
-    fontSize: 24,
-    fontFamily: 'RobotoCondensed-Regular'
+    fontSize: 26,
+    fontFamily: 'RobotoCondensed-Light'
   },
   text: {
     color: 'rgba(255,255,255,0.5)',

@@ -218,12 +218,11 @@ class Calendar extends PureComponent {
 
 const styles = StyleSheet.create({
   visibleMonthAndYear: {
-    paddingTop: 10,
-    paddingBottom: 10,
-    fontSize: 21,
+    fontSize: 24,
     color: '#fff',
+    paddingVertical: 7.5,
     paddingHorizontal: 15,
-    fontFamily: 'RobotoCondensed-Bold',
+    fontFamily: 'RobotoCondensed-Light',
     backgroundColor: '#1B1F22'
   },
 });
