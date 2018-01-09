@@ -7,8 +7,8 @@ const filterEvents = (date, props) => {
   const days = [];
   const day = 1;
   const current = start.clone();
-  const odd = '*';
-  const even = '/';
+  const odd = '/';
+  const even = '*';
 
   let currentWeek;
   let i = 1;
