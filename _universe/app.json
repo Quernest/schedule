@@ -1,8 +1,8 @@
 {
   expo: {
-    name: "My New Project",
-    description: "No description",
-    slug: "my-new-project",
+    name: "Schedule",
+    description: "-",
+    slug: "schedule",
     privacy: "unlisted",
     sdkVersion: "UNVERSIONED",
     version: "1.0.0",
