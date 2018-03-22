@@ -1,46 +1,37 @@
 {
-  "name": "schedule",
-  "version": "1.0.0",
-  "description": "",
-  "author": "Quernest",
-  "private": true,
   "main": "node_modules/expo/AppEntry.js",
+  "private": true,
   "scripts": {
-    "start": "node_modules/nodemon/bin/nodemon.js -- node_modules/babel-cli/bin/babel-node.js server/server.js"
+    "test": "node ./node_modules/jest/bin/jest.js --watchAll"
   },
-  "rnpm": {
-    "assets": [
-      "./assets/fonts"
-    ]
+  "jest": {
+    "preset": "jest-expo"
   },
   "dependencies": {
-    "eslint": "^4.8.0",
-    "eslint-plugin-react": "^7.4.0",
-    "eslint-plugin-react-native": "^3.1.0",
-    "expo": "^23.0.0",
-    "express": "^4.16.1",
-    "global": "^4.3.2",
-    "moment": "^2.18.1",
-    "nodemon": "^1.12.1",
-    "react": "16.0.0-alpha.12",
-    "axios": "^0.17.1",
-    "react-create-class": "^1.0.0",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-23.0.0.tar.gz",
-    "react-native-cli": "^2.0.1",
-    "react-native-elements": "^0.18.4",
-    "react-native-flexbox-grid": "^0.3.2",
-    "react-native-hr": "^1.1.3",
-    "react-native-progress": "^3.4.0",
-    "react-native-progress-bar": "^0.1.2",
-    "react-native-router-flux": "^4.0.0-beta.24",
-    "react-native-svg": "^6.0.0-rc1",
-    "react-native-timeline-listview": "^0.2.2",
-    "react-native-vector-icons": "^4.4.2",
-    "react-navigation": "^1.0.0-beta.19",
-    "react-test-renderer": "16.0.0-alpha.12"
+    "@expo/samples": "2.1.1",
+    "@expo/vector-icons": "^6.3.1",
+    "eslint": "^4.19.0",
+    "eslint-plugin-flowtype": "^2.46.1",
+    "exp": "^50.0.1",
+    "expo": "^25.0.0",
+    "humanize-duration": "^3.13.0",
+    "moment": "^2.21.0",
+    "prop-types": "^15.6.1",
+    "react": "16.2.0",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-25.0.0.tar.gz",
+    "react-native-calendar-strip": "^1.3.1",
+    "react-native-elements": "^0.19.0",
+    "react-native-simple-store": "^1.3.0",
+    "react-navigation": "^1.0.0-beta.27"
   },
   "devDependencies": {
-    "eslint-config-airbnb-base": "^12.0.2",
-    "eslint-plugin-import": "^2.7.0"
+    "babel-eslint": "^8.2.2",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.9.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-react": "^7.7.0",
+    "eslint-plugin-react-native": "^3.2.1",
+    "jest-expo": "^25.0.0"
   }
 }

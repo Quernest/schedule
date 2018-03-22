@@ -1,2 +1,0 @@
-# Schedule
-React-native schedule

@@ -1,17 +1,17 @@
 module.exports = {
-  "extends": ["airbnb-base", "plugin:react-native/all", "plugin:react/recommended"],
-  "plugins": [
-    "react",
-    "react-native"
-  ],
-  "ecmaFeatures": {
-    "jsx": true
+  parser: 'babel-eslint',
+  plugins: ['react', 'react-native'],
+  parserOptions: {
+    ecmaFeatures: {
+      jsx: true,
+      modules: true,
+    },
   },
-  "rules": {
-    "react-native/no-unused-styles": 2,
-    "react-native/split-platform-components": 2,
-    "react-native/no-inline-styles": 2,
-    "react-native/no-color-literals": 2,
-    "no-use-before-define": 0,
-  }
+  extends: ['airbnb'],
+  rules: {
+    'react/jsx-filename-extension': 0,
+    'arrow-body-style': 'warn',
+    'no-use-before-define': 0,
+    'max-len': [2, 100, 2],
+  },
 };
