@@ -1,6 +1,6 @@
 # Schedule
 
-React-native schedule application
+React-Native Schedule application
 
 # MIT License
 
