@@ -44,7 +44,7 @@ export default class HomeScreen extends React.Component {
     if (!isEmptyObject(schedule)) {
       this.setScheduleToState(schedule);
     } else {
-      API.getGroupSchedule(id)
+      API.getGroupAllData(id)
         .then((groupSchedule) => {
           if (!isEmptyObject(groupSchedule)) {
             store.update('schedule', groupSchedule);

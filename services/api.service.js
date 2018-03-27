@@ -29,9 +29,9 @@ class API {
     return getRequest(url);
   }
 
-  static getGroupSchedule(id) {
+  static getGroupAllData(id) {
     if (typeof id === 'number' && Number.isInteger(id)) {
-      const url = `${API_URL}/group/${id}`;
+      const url = `${API_URL}/group/${id}/alldata`;
 
       return getRequest(url);
     }

@@ -32,7 +32,7 @@ export default class WelcomeScreen extends React.Component {
   componentDidMount() {
     const { replace } = this.props.navigation;
 
-    API.getGroupSchedule()
+    API.getGroupAllData()
       .then((schedule) => {
         if (!isEmptyObject(schedule)) {
           this.setState({

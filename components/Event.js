@@ -72,7 +72,7 @@ export default class Event extends React.Component {
   willStart(start) {
     const { date } = this.props;
     const { currentTime } = this.state;
-    const ms = moment(start, 'HH:mm').diff(currentTime);
+    const ms = moment(start, 'HH:mm:ss').diff(currentTime);
     const d = moment.duration(ms);
     const hours = d.hours();
     // prettier-ignore
@@ -94,7 +94,7 @@ export default class Event extends React.Component {
   willEnd(end) {
     const { date } = this.props;
     const { currentTime } = this.state;
-    const ms = moment(end, 'HH:mm').diff(currentTime);
+    const ms = moment(end, 'HH:mm:ss').diff(currentTime);
     const d = moment.duration(ms);
     const hours = d.hours();
     // prettier-ignore
@@ -119,6 +119,9 @@ export default class Event extends React.Component {
       name, location, start, end,
     } = event;
 
+    const formattedStartTime = moment(start, 'HH:mm:ss').format('H:mm');
+    const formattedEndTime = moment(end, 'HH:mm:ss').format('H:mm');
+
     const showWillEndNotify = this.isActive(event, date) && this.willEnd(end);
     const showWillStartNotify = !this.isActive(event, date) && this.willStart(start);
 
@@ -126,7 +129,7 @@ export default class Event extends React.Component {
       <View style={[styles.container, this.isDisabled(event, date) && styles.disabled]}>
         <View>
           <Text style={styles.time}>
-            {start} - {end}
+            {formattedStartTime} - {formattedEndTime}
           </Text>
           <Text style={styles.name}>{name}</Text>
           {showWillEndNotify && <Text style={styles.notify}>До конца: {this.willEnd(end).in}</Text>}
