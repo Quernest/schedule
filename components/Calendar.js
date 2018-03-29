@@ -24,9 +24,7 @@ const calendarConifg = {
   calendarColor: lightgrey,
 };
 
-const Calendar = ({
-  selectedDate, onDatePress, minDate, maxDate,
-}) => (
+const Calendar = ({ selectedDate, onDatePress }) => (
   <View>
     <CelendarStrip
       {...calendarConifg}
@@ -41,8 +39,6 @@ const Calendar = ({
       iconContainer={styles.iconContainer}
       selectedDate={selectedDate}
       onDateSelected={onDatePress}
-      minDate={minDate}
-      maxDate={maxDate}
     />
   </View>
 );
@@ -50,8 +46,6 @@ const Calendar = ({
 Calendar.propTypes = {
   selectedDate: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
   onDatePress: PropTypes.func.isRequired,
-  minDate: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
-  maxDate: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
 };
 
 const styles = StyleSheet.create({

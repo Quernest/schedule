@@ -17,11 +17,11 @@ const isBetweenTime = (currentTime, startTime, endTime) => {
   return currentTime.isBetween(start, end);
 };
 
-const isSameWeekDay = (day, date) => day === moment(date).isoWeekday();
+const isSameWeekDay = (weekDay, date) => weekDay === moment(date).isoWeekday();
 
 const isSameWeekType = (weekType, semester, date) => {
   const { start, firstWeekType } = semester;
-  const current = moment(start, 'DD-MM-YYYY').clone();
+  const current = moment(start, 'YYYY-MM-DD').clone();
   const days = [];
   let currentWeekType;
   let i = 0;
@@ -38,6 +38,15 @@ const isSameWeekType = (weekType, semester, date) => {
   }
 
   return weekType === currentWeekType;
+};
+
+const isSameSemester = (semester, date) => {
+  const { start, end } = semester;
+
+  const startDate = moment(start);
+  const endDate = moment(end);
+
+  return date.isBetween(startDate, endDate);
 };
 
 const isEmptyObject = (obj) => {
@@ -60,4 +69,5 @@ export {
   isEmptyObject,
   isSameWeekDay,
   isSameWeekType,
+  isSameSemester,
 };

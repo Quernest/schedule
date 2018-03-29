@@ -2,6 +2,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Button, Text } from 'react-native-elements';
 import PropTypes from 'prop-types';
+import store from 'react-native-simple-store';
 import Loading from '../components/Loading';
 import SizeConstants from '../constants/Sizes';
 import ColorConstants from '../constants/Colors';
@@ -29,30 +30,28 @@ export default class WelcomeScreen extends React.Component {
     isLoading: true,
   };
 
-  componentDidMount() {
+  async componentDidMount() {
     const { replace } = this.props.navigation;
 
-    API.getGroupAllData()
-      .then((schedule) => {
-        if (!isEmptyObject(schedule)) {
-          this.setState({
-            isLoading: false,
-          });
+    try {
+      const data = await API.getGroupAllData(undefined, true);
 
-          replace('Main', { schedule });
-        } else {
-          this.setState({
-            isLoading: false,
-          });
-        }
-      })
-      .catch((err) => {
-        console.error(err);
+      if (!isEmptyObject(data)) {
+        this.stopLoading();
+        replace('Main', { data });
+      } else {
+        this.stopLoading();
+      }
+    } catch (error) {
+      this.stopLoading();
+      console.error(error);
+    }
+  }
 
-        this.setState({
-          isLoading: false,
-        });
-      });
+  stopLoading() {
+    this.setState({
+      isLoading: false,
+    });
   }
 
   render() {

@@ -1,12 +1,12 @@
 import React from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View, Text } from 'react-native';
 import PropTypes from 'prop-types';
 import Event from '../components/Event';
 import SizeConstants from '../constants/Sizes';
 import ColorConstants from '../constants/Colors';
 
 const { gutter } = SizeConstants;
-const { lightgrey } = ColorConstants;
+const { lightgrey, grey } = ColorConstants;
 
 const Schedule = ({ events, date }) => (
   <View style={styles.container}>
@@ -18,6 +18,8 @@ const Schedule = ({ events, date }) => (
 
             return <Event key={id} event={event} date={date} />;
           })}
+
+        {events && events.length === 0 && <Text style={styles.message}>Пусто</Text>}
       </View>
     </ScrollView>
   </View>
@@ -36,6 +38,10 @@ const styles = StyleSheet.create({
   eventsContainer: {
     paddingTop: gutter,
     paddingHorizontal: gutter,
+  },
+  message: {
+    textAlign: 'center',
+    color: grey,
   },
 });
 

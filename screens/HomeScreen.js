@@ -7,7 +7,7 @@ import Loading from '../components/Loading';
 import Schedule from '../components/Schedule';
 import Calendar from '../components/Calendar';
 import ColorConstants from '../constants/Colors';
-import { isEmptyObject } from '../helpers/helpers';
+import { isSameSemester } from '../helpers/helpers';
 import { filterEvents } from '../helpers/filters';
 import API from '../services/api.service';
 
@@ -33,71 +33,93 @@ export default class HomeScreen extends React.Component {
 
   state = {
     selectedDate: moment(),
-    schedule: {},
-    events: [],
+    group: {},
+    schedule: [],
+    semesters: [],
+    currentSemester: {},
     isLoading: true,
   };
 
-  componentDidMount() {
-    const { id, schedule } = this.props.navigation.state.params;
+  async componentDidMount() {
+    const { id, data } = this.props.navigation.state.params;
+    const { selectedDate } = this.state;
 
-    if (!isEmptyObject(schedule)) {
-      this.setScheduleToState(schedule);
-    } else {
-      API.getGroupAllData(id)
-        .then((groupSchedule) => {
-          if (!isEmptyObject(groupSchedule)) {
-            store.update('schedule', groupSchedule);
+    try {
+      const data = data || (await API.getGroupAllData(id));
+      const { semesters, group } = data;
 
-            this.setScheduleToState(groupSchedule);
-          }
-        })
-        .catch((err) => {
-          console.error(err);
+      store.save('data', data);
 
-          this.setState({
-            isLoading: false,
-          });
-        });
+      this.getGroup(group);
+      this.getAllSemesters(semesters);
+      this.getCurrentSemester(semesters, selectedDate);
+      this.stopLoading();
+    } catch (error) {
+      this.stopLoading();
+      console.error(error);
     }
   }
 
-  setScheduleToState(schedule) {
-    const events = filterEvents(schedule, moment());
+  getCurrentSemester(semesters, date) {
+    if (semesters && semesters.length > 0) {
+      semesters.map((semester) => {
+        if (isSameSemester(semester, date)) {
+          this.getSchedule(semester, date);
+
+          this.setState({
+            currentSemester: semester,
+          });
+        }
+
+        return undefined;
+      });
+    }
+  }
+
+  getSchedule(semester, date) {
+    const schedule = filterEvents(semester, date);
 
     this.setState({
       schedule,
-      events,
+    });
+  }
+
+  getGroup(group) {
+    this.setState({
+      group,
+    });
+  }
+
+  getAllSemesters(semesters) {
+    this.setState({
+      semesters,
+    });
+  }
+
+  stopLoading() {
+    this.setState({
       isLoading: false,
     });
   }
 
   handleDatePress = (date) => {
-    const { schedule } = this.state;
+    const { semesters } = this.state;
+
+    this.getCurrentSemester(semesters, date);
 
     this.setState({
-      events: filterEvents(schedule, date),
       selectedDate: date,
     });
   };
 
   render() {
-    const { isLoading } = this.state;
+    const { isLoading, schedule, selectedDate } = this.state;
 
     if (!isLoading) {
-      const { events, selectedDate, schedule } = this.state;
-      const { semester } = schedule;
-      const { start, end } = semester;
-
       return (
         <View style={styles.container}>
-          <Calendar
-            minDate={moment(start, 'DD-MM-YYYY')}
-            maxDate={moment(end, 'DD-MM-YYYY')}
-            selectedDate={selectedDate}
-            onDatePress={this.handleDatePress}
-          />
-          <Schedule events={events} date={selectedDate} />
+          <Calendar selectedDate={selectedDate} onDatePress={this.handleDatePress} />
+          <Schedule events={schedule} date={selectedDate} />
         </View>
       );
     }

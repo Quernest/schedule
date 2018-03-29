@@ -13,7 +13,6 @@ const { lightgrey, black, white } = ColorConstants;
 export default class GroupsScreen extends React.Component {
   static navigationOptions = {
     title: 'Выбор группы',
-    // header: null,
   };
 
   static propTypes = {
@@ -24,23 +23,20 @@ export default class GroupsScreen extends React.Component {
 
   state = {
     groups: [],
-    data: [],
+    filteredGroups: [],
     isLoading: true,
     searchText: '',
   };
 
-  componentDidMount() {
-    API.getGroups()
-      .then((groups) => {
-        this.setGroupsToState(groups);
-      })
-      .catch((err) => {
-        console.error(err);
+  async componentDidMount() {
+    try {
+      const groups = await API.getGroups();
 
-        this.setState({
-          isLoading: false,
-        });
-      });
+      this.setGroupsToState(groups);
+    } catch (error) {
+      console.error(error);
+      this.stopLoading();
+    }
   }
 
   onClearSearchInput() {
@@ -52,7 +48,14 @@ export default class GroupsScreen extends React.Component {
   setGroupsToState(groups) {
     this.setState({
       groups,
-      data: groups,
+      filteredGroups: groups,
+    });
+
+    this.stopLoading();
+  }
+
+  stopLoading() {
+    this.setState({
       isLoading: false,
     });
   }
@@ -64,7 +67,7 @@ export default class GroupsScreen extends React.Component {
     const filter = groups.filter(group => group.name.toLowerCase().includes(value));
 
     this.setState({
-      data: filter,
+      filteredGroups: filter,
       searchText,
     });
   }
@@ -80,7 +83,7 @@ export default class GroupsScreen extends React.Component {
     const { isLoading } = this.state;
 
     if (!isLoading) {
-      const { data } = this.state;
+      const { filteredGroups } = this.state;
 
       return (
         <View style={styles.container}>
@@ -96,8 +99,8 @@ export default class GroupsScreen extends React.Component {
               placeholder="Поиск группы"
             />
             <View containerStyle={styles.groupsContainer}>
-              {data &&
-                data.map((group) => {
+              {filteredGroups &&
+                filteredGroups.map((group) => {
                   const { id, name } = group;
 
                   return (
