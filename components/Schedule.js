@@ -41,6 +41,7 @@ const styles = StyleSheet.create({
   },
   message: {
     textAlign: 'center',
+    opacity: 0.75,
     color: grey,
   },
 });

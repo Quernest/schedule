@@ -2,7 +2,6 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Button, Text } from 'react-native-elements';
 import PropTypes from 'prop-types';
-import store from 'react-native-simple-store';
 import Loading from '../components/Loading';
 import SizeConstants from '../constants/Sizes';
 import ColorConstants from '../constants/Colors';

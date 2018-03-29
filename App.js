@@ -1,3 +1,10 @@
+/**
+ * React-Native Schedule application
+ *
+ * created by Quernest
+ * Copyright © 2018. All rights reserved.
+ */
+
 import React from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { AppLoading, Asset, Font } from 'expo';

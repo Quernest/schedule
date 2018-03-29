@@ -70,8 +70,6 @@ export default class HomeScreen extends React.Component {
             currentSemester: semester,
           });
         }
-
-        return undefined;
       });
     }
   }
