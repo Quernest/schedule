@@ -1,34 +1,58 @@
-/**
- * React-Native Schedule application
- *
- * created by Quernest
- * Copyright © 2018. All rights reserved.
- */
-
-import React from 'react';
-import { Platform, StatusBar, StyleSheet, View } from 'react-native';
-import { AppLoading, Asset, Font } from 'expo';
+import React, { Component } from 'react';
+import {
+  Platform,
+  StatusBar,
+  StyleSheet,
+  View,
+} from 'react-native';
+import {
+  AppLoading,
+  Asset,
+  Font,
+} from 'expo';
 import { Ionicons } from '@expo/vector-icons';
+
 import ColorConstants from './constants/Colors';
 import RootNavigation from './navigation/RootNavigation';
 
 const { lightgrey } = ColorConstants;
 
-export default class App extends React.Component {
+export default class App extends Component {
   state = {
     isLoadingComplete: false,
   };
 
+  loadResourcesAsync = async () => {
+    Promise.all([
+      Asset.loadAsync([]),
+      Font.loadAsync({
+        ...Ionicons.font,
+      }),
+    ]);
+  }
+
+  handleLoadingError(error) {
+    console.warn(error);
+  }
+
+  handleFinishLoading = () => {
+    this.setState({ isLoadingComplete: true });
+  }
+
   render() {
-    if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
+    const { isLoadingComplete } = this.state;
+    const { skipLoadingScreen } = this.props;
+
+    if (!isLoadingComplete && !skipLoadingScreen) {
       return (
         <AppLoading
-          startAsync={this._loadResourcesAsync}
-          onError={this._handleLoadingError}
-          onFinish={this._handleFinishLoading}
+          startAsync={this.loadResourcesAsync}
+          onError={this.handleLoadingError}
+          onFinish={this.handleFinishLoading}
         />
       );
     }
+
     return (
       <View style={styles.container}>
         {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
@@ -37,22 +61,6 @@ export default class App extends React.Component {
       </View>
     );
   }
-
-  _loadResourcesAsync = async () =>
-    Promise.all([
-      Asset.loadAsync([]),
-      Font.loadAsync({
-        ...Ionicons.font,
-      }),
-    ]);
-
-  _handleLoadingError = (error) => {
-    console.warn(error);
-  };
-
-  _handleFinishLoading = () => {
-    this.setState({ isLoadingComplete: true });
-  };
 }
 
 const styles = StyleSheet.create({

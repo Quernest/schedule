@@ -36,14 +36,14 @@ export default class WelcomeScreen extends React.Component {
       const data = await API.getGroupAllData(undefined, true);
 
       if (!isEmptyObject(data)) {
-        this.stopLoading();
         replace('Main', { data });
-      } else {
-        this.stopLoading();
       }
     } catch (error) {
-      this.stopLoading();
       console.error(error);
+    } finally {
+      this.setState({
+        isLoading: false,
+      });
     }
   }
 

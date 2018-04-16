@@ -1,5 +1,10 @@
-import React from 'react';
-import { Platform, StyleSheet, Text, View } from 'react-native';
+import React, { Component } from 'react';
+import {
+  Platform,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import moment from 'moment';
 import humanizeDuration from 'humanize-duration';
@@ -7,28 +12,42 @@ import PropTypes from 'prop-types';
 import SizeConstants from '../constants/Sizes';
 import LayoutConstants from '../constants/Layout';
 import ColorConstants from '../constants/Colors';
-import { isSameDay, isBeforeDay, isBeforeTime, isBetweenTime } from '../helpers/helpers';
+import {
+  isSameDay,
+  isBeforeDay,
+  isBeforeTime,
+  isBetweenTime,
+} from '../helpers/helpers';
 
 const {
-  gutter, borderRadiusSmall, fontSizeSmall, fontSizeNormal, fontSizeLarge,
+  gutter,
+  borderRadiusSmall,
+  fontSizeSmall,
+  fontSizeNormal,
+  fontSizeLarge,
 } = SizeConstants;
+
 const { window: { width } } = LayoutConstants;
 const { white, grey, black } = ColorConstants;
 
-export default class Event extends React.Component {
+class Event extends Component {
   static propTypes = {
     event: PropTypes.shape({
       id: PropTypes.number,
-      day: PropTypes.number,
+      weekDay: PropTypes.number,
+      weekType: PropTypes.number,
       start: PropTypes.string,
       end: PropTypes.string,
       location: PropTypes.string,
       name: PropTypes.string,
       teacher: PropTypes.string,
       type: PropTypes.string,
-      weekType: PropTypes.number,
+      isFreeTime: PropTypes.bool,
     }).isRequired,
-    date: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
+    date: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.object,
+    ]).isRequired,
   };
 
   state = {
@@ -75,7 +94,6 @@ export default class Event extends React.Component {
     const ms = moment(start, 'HH:mm:ss').diff(currentTime);
     const d = moment.duration(ms);
     const hours = d.hours();
-    // prettier-ignore
     const minutes = (hours * 60) + d.minutes();
 
     if (minutes >= 0 && minutes < 20 && isSameDay(currentTime, date)) {
@@ -97,7 +115,6 @@ export default class Event extends React.Component {
     const ms = moment(end, 'HH:mm:ss').diff(currentTime);
     const d = moment.duration(ms);
     const hours = d.hours();
-    // prettier-ignore
     const minutes = (hours * 60) + d.minutes();
 
     if (isSameDay(currentTime, date)) {
@@ -116,7 +133,11 @@ export default class Event extends React.Component {
   render() {
     const { event, date } = this.props;
     const {
-      name, location, start, end,
+      name,
+      location,
+      start,
+      end,
+      isFreeTime,
     } = event;
 
     const formattedStartTime = moment(start, 'HH:mm:ss').format('H:mm');
@@ -124,6 +145,14 @@ export default class Event extends React.Component {
 
     const showWillEndNotify = this.isActive(event, date) && this.willEnd(end);
     const showWillStartNotify = !this.isActive(event, date) && this.willStart(start);
+
+    if (isFreeTime) {
+      return (
+        <View>
+          <Text>free time</Text>
+        </View>
+      );
+    }
 
     return (
       <View style={[styles.container, this.isDisabled(event, date) && styles.disabled]}>
@@ -195,3 +224,5 @@ const styles = StyleSheet.create({
     color: grey,
   },
 });
+
+export default Event;

@@ -45,18 +45,20 @@ export default class HomeScreen extends React.Component {
     const { selectedDate } = this.state;
 
     try {
-      const data = data || (await API.getGroupAllData(id));
+      const data = data || await API.getGroupAllData(id);
       const { semesters, group } = data;
-
+    
       store.save('data', data);
 
       this.getGroup(group);
       this.getAllSemesters(semesters);
       this.getCurrentSemester(semesters, selectedDate);
-      this.stopLoading();
     } catch (error) {
-      this.stopLoading();
       console.error(error);
+    } finally {
+      this.setState({
+        isLoading: false,
+      });
     }
   }
 

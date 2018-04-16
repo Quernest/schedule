@@ -1,5 +1,5 @@
 const ODD = 1;
-const EVEN = 0;
+const EVEN = 2;
 
 export default {
   ODD,
