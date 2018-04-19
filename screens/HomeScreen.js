@@ -1,52 +1,21 @@
 // @flow
 
-import React from 'react';
+import React, { Component } from 'react';
 import {
   StyleSheet,
   View,
 } from 'react-native';
 import moment from 'moment';
 import type Moment from 'moment';
-
 import Loading from '../components/Loading';
 import Schedule from '../components/Schedule';
 import Calendar from '../components/Calendar';
-
+import type {
+  EventType,
+  DataType,
+} from '../types';
 import API from '../services/api.service';
-
-export type EventType = {
-  id: number,
-  name: string,
-  teacher: string,
-  start: string,
-  end: string,
-  weekDay: number,
-  // 1 = odd, 2 = even
-  weekType: number,
-  semester: number,
-  location: string,
-  // if no lesson
-  isFreeTime: number,
-  // it's usually friday
-  isShortDay: number,
-};
-
-export type SemesterType = {
-  id: number,
-  start: string,
-  end: string,
-  schedule?: Array<EventType>,
-  // the week type from which the semester begins
-  firstWeekType: number,
-};
-
-export type dataType = {
-  group: {
-    id: number,
-    name: string,
-  },
-  semesters: Array<Object>,
-};
+import { filterEvents } from '../helpers/filters';
 
 type Props = {
   navigation: {
@@ -68,86 +37,7 @@ type State = {
   isLoading: boolean,
 };
 
-/**
- * TODO:
- * 
- * - create external file for filterEvents
- * - create external file for types
- */
-
-const filterEvents = (date: Moment, semesters?: Array<Object>): Array<EventType> => {
-  let currentSemester: SemesterType;
-
-  const dateFormat: string = 'DD/MM/YYYY';
-  const dateFormatWithoutYear: string = 'DD/MM/____';
-
-  // detect current semester
-  if (semesters && semesters.length) {
-    semesters.map((semester) => {
-      const { start, end } = semester;
-
-      const startDate = moment(new Date(start)).format(dateFormat);
-      const endDate = moment(new Date(end)).format(dateFormat);
-
-      const isMonthBetween = date.isBetween(
-        moment(startDate, dateFormatWithoutYear),
-        moment(endDate, dateFormatWithoutYear),
-        'month',
-        '[]',
-      );
-
-      // using month() for missing year
-      if (isMonthBetween) {
-        currentSemester = semester;
-      }
-
-      return semester;
-    });
-  }
-
-  // get filtered schedule
-  const {
-    schedule,
-    end,
-    start,
-    firstWeekType,
-  } = currentSemester;
-
-  const startDate = moment(new Date(start)).format(dateFormat);
-  const endDate = moment(new Date(end)).format(dateFormat);
-
-  const weeksTotal = moment(endDate, dateFormatWithoutYear).isoWeek() - moment(startDate, dateFormatWithoutYear).isoWeek();
-  const weeksAfterStart = date.isoWeek() - moment(startDate, dateFormatWithoutYear).isoWeek();
-  const weeksBeforeEnd = moment(endDate, dateFormatWithoutYear).isoWeek() - date.isoWeek();
-
-  // console.log(weeksAfterStart, weeksBeforeEnd, weeksTotal);
-
-  let currentWeekType: number;
-
-  const oddWeek: number = 1;
-  const evenWeek: number = 2;
-
-  if (weeksAfterStart % 2 !== 0) {
-    currentWeekType = firstWeekType === oddWeek ? oddWeek : evenWeek;
-  } else {
-    currentWeekType = firstWeekType === evenWeek ? oddWeek : evenWeek;
-  }
-
-  if (schedule && schedule.length) {
-    return schedule.filter((event) => {
-      const isSameWeekType = event.weekType === currentWeekType;
-      const isSameWeekDay = event.weekDay === date.isoWeekday();
-
-      if (isSameWeekType && isSameWeekDay) {
-        return event;
-      }
-    });
-  }
-
-  return [];
-};
-
-export default class HomeScreen extends React.Component<Props, State> {
+export default class HomeScreen extends Component<Props, State> {
   static navigationOptions = {
     header: null,
     title: 'Расписание',
@@ -178,7 +68,7 @@ export default class HomeScreen extends React.Component<Props, State> {
     const { currentDate } = this.state;
 
     try {
-      const data: dataType = await API.getGroupAllData(id);
+      const data: DataType = await API.getGroupAllData(id);
       const { group, semesters } = data;
 
       this.setState({
