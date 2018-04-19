@@ -1,12 +1,13 @@
 import React from 'react';
-import { View, StyleSheet, ActivityIndicator } from 'react-native';
-import ColorConstants from '../constants/Colors';
-
-const { lightblue } = ColorConstants;
+import {
+  View,
+  StyleSheet,
+  ActivityIndicator,
+} from 'react-native';
 
 const Loading = () => (
   <View style={styles.container}>
-    <ActivityIndicator size="large" color={lightblue} />
+    <ActivityIndicator size="large" color="#38498C" />
   </View>
 );
 
