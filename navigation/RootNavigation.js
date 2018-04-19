@@ -9,12 +9,12 @@ const { fontSizeLarge } = SizeConstants;
 
 const RootStackNavigator = StackNavigator(
   {
-    Welcome: {
-      screen: WelcomeScreen,
-    },
-    Groups: {
-      screen: GroupsScreen,
-    },
+    // Welcome: {
+    //   screen: WelcomeScreen,
+    // },
+    // Groups: {
+    //   screen: GroupsScreen,
+    // },
     Main: {
       screen: MainTabNavigator,
     },

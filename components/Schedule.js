@@ -1,6 +1,12 @@
-import React from 'react';
-import { ScrollView, StyleSheet, View, Text } from 'react-native';
-import PropTypes from 'prop-types';
+// @flow
+
+import React, { PureComponent } from 'react';
+import {
+  ScrollView,
+  StyleSheet,
+  View,
+  Text,
+} from 'react-native';
 import Event from '../components/Event';
 import SizeConstants from '../constants/Sizes';
 import ColorConstants from '../constants/Colors';
@@ -24,11 +30,6 @@ const Schedule = ({ events, date }) => (
     </ScrollView>
   </View>
 );
-
-Schedule.propTypes = {
-  events: PropTypes.arrayOf(PropTypes.object).isRequired,
-  date: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
-};
 
 const styles = StyleSheet.create({
   container: {

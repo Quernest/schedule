@@ -1,58 +1,141 @@
+// @flow
+
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import {
+  StyleSheet,
+  View,
+} from 'react-native';
 import moment from 'moment';
+import type Moment from 'moment';
+
 import store from 'react-native-simple-store';
-import PropTypes from 'prop-types';
 import Loading from '../components/Loading';
 import Schedule from '../components/Schedule';
 import Calendar from '../components/Calendar';
-import ColorConstants from '../constants/Colors';
-import { isSameSemester } from '../helpers/helpers';
-import { filterEvents } from '../helpers/filters';
+// import { isSameSemester } from '../helpers/helpers';
+// import { filterEvents } from '../helpers/filters';
 import API from '../services/api.service';
 
-const { lightgrey } = ColorConstants;
+export type EventType = {
+  id: number,
+  name: string,
+  teacher: string,
+  start: string,
+  end: string,
+  weekDay: number,
+  // 1 = odd, 2 = even
+  weekType: number,
+  semester: number,
+  location: string,
+  // if no lesson
+  isFreeTime: number,
+  // it's usually friday
+  isShortDay: number,
+};
 
-export default class HomeScreen extends React.Component {
+export type SemesterType = {
+  id: number,
+  start: string,
+  end: string,
+  schedule?: Array<EventType>,
+  // the week type from which the semester begins
+  firstWeekType: number,
+};
+
+export type dataType = {
+  group: {
+    id: number,
+    name: string,
+  },
+  semesters: Array<Object>,
+};
+
+type Props = {
+  navigation: {
+    state: Object,
+    params: Object,
+  },
+  id?: number,
+  schedule?: Array<EventType>,
+};
+
+type State = {
+  currentDate: string | Moment,
+  group?: {
+    id: number,
+    name: string,
+  },
+  semesters?: Array<Object>,
+  isLoading: boolean,
+};
+
+const filterEvents = (date: Moment, semesters: Array<Object>): Array<EventType> => {
+
+  let currentSemester: SemesterType;
+
+  // detect current semester
+  if (semesters && semesters.length) {
+    semesters.map((semester) => {
+      const { start, end } = semester;
+
+      const startDate = moment(start);
+      const endDate = moment(end);
+
+      // using month() for missing year
+      if (startDate.month() <= date.month() && date.month() <= endDate.month()) {
+        currentSemester = semester;
+      }
+
+      return semester;
+    });
+  }
+
+  const { schedule } = currentSemester;
+
+  // filter schedule of current semester
+  if (schedule && schedule.length) {
+    return schedule.filter((event) => {
+      if (event.weekDay === moment(date).isoWeekday()) {
+        return event;
+      }
+    });
+  }
+
+  return [];
+};
+
+export default class HomeScreen extends React.Component<Props, State> {
   static navigationOptions = {
     header: null,
     title: 'Расписание',
   };
 
-  static propTypes = {
-    navigation: PropTypes.shape({
-      state: PropTypes.object,
-      params: PropTypes.object,
-    }).isRequired,
-  };
-
-  static defaultProp = {
-    id: PropTypes.number,
-    schedule: PropTypes.object,
-  };
-
   state = {
-    selectedDate: moment(),
-    group: {},
-    schedule: [],
-    semesters: [],
-    currentSemester: {},
+    currentDate: moment(),
     isLoading: true,
-  };
+  }
 
-  async componentDidMount() {
-    const { id, data } = this.props.navigation.state.params;
-    const { selectedDate } = this.state;
+  componentDidMount() {
+    const tmpId = 71;
 
+    this.getGroupAllData(tmpId);
+  }
+
+  onDatePress = (date: Moment): void => {
+    const { semesters } = this.state;
+
+    console.log(filterEvents(date, semesters));
+
+    this.setState({
+      currentDate: date,
+    });
+  }
+
+  getGroupAllData = async (id: number) => {
     try {
-      const data = data || await API.getGroupAllData(id);
-      const { semesters, group } = data;
-    
-      store.save('data', data);
+      const data: dataType = await API.getGroupAllData(id);
 
-      this.getGroup(group);
-      this.getAllSemesters(semesters);
-      this.getCurrentSemester(semesters, selectedDate);
+      this.setState({ ...data });
     } catch (error) {
       console.error(error);
     } finally {
@@ -62,64 +145,23 @@ export default class HomeScreen extends React.Component {
     }
   }
 
-  getCurrentSemester(semesters, date) {
-    if (semesters && semesters.length > 0) {
-      semesters.map((semester) => {
-        if (isSameSemester(semester, date)) {
-          this.getSchedule(semester, date);
-
-          this.setState({
-            currentSemester: semester,
-          });
-        }
-      });
-    }
-  }
-
-  getSchedule(semester, date) {
-    const schedule = filterEvents(semester, date);
-
-    this.setState({
-      schedule,
-    });
-  }
-
-  getGroup(group) {
-    this.setState({
-      group,
-    });
-  }
-
-  getAllSemesters(semesters) {
-    this.setState({
-      semesters,
-    });
-  }
-
-  stopLoading() {
-    this.setState({
-      isLoading: false,
-    });
-  }
-
-  handleDatePress = (date) => {
-    const { semesters } = this.state;
-
-    this.getCurrentSemester(semesters, date);
-
-    this.setState({
-      selectedDate: date,
-    });
-  };
-
   render() {
-    const { isLoading, schedule, selectedDate } = this.state;
+    const {
+      currentDate,
+      isLoading,
+    } = this.state;
 
     if (!isLoading) {
       return (
         <View style={styles.container}>
-          <Calendar selectedDate={selectedDate} onDatePress={this.handleDatePress} />
-          <Schedule events={schedule} date={selectedDate} />
+          <Calendar
+            selectedDate={currentDate}
+            onDatePress={this.onDatePress}
+          />
+          {/* <Schedule
+            events={schedule}
+            date={currentDate}
+          /> */}
         </View>
       );
     }
@@ -131,6 +173,6 @@ export default class HomeScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: lightgrey,
+    backgroundColor: '#eeefef',
   },
 });

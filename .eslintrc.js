@@ -1,6 +1,6 @@
 module.exports = {
   parser: 'babel-eslint',
-  plugins: ['react', 'react-native'],
+  plugins: ['flowtype', 'react', 'react-native'],
   parserOptions: {
     ecmaFeatures: {
       jsx: true,

@@ -148,8 +148,8 @@ class Event extends Component {
 
     if (isFreeTime) {
       return (
-        <View>
-          <Text>free time</Text>
+        <View style={[styles.container, this.isDisabled(event, date) && styles.disabled]}>
+          <Text>-</Text>
         </View>
       );
     }
