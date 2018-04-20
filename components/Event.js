@@ -2,6 +2,7 @@
 
 import React, { Component } from 'react';
 import {
+  Platform,
   StyleSheet,
   Text,
   View,
@@ -127,101 +128,40 @@ export default class Event extends Component<Props, State> {
 
     return (
       <View style={[styles.container, this.isDisabled(event, currentDate) && styles.disabled]}>
+        <View>
+          <Text style={styles.time}>
+            {moment(start, timeFormat).format('H:mm')} - {moment(end, timeFormat).format('H:mm')}
+          </Text>
 
-        <Text style={styles.name}>{name}</Text>
+          <Text style={styles.name}>{name}</Text>
 
-        {this.willBegin(event) && (
-          <Text>До начала: {this.calcTime(start, 'ru').humanized}</Text>
-        )}
+          {this.willBegin(event) && (
+            <Text style={styles.notify}>До начала: {this.calcTime(start, 'ru').humanized}</Text>
+          )}
+
+          {this.isActive(event, currentDate) && (
+            <Text style={styles.notify}>До конца: {this.calcTime(end, 'ru').humanized}</Text>
+          )}
+        </View>
+
+        <View style={styles.location}>
+          <Ionicons
+            name={Platform.OS === 'ios' ? 'ios-pin' : 'md-pin'}
+            size={14}
+            style={styles.locationIcon}
+          />
+          <Text style={styles.locationValue}>{location}</Text>
+        </View>
       </View>
     );
   }
 
-  // isDisabled(event, date) {
-  //   const { currentTime } = this.state;
-  //   const { end } = event;
-
-  //   const isWrongDay = isBeforeDay(currentTime, date);
-  //   const isWrongTime = isSameDay(currentTime, date) && isBeforeTime(currentTime, end);
-
-  //   return isWrongDay || isWrongTime;
-  // }
-
-  // isActive(event, date) {
-  //   const { currentTime } = this.state;
-  //   const { start, end } = event;
-
-  //   const isRightDay = isSameDay(currentTime, date);
-  //   const isRightTime = isBetweenTime(currentTime, start, end);
-
-  //   return isRightDay && isRightTime;
-  // }
-
-  // willStart(start) {
-  //   const { date } = this.props;
-  //   const { currentTime } = this.state;
-  //   const ms = moment(start, 'HH:mm:ss').diff(currentTime);
-  //   const d = moment.duration(ms);
-  //   const hours = d.hours();
-  //   const minutes = (hours * 60) + d.minutes();
-
-  //   if (minutes >= 0 && minutes < 20 && isSameDay(currentTime, date)) {
-  //     return {
-  //       in: humanizeDuration(d, {
-  //         language: 'ru',
-  //         round: true,
-  //         units: ['h', 'm', minutes < 1 && 's'],
-  //       }),
-  //     };
-  //   }
-
-  //   return false;
-  // }
-
-  // willEnd(end) {
-  //   const { date } = this.props;
-  //   const { currentTime } = this.state;
-  //   const ms = moment(end, 'HH:mm:ss').diff(currentTime);
-  //   const d = moment.duration(ms);
-  //   const hours = d.hours();
-  //   const minutes = (hours * 60) + d.minutes();
-
-  //   if (isSameDay(currentTime, date)) {
-  //     return {
-  //       in: humanizeDuration(d, {
-  //         language: 'ru',
-  //         round: true,
-  //         units: ['h', 'm', minutes < 1 && 's'],
-  //       }),
-  //     };
-  //   }
-
-  //   return false;
-  // }
-
   // render() {
-    // const { event, date } = this.props;
-    // const {
-    //   name,
-    //   location,
-    //   start,
-    //   end,
-    //   isFreeTime,
-    // } = event;
-
     // const formattedStartTime = moment(start, 'HH:mm:ss').format('H:mm');
     // const formattedEndTime = moment(end, 'HH:mm:ss').format('H:mm');
 
     // const showWillEndNotify = this.isActive(event, date) && this.willEnd(end);
     // const showWillStartNotify = !this.isActive(event, date) && this.willStart(start);
-
-    // if (isFreeTime) {
-    //   return (
-    //     <View style={[styles.container, this.isDisabled(event, date) && styles.disabled]}>
-    //       <Text>-</Text>
-    //     </View>
-    //   );
-    // }
 
     // return (
     //   <View style={[styles.container, this.isDisabled(event, date) && styles.disabled]}>
