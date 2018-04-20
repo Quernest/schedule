@@ -155,38 +155,6 @@ export default class Event extends Component<Props, State> {
       </View>
     );
   }
-
-  // render() {
-    // const formattedStartTime = moment(start, 'HH:mm:ss').format('H:mm');
-    // const formattedEndTime = moment(end, 'HH:mm:ss').format('H:mm');
-
-    // const showWillEndNotify = this.isActive(event, date) && this.willEnd(end);
-    // const showWillStartNotify = !this.isActive(event, date) && this.willStart(start);
-
-    // return (
-    //   <View style={[styles.container, this.isDisabled(event, date) && styles.disabled]}>
-    //     <View>
-    //       <Text style={styles.time}>
-    //         {formattedStartTime} - {formattedEndTime}
-    //       </Text>
-    //       <Text style={styles.name}>{name}</Text>
-    //       {showWillEndNotify && <Text style={styles.notify}>До конца: {this.willEnd(end).in}</Text>}
-    //       {showWillStartNotify && (
-    //         <Text style={styles.notify}>До начала: {this.willStart(start).in}</Text>
-    //       )}
-    //     </View>
-    //     <View style={styles.location}>
-    //       <Ionicons
-    //         name={Platform.OS === 'ios' ? 'ios-pin' : 'md-pin'}
-    //         size={14}
-    //         style={styles.locationIcon}
-    //       />
-    //       <Text style={styles.locationValue}>{location}</Text>
-    //     </View>
-    //   </View>
-    // );
-  // }
-  // }
 }
 
 const styles = StyleSheet.create({
