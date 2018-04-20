@@ -1,8 +1,13 @@
+// @flow
+
 import store from 'react-native-simple-store';
+import fetchPonyfill from 'fetch-ponyfill';
 
-const API_URL = 'https://schedule-admin.herokuapp.com/api';
+const { fetch } = fetchPonyfill();
 
-const getRequest = async (url) => {
+const API_URL: string = 'https://schedule-admin.herokuapp.com/api';
+
+const getRequest = async (url: string): ?Object => {
   try {
     const response = await fetch(url);
 
@@ -18,17 +23,19 @@ const getRequest = async (url) => {
       return error;
     }
   }
+
+  return {};
 };
 
 class API {
-  static getGroups() {
-    const url = `${API_URL}/groups`;
+  static getGroups(): ?Object {
+    const url: string = `${API_URL}/groups`;
 
     return getRequest(url);
   }
 
-  static getGroupAllData(id, isUseStore = false) {
-    const url = `${API_URL}/group/${id}/alldata`;
+  static getGroupAllData(id: number, isUseStore: boolean = false): ?Object {
+    const url: string = `${API_URL}/group/${id}/alldata`;
 
     if (!isUseStore && id) {
       return getRequest(url);

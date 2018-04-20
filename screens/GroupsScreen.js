@@ -1,24 +1,34 @@
-import React from 'react';
-import { StyleSheet, View, ScrollView, Text, TouchableOpacity } from 'react-native';
+// @flow
+
+import React, { Component } from 'react';
+import {
+  StyleSheet,
+  View,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+} from 'react-native';
 import { SearchBar } from 'react-native-elements';
-import PropTypes from 'prop-types';
-import SizeConstants from '../constants/Sizes';
-import ColorConstants from '../constants/Colors';
 import Loading from '../components/Loading';
 import API from '../services/api.service';
+import type { GroupType } from '../types';
 
-const { gutter, borderRadiusNormal, fontSizeNormal } = SizeConstants;
-const { lightgrey, black, white } = ColorConstants;
+type Props = {
+  navigation: {
+    navigate: () => void,
+  }
+};
 
-export default class GroupsScreen extends React.Component {
+type State = {
+  groups: Array<GroupType>,
+  filteredGroups: Array<GroupType>,
+  isLoading: boolean,
+  searchText: string,
+};
+
+export default class GroupsScreen extends Component<Props, State> {
   static navigationOptions = {
     title: 'Выбор группы',
-  };
-
-  static propTypes = {
-    navigation: PropTypes.shape({
-      navigate: PropTypes.func.isRequired,
-    }).isRequired,
   };
 
   state = {
@@ -28,39 +38,38 @@ export default class GroupsScreen extends React.Component {
     searchText: '',
   };
 
-  async componentDidMount() {
+  componentDidMount() {
+    this.getGroups();
+  }
+
+  onClearSearchInput = (): void => {
+    this.setState({
+      searchText: undefined,
+    });
+  }
+
+  getGroups = async (): void => {
     try {
       const groups = await API.getGroups();
 
       this.setGroupsToState(groups);
     } catch (error) {
       console.error(error);
-      this.stopLoading();
+    } finally {
+      this.setState({
+        isLoading: false,
+      });
     }
   }
 
-  onClearSearchInput() {
-    this.setState({
-      searchText: undefined,
-    });
-  }
-
-  setGroupsToState(groups) {
+  setGroupsToState = (groups: Array<GroupType>): void => {
     this.setState({
       groups,
       filteredGroups: groups,
     });
-
-    this.stopLoading();
   }
 
-  stopLoading() {
-    this.setState({
-      isLoading: false,
-    });
-  }
-
-  handleSearchInputChange(searchText) {
+  handleSearchInputChange = (searchText: string): void => {
     const { groups } = this.state;
 
     const value = searchText.toLowerCase();
@@ -72,11 +81,11 @@ export default class GroupsScreen extends React.Component {
     });
   }
 
-  handleGroupPress(group) {
-    const { id } = group;
+  goToHomeScreen = (group: GroupType): void => {
     const { navigate } = this.props.navigation;
+    const { id } = group;
 
-    navigate('Home', { id, isUseStorage: false });
+    navigate('Home', { id });
   }
 
   render() {
@@ -94,7 +103,7 @@ export default class GroupsScreen extends React.Component {
               round
               lightTheme
               onChangeText={searchText => this.handleSearchInputChange(searchText)}
-              onClearText={() => this.onClearSearchInput()}
+              onClearText={this.onClearSearchInput}
               clearIcon
               placeholder="Поиск группы"
             />
@@ -107,7 +116,7 @@ export default class GroupsScreen extends React.Component {
                     <TouchableOpacity
                       key={id}
                       style={styles.group}
-                      onPress={() => this.handleGroupPress(group)}
+                      onPress={() => this.goToHomeScreen(group)}
                     >
                       <Text style={styles.groupName}>{name}</Text>
                     </TouchableOpacity>
@@ -126,42 +135,42 @@ export default class GroupsScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: lightgrey,
+    backgroundColor: '#eeefef',
   },
   contentContainer: {
-    marginTop: gutter,
-    paddingHorizontal: gutter,
+    marginTop: 10,
+    paddingHorizontal: 10,
   },
   group: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: gutter * 2,
-    paddingVertical: gutter,
-    marginBottom: gutter,
-    borderRadius: borderRadiusNormal,
-    backgroundColor: white,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    marginBottom: 10,
+    borderRadius: 5,
+    backgroundColor: '#fff',
   },
   groupName: {
-    fontSize: fontSizeNormal,
-    color: black,
+    fontSize: 14,
+    color: '#343434',
   },
   groupsContainer: {
-    marginTop: gutter,
+    marginTop: 10,
     borderTopWidth: 0,
     borderBottomWidth: 0,
   },
   searchBarContainer: {
     margin: 0,
-    marginBottom: gutter,
+    marginBottom: 10,
     borderTopWidth: 0,
     borderBottomWidth: 0,
-    backgroundColor: lightgrey,
+    backgroundColor: '#eeefef',
   },
   searchBarInput: {
     marginLeft: 0,
     marginRight: 0,
     paddingLeft: 40,
-    backgroundColor: white,
+    backgroundColor: '#fff',
   },
 });

@@ -38,3 +38,8 @@ export type DataType = {
   semesters: Array<SemesterType>,
 };
 
+export type GroupType = {
+  id: number,
+  name: string,
+};
+

@@ -112,6 +112,7 @@ export default class Event extends Component<Props, State> {
       name,
       location,
       teacher,
+      type,
       start,
       end,
       isFreeTime,
@@ -121,7 +122,7 @@ export default class Event extends Component<Props, State> {
     if (isFreeTime) {
       return (
         <View style={[styles.container, this.isDisabled(event, currentDate) && styles.disabled]}>
-          <Text>Free time</Text>
+          <Text style={styles.name}>-</Text>
         </View>
       );
     }
@@ -132,6 +133,8 @@ export default class Event extends Component<Props, State> {
           <Text style={styles.time}>
             {moment(start, timeFormat).format('H:mm')} - {moment(end, timeFormat).format('H:mm')}
           </Text>
+
+          {type && <Text>{type}</Text>}
 
           <Text style={styles.name}>{name}</Text>
 

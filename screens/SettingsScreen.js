@@ -1,35 +1,38 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
+// @flow
+
+import React, { Component } from 'react';
+import {
+  View,
+  StyleSheet,
+} from 'react-native';
 import { Button } from 'react-native-elements';
-import PropTypes from 'prop-types';
-import SizeConstants from '../constants/Sizes';
-import ColorConstants from '../constants/Colors';
 
-const { gutter } = SizeConstants;
-const { lightblue } = ColorConstants;
+type Props = {
+  navigation: {
+    navigate: () => void,
+  },
+};
 
-export default class SettingsScreen extends React.Component {
+export default class SettingsScreen extends Component<Props> {
   static navigationOptions = {
     title: 'Настройки',
   };
 
-  static propTypes = {
-    navigation: PropTypes.shape({
-      navigate: PropTypes.func.isRequired,
-    }).isRequired,
-  };
-
-  render() {
+  goToGroups = (): void => {
     const { navigate } = this.props.navigation;
 
+    navigate('Groups');
+  }
+
+  render() {
     return (
       <View style={styles.container}>
         <View style={styles.swtichGroup}>
           <Button
             rounded
             title="Сменить группу"
-            onPress={() => navigate('Groups')}
-            backgroundColor={lightblue}
+            onPress={this.goToGroups}
+            backgroundColor="#38498C"
           />
         </View>
       </View>
@@ -39,9 +42,9 @@ export default class SettingsScreen extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    padding: gutter,
+    padding: 10,
   },
   swtichGroup: {
-    marginTop: gutter,
+    marginTop: 10,
   },
 });

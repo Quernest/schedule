@@ -50,7 +50,7 @@ export default class HomeScreen extends Component<Props, State> {
   }
 
   componentDidMount() {
-    const id: number = 71;
+    const { id } = this.getParamsFromNavigatorProps(this.props);
 
     this.getGroupAllData(id);
   }
@@ -62,6 +62,16 @@ export default class HomeScreen extends Component<Props, State> {
       events: filterEvents(date, semesters),
       currentDate: date,
     });
+  }
+
+  getParamsFromNavigatorProps = (props: Object): Object => {
+    const { navigation } = props;
+    const { state } = navigation;
+    const { params } = state;
+
+    return {
+      ...params,
+    };
   }
 
   getGroupAllData = async (id: number) => {

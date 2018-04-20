@@ -1,60 +1,42 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Button, Text } from 'react-native-elements';
-import PropTypes from 'prop-types';
+// @flow
+
+import React, { Component } from 'react';
+import {
+  View,
+  StyleSheet,
+} from 'react-native';
+import {
+  Button,
+  Text,
+} from 'react-native-elements';
 import Loading from '../components/Loading';
-import SizeConstants from '../constants/Sizes';
-import ColorConstants from '../constants/Colors';
-import { isEmptyObject } from '../helpers/helpers';
-import API from '../services/api.service';
 
-const { gutter, fontSizeSmall } = SizeConstants;
-const {
-  steel, lightblue, lightgrey, black,
-} = ColorConstants;
+type Props = {
+  navigation: {
+    navigate: () => void,
+  }
+};
 
-export default class WelcomeScreen extends React.Component {
+type State = {
+  isLoading: boolean,
+};
+
+export default class WelcomeScreen extends Component<Props, State> {
   static navigationOptions = {
     header: null,
   };
 
-  static propTypes = {
-    navigation: PropTypes.shape({
-      navigate: PropTypes.func.isRequired,
-      replace: PropTypes.func.isRequired,
-    }).isRequired,
-  };
-
   state = {
-    isLoading: true,
+    isLoading: false,
   };
 
-  async componentDidMount() {
-    const { replace } = this.props.navigation;
+  goToGroups = (): void => {
+    const { navigate } = this.props.navigation;
 
-    try {
-      const data = await API.getGroupAllData(undefined, true);
-
-      if (!isEmptyObject(data)) {
-        replace('Main', { data });
-      }
-    } catch (error) {
-      console.error(error);
-    } finally {
-      this.setState({
-        isLoading: false,
-      });
-    }
-  }
-
-  stopLoading() {
-    this.setState({
-      isLoading: false,
-    });
+    navigate('Groups');
   }
 
   render() {
-    const { navigate } = this.props.navigation;
     const { isLoading } = this.state;
 
     if (!isLoading) {
@@ -67,8 +49,8 @@ export default class WelcomeScreen extends React.Component {
             large
             rounded
             title="Перейти к выбору группы"
-            onPress={() => navigate('Groups')}
-            backgroundColor={lightblue}
+            onPress={this.goToGroups}
+            backgroundColor="#38498C"
           />
           <View style={styles.copyWrap}>
             <Text h4 style={styles.copy}>
@@ -88,23 +70,22 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: lightgrey,
+    backgroundColor: '#eeefef',
   },
   heading: {
-    marginBottom: gutter,
-    color: black,
+    marginBottom: 10,
+    color: '#343434',
   },
   copyWrap: {
     position: 'absolute',
     left: 0,
     right: 0,
-    bottom: gutter * 2,
+    bottom: 20,
     justifyContent: 'center',
     alignItems: 'center',
   },
   copy: {
-    marginTop: gutter * 5,
-    fontSize: fontSizeSmall,
-    color: steel,
+    fontSize: 12,
+    color: '#b2bec3',
   },
 });
