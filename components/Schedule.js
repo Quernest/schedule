@@ -12,11 +12,11 @@ import type { EventType } from '../types';
 
 type Props = {
   events: ?Array<EventType>,
-  date: Moment,
+  currentDate: Moment,
 };
 
 const Schedule = (props: Props) => {
-  const { events, date } = props;
+  const { events, currentDate } = props;
 
   return (
     <View style={styles.container}>
@@ -29,7 +29,7 @@ const Schedule = (props: Props) => {
               <Event
                 key={id}
                 event={event}
-                date={date}
+                currentDate={currentDate}
               />
             );
           })}

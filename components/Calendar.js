@@ -1,17 +1,15 @@
+// @flow
+
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import {
+  View,
+  StyleSheet,
+} from 'react-native';
 import localization from 'moment/locale/ru';
-import PropTypes from 'prop-types';
 import CelendarStrip from 'react-native-calendar-strip';
-import SizeConstants from '../constants/Sizes';
-import ColorConstants from '../constants/Colors';
+import type Moment from 'moment';
 
-const { fontSizeLarge } = SizeConstants;
-const {
-  lightblue, lightgrey, black, grey,
-} = ColorConstants;
-
-const calendarConifg = {
+const conifg = {
   locale: {
     name: 'ru',
     config: localization,
@@ -21,31 +19,35 @@ const calendarConifg = {
     duration: 200,
   },
   daySelectionAnimation: {},
-  calendarColor: lightgrey,
+  calendarColor: '#eeefef',
 };
 
-const Calendar = ({ selectedDate, onDatePress }) => (
-  <View>
-    <CelendarStrip
-      {...calendarConifg}
-      style={styles.calendarStyle}
-      calendarHeaderStyle={styles.calendarHeaderStyle}
-      dateNumberStyle={styles.dateNumberStyle}
-      dateNameStyle={styles.dateNameStyle}
-      highlightDateNumberStyle={styles.highlightDateNumberStyle}
-      highlightDateNameStyle={styles.highlightDateNameStyle}
-      disabledDateNameStyle={styles.disabledDateNameStyle}
-      disabledDateNumberStyle={styles.disabledDateNumberStyle}
-      iconContainer={styles.iconContainer}
-      selectedDate={selectedDate}
-      onDateSelected={onDatePress}
-    />
-  </View>
-);
+type Props = {
+  currentDate: Moment,
+  onDatePress: (date: Moment) => void;
+};
 
-Calendar.propTypes = {
-  selectedDate: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
-  onDatePress: PropTypes.func.isRequired,
+const Calendar = (props: Props) => {
+  const { currentDate, onDatePress } = props;
+
+  return (
+    <View>
+      <CelendarStrip
+        {...conifg}
+        style={styles.calendarStyle}
+        calendarHeaderStyle={styles.calendarHeaderStyle}
+        dateNumberStyle={styles.dateNumberStyle}
+        dateNameStyle={styles.dateNameStyle}
+        highlightDateNumberStyle={styles.highlightDateNumberStyle}
+        highlightDateNameStyle={styles.highlightDateNameStyle}
+        disabledDateNameStyle={styles.disabledDateNameStyle}
+        disabledDateNumberStyle={styles.disabledDateNumberStyle}
+        iconContainer={styles.iconContainer}
+        selectedDate={currentDate}
+        onDateSelected={onDatePress}
+      />
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
@@ -56,26 +58,26 @@ const styles = StyleSheet.create({
   },
   calendarHeaderStyle: {
     marginBottom: 15,
-    fontSize: fontSizeLarge,
-    color: black,
+    fontSize: 18,
+    color: '#343434',
   },
   dateNameStyle: {
-    color: black,
+    color: '#343434',
   },
   dateNumberStyle: {
-    color: black,
+    color: '#343434',
   },
   highlightDateNumberStyle: {
-    color: lightblue,
+    color: '#38498C',
   },
   highlightDateNameStyle: {
-    color: lightblue,
+    color: '#38498C',
   },
   disabledDateNameStyle: {
-    color: grey,
+    color: '#989898',
   },
   disabledDateNumberStyle: {
-    color: grey,
+    color: '#989898',
   },
   iconContainer: {
     flex: 0.1,

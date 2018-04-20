@@ -96,12 +96,12 @@ export default class HomeScreen extends Component<Props, State> {
       return (
         <View style={styles.container}>
           <Calendar
-            selectedDate={currentDate}
+            currentDate={currentDate}
             onDatePress={this.onDatePress}
           />
           <Schedule
             events={events}
-            date={currentDate}
+            currentDate={currentDate}
           />
         </View>
       );

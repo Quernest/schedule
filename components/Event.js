@@ -1,55 +1,33 @@
 import React, { Component } from 'react';
 import {
-  Platform,
   StyleSheet,
   Text,
   View,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import moment from 'moment';
+import type Moment from 'moment';
 import humanizeDuration from 'humanize-duration';
-import PropTypes from 'prop-types';
-import SizeConstants from '../constants/Sizes';
-import LayoutConstants from '../constants/Layout';
-import ColorConstants from '../constants/Colors';
 import {
   isSameDay,
   isBeforeDay,
-  isBeforeTime,
   isBetweenTime,
 } from '../helpers/helpers';
-
-const {
-  gutter,
-  borderRadiusSmall,
-  fontSizeSmall,
-  fontSizeNormal,
-  fontSizeLarge,
-} = SizeConstants;
+import type { EventType } from '../types';
+import LayoutConstants from '../constants/Layout';
 
 const { window: { width } } = LayoutConstants;
-const { white, grey, black } = ColorConstants;
 
-class Event extends Component {
-  static propTypes = {
-    event: PropTypes.shape({
-      id: PropTypes.number,
-      weekDay: PropTypes.number,
-      weekType: PropTypes.number,
-      start: PropTypes.string,
-      end: PropTypes.string,
-      location: PropTypes.string,
-      name: PropTypes.string,
-      teacher: PropTypes.string,
-      type: PropTypes.string,
-      isFreeTime: PropTypes.bool,
-    }).isRequired,
-    date: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.object,
-    ]).isRequired,
-  };
+type Props = {
+  currentDate: Moment,
+  event: EventType,
+};
 
+type State = {
+  currentTime: Moment,
+};
+
+export default class Event extends Component<Props, State> {
   state = {
     currentTime: moment(),
   };
@@ -62,121 +40,164 @@ class Event extends Component {
     clearInterval(this.interval);
   }
 
-  tick = () => {
+  tick = (): void => {
     this.setState({
       currentTime: moment(),
     });
   };
 
-  isDisabled(event, date) {
-    const { currentTime } = this.state;
-    const { end } = event;
-
-    const isWrongDay = isBeforeDay(currentTime, date);
-    const isWrongTime = isSameDay(currentTime, date) && isBeforeTime(currentTime, end);
-
-    return isWrongDay || isWrongTime;
-  }
-
-  isActive(event, date) {
+  isActive = (event: EventType, currentDate: Moment): boolean => {
     const { currentTime } = this.state;
     const { start, end } = event;
 
-    const isRightDay = isSameDay(currentTime, date);
-    const isRightTime = isBetweenTime(currentTime, start, end);
-
-    return isRightDay && isRightTime;
+    return isSameDay(currentTime, currentDate) && isBetweenTime(currentTime, start, end);
   }
 
-  willStart(start) {
-    const { date } = this.props;
+  isDisabled = (event: EventType, currentDate: Moment): boolean => {
     const { currentTime } = this.state;
-    const ms = moment(start, 'HH:mm:ss').diff(currentTime);
-    const d = moment.duration(ms);
-    const hours = d.hours();
-    const minutes = (hours * 60) + d.minutes();
+    const { end, start } = event;
 
-    if (minutes >= 0 && minutes < 20 && isSameDay(currentTime, date)) {
-      return {
-        in: humanizeDuration(d, {
-          language: 'ru',
-          round: true,
-          units: ['h', 'm', minutes < 1 && 's'],
-        }),
-      };
-    }
-
-    return false;
-  }
-
-  willEnd(end) {
-    const { date } = this.props;
-    const { currentTime } = this.state;
-    const ms = moment(end, 'HH:mm:ss').diff(currentTime);
-    const d = moment.duration(ms);
-    const hours = d.hours();
-    const minutes = (hours * 60) + d.minutes();
-
-    if (isSameDay(currentTime, date)) {
-      return {
-        in: humanizeDuration(d, {
-          language: 'ru',
-          round: true,
-          units: ['h', 'm', minutes < 1 && 's'],
-        }),
-      };
-    }
-
-    return false;
-  }
+    return isBeforeDay(currentTime, currentDate)
+      || (isSameDay(currentTime, currentDate) && !isBetweenTime(currentTime, start, end));
+  };
 
   render() {
-    const { event, date } = this.props;
+    const { event, currentDate } = this.props;
     const {
       name,
       location,
+      teacher,
       start,
       end,
       isFreeTime,
     } = event;
 
-    const formattedStartTime = moment(start, 'HH:mm:ss').format('H:mm');
-    const formattedEndTime = moment(end, 'HH:mm:ss').format('H:mm');
-
-    const showWillEndNotify = this.isActive(event, date) && this.willEnd(end);
-    const showWillStartNotify = !this.isActive(event, date) && this.willStart(start);
-
+    // is no lesson render empty view
     if (isFreeTime) {
       return (
-        <View style={[styles.container, this.isDisabled(event, date) && styles.disabled]}>
-          <Text>-</Text>
+        <View style={[styles.container]}>
+          <Text>Free time</Text>
         </View>
       );
     }
 
     return (
-      <View style={[styles.container, this.isDisabled(event, date) && styles.disabled]}>
-        <View>
-          <Text style={styles.time}>
-            {formattedStartTime} - {formattedEndTime}
-          </Text>
-          <Text style={styles.name}>{name}</Text>
-          {showWillEndNotify && <Text style={styles.notify}>До конца: {this.willEnd(end).in}</Text>}
-          {showWillStartNotify && (
-            <Text style={styles.notify}>До начала: {this.willStart(start).in}</Text>
-          )}
-        </View>
-        <View style={styles.location}>
-          <Ionicons
-            name={Platform.OS === 'ios' ? 'ios-pin' : 'md-pin'}
-            size={fontSizeNormal}
-            style={styles.locationIcon}
-          />
-          <Text style={styles.locationValue}>{location}</Text>
-        </View>
+      <View style={[styles.container]}>
+        <Text>{name}</Text>
       </View>
     );
   }
+
+  // isDisabled(event, date) {
+  //   const { currentTime } = this.state;
+  //   const { end } = event;
+
+  //   const isWrongDay = isBeforeDay(currentTime, date);
+  //   const isWrongTime = isSameDay(currentTime, date) && isBeforeTime(currentTime, end);
+
+  //   return isWrongDay || isWrongTime;
+  // }
+
+  // isActive(event, date) {
+  //   const { currentTime } = this.state;
+  //   const { start, end } = event;
+
+  //   const isRightDay = isSameDay(currentTime, date);
+  //   const isRightTime = isBetweenTime(currentTime, start, end);
+
+  //   return isRightDay && isRightTime;
+  // }
+
+  // willStart(start) {
+  //   const { date } = this.props;
+  //   const { currentTime } = this.state;
+  //   const ms = moment(start, 'HH:mm:ss').diff(currentTime);
+  //   const d = moment.duration(ms);
+  //   const hours = d.hours();
+  //   const minutes = (hours * 60) + d.minutes();
+
+  //   if (minutes >= 0 && minutes < 20 && isSameDay(currentTime, date)) {
+  //     return {
+  //       in: humanizeDuration(d, {
+  //         language: 'ru',
+  //         round: true,
+  //         units: ['h', 'm', minutes < 1 && 's'],
+  //       }),
+  //     };
+  //   }
+
+  //   return false;
+  // }
+
+  // willEnd(end) {
+  //   const { date } = this.props;
+  //   const { currentTime } = this.state;
+  //   const ms = moment(end, 'HH:mm:ss').diff(currentTime);
+  //   const d = moment.duration(ms);
+  //   const hours = d.hours();
+  //   const minutes = (hours * 60) + d.minutes();
+
+  //   if (isSameDay(currentTime, date)) {
+  //     return {
+  //       in: humanizeDuration(d, {
+  //         language: 'ru',
+  //         round: true,
+  //         units: ['h', 'm', minutes < 1 && 's'],
+  //       }),
+  //     };
+  //   }
+
+  //   return false;
+  // }
+
+  // render() {
+    // const { event, date } = this.props;
+    // const {
+    //   name,
+    //   location,
+    //   start,
+    //   end,
+    //   isFreeTime,
+    // } = event;
+
+    // const formattedStartTime = moment(start, 'HH:mm:ss').format('H:mm');
+    // const formattedEndTime = moment(end, 'HH:mm:ss').format('H:mm');
+
+    // const showWillEndNotify = this.isActive(event, date) && this.willEnd(end);
+    // const showWillStartNotify = !this.isActive(event, date) && this.willStart(start);
+
+    // if (isFreeTime) {
+    //   return (
+    //     <View style={[styles.container, this.isDisabled(event, date) && styles.disabled]}>
+    //       <Text>-</Text>
+    //     </View>
+    //   );
+    // }
+
+    // return (
+    //   <View style={[styles.container, this.isDisabled(event, date) && styles.disabled]}>
+    //     <View>
+    //       <Text style={styles.time}>
+    //         {formattedStartTime} - {formattedEndTime}
+    //       </Text>
+    //       <Text style={styles.name}>{name}</Text>
+    //       {showWillEndNotify && <Text style={styles.notify}>До конца: {this.willEnd(end).in}</Text>}
+    //       {showWillStartNotify && (
+    //         <Text style={styles.notify}>До начала: {this.willStart(start).in}</Text>
+    //       )}
+    //     </View>
+    //     <View style={styles.location}>
+    //       <Ionicons
+    //         name={Platform.OS === 'ios' ? 'ios-pin' : 'md-pin'}
+    //         size={14}
+    //         style={styles.locationIcon}
+    //       />
+    //       <Text style={styles.locationValue}>{location}</Text>
+    //     </View>
+    //   </View>
+    // );
+  // }
+  // }
 }
 
 const styles = StyleSheet.create({
@@ -185,18 +206,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    borderRadius: borderRadiusSmall,
-    padding: gutter * 2,
-    marginBottom: gutter,
-    backgroundColor: white,
+    borderRadius: 3,
+    padding: 20,
+    marginBottom: 10,
+    backgroundColor: '#fff',
   },
   name: {
     width: width * 0.6,
-    marginTop: gutter / 2,
-    marginBottom: gutter / 2,
+    marginTop: 5,
+    marginBottom: 5,
     fontWeight: 'normal',
-    fontSize: fontSizeNormal,
-    color: black,
+    fontSize: 14,
+    color: '#343434',
   },
   location: {
     flexDirection: 'row',
@@ -204,25 +225,23 @@ const styles = StyleSheet.create({
   },
   locationIcon: {
     marginRight: 2.5,
-    color: grey,
+    color: '#989898',
   },
   locationValue: {
     fontWeight: 'bold',
-    fontSize: fontSizeNormal,
-    color: grey,
+    fontSize: 14,
+    color: '#989898',
   },
   time: {
     fontWeight: 'bold',
-    fontSize: fontSizeLarge,
-    color: black,
+    fontSize: 18,
+    color: '#343434',
   },
   disabled: {
     opacity: 0.5,
   },
   notify: {
-    fontSize: fontSizeSmall,
-    color: grey,
+    fontSize: 12,
+    color: '#989898',
   },
 });
-
-export default Event;
