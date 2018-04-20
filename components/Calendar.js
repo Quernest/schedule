@@ -42,9 +42,13 @@ const Calendar = (props: Props) => {
         highlightDateNameStyle={styles.highlightDateNameStyle}
         disabledDateNameStyle={styles.disabledDateNameStyle}
         disabledDateNumberStyle={styles.disabledDateNumberStyle}
+        weekendDateNameStyle={styles.weekendDateNameStyle}
+        weekendDateNumberStyle={styles.weekendDateNumberStyle}
         iconContainer={styles.iconContainer}
         selectedDate={currentDate}
         onDateSelected={onDatePress}
+        iconLeft={require('../assets/images/left-arrow.png')}
+        iconRight={require('../assets/images/right-arrow.png')}
       />
     </View>
   );
@@ -55,29 +59,36 @@ const styles = StyleSheet.create({
     height: 120,
     paddingTop: 20,
     paddingBottom: 10,
+    backgroundColor: '#00c26b',
   },
   calendarHeaderStyle: {
     marginBottom: 15,
     fontSize: 18,
-    color: '#343434',
+    color: '#f9ffff',
   },
   dateNameStyle: {
-    color: '#343434',
+    color: '#39d58e',
   },
   dateNumberStyle: {
-    color: '#343434',
+    color: '#39d58e',
   },
   highlightDateNumberStyle: {
-    color: '#38498C',
+    color: '#f9ffff',
   },
   highlightDateNameStyle: {
-    color: '#38498C',
+    color: '#f9ffff',
   },
   disabledDateNameStyle: {
-    color: '#989898',
+    color: '#39d58e',
   },
   disabledDateNumberStyle: {
-    color: '#989898',
+    color: '#39d58e',
+  },
+  weekendDateNameStyle: {
+    color: '#39d58e',
+  },
+  weekendDateNumberStyle: {
+    color: '#39d58e',
   },
   iconContainer: {
     flex: 0.1,

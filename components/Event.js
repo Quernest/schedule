@@ -8,6 +8,11 @@ import {
   View,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import {
+  Col,
+  Row,
+  Grid,
+} from 'react-native-easy-grid';
 import moment from 'moment';
 import type Moment from 'moment';
 import humanizeDuration from 'humanize-duration';
@@ -121,40 +126,61 @@ export default class Event extends Component<Props, State> {
     // is no lesson render empty view
     if (isFreeTime) {
       return (
-        <View style={[styles.container, this.isDisabled(event, currentDate) && styles.disabled]}>
+        <View style={[styles.container, this.isDisabled(event, currentDate) && styles.disabled, this.isActive(event, currentDate) && styles.active]}>
           <Text style={styles.name}>-</Text>
         </View>
       );
     }
 
+    /**
+     * TODO:
+     *
+     * - styles refactoring
+     * - event type from api
+     * - new fonts
+     * - display calcTime()
+     * - create getContainerStyle component
+     */
+
+    // {this.willBegin(event) && (
+    //   <Text style={styles.notify}>До начала: {this.calcTime(start, 'ru').humanized}</Text>
+    // )}
+
+    // {this.isActive(event, currentDate) && (
+    //   <Text style={styles.notify}>До конца: {this.calcTime(end, 'ru').humanized}</Text>
+    // )}
+
     return (
-      <View style={[styles.container, this.isDisabled(event, currentDate) && styles.disabled]}>
-        <View>
-          <Text style={styles.time}>
-            {moment(start, timeFormat).format('H:mm')} - {moment(end, timeFormat).format('H:mm')}
-          </Text>
-
-          {type && <Text>{type}</Text>}
-
-          <Text style={styles.name}>{name}</Text>
-
-          {this.willBegin(event) && (
-            <Text style={styles.notify}>До начала: {this.calcTime(start, 'ru').humanized}</Text>
-          )}
-
-          {this.isActive(event, currentDate) && (
-            <Text style={styles.notify}>До конца: {this.calcTime(end, 'ru').humanized}</Text>
-          )}
-        </View>
-
-        <View style={styles.location}>
-          <Ionicons
-            name={Platform.OS === 'ios' ? 'ios-pin' : 'md-pin'}
-            size={14}
-            style={styles.locationIcon}
-          />
-          <Text style={styles.locationValue}>{location}</Text>
-        </View>
+      <View style={[styles.container, this.isDisabled(event, currentDate) && styles.disabled, this.isActive(event, currentDate) && styles.active]}>
+        <Grid>
+          <Row style={{ alignItems: 'center' }}>
+            <Col size={20} style={{ borderRightWidth: 1, borderRightColor: '#ddd' }}>
+              <Text style={styles.time}>
+                {moment(start, timeFormat).format('HH:mm')}
+              </Text>
+              <Text style={[styles.time, styles.timeEnd]}>
+                {moment(end, timeFormat).format('HH:mm')}
+              </Text>
+            </Col>
+            <Col size={80} style={{ paddingLeft: 10, paddingRight: 10 }}>
+              <Text style={styles.name}>{name}</Text>
+              <Text style={styles.type}>Практика</Text>
+              <Row style={{ marginTop: 10 }}>
+                <View style={styles.location}>
+                  <Ionicons
+                    name={Platform.OS === 'ios' ? 'ios-pin' : 'md-pin'}
+                    size={12}
+                    style={styles.locationIcon}
+                  />
+                  <Text style={styles.locationValue}>{location}</Text>
+                </View>
+                <View>
+                  <Text style={styles.teacher}>{teacher}</Text>
+                </View>
+              </Row>
+            </Col>
+          </Row>
+        </Grid>
       </View>
     );
   }
@@ -163,42 +189,50 @@ export default class Event extends Component<Props, State> {
 const styles = StyleSheet.create({
   container: {
     position: 'relative',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
     borderRadius: 3,
-    padding: 20,
-    marginBottom: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    marginBottom: 5,
     backgroundColor: '#fff',
   },
   name: {
-    width: width * 0.6,
-    marginTop: 5,
-    marginBottom: 5,
-    fontWeight: 'normal',
-    fontSize: 14,
-    color: '#343434',
+    fontSize: 16,
+    color: '#242424',
+  },
+  type: {
+    fontSize: 12,
+    color: '#979797',
   },
   location: {
+    marginRight: 5,
     flexDirection: 'row',
     alignItems: 'center',
   },
   locationIcon: {
     marginRight: 2.5,
-    color: '#989898',
+    color: '#aeaeae',
   },
   locationValue: {
-    fontWeight: 'bold',
-    fontSize: 14,
-    color: '#989898',
+    fontSize: 12,
+    color: '#aeaeae',
   },
   time: {
-    fontWeight: 'bold',
-    fontSize: 18,
+    fontSize: 16,
     color: '#343434',
   },
+  timeEnd: {
+    color: '#aeaeae',
+  },
+  teacher: {
+    marginRight: 5,
+    fontSize: 12,
+    color: '#aeaeae',
+  },
   disabled: {
-    opacity: 0.5,
+    backgroundColor: '#ddd',
+  },
+  active: {
+    backgroundColor: '#d2f9e7',
   },
   notify: {
     fontSize: 12,
