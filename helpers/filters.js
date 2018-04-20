@@ -7,6 +7,7 @@ import { dateFormat, dateFormatWithoutYear, isBetweenMonth } from './helpers';
 
 const filterEvents = (currentDate: Moment, semesters?: Array<SemesterType>): Array<EventType> => {
   let currentSemester: SemesterType;
+  let currentWeekType: number;
 
   // detect current semester
   if (semesters && semesters.length) {
@@ -30,16 +31,12 @@ const filterEvents = (currentDate: Moment, semesters?: Array<SemesterType>): Arr
 
   const startDate = moment(new Date(start)).format(dateFormat);
   const endDate = moment(new Date(end)).format(dateFormat);
-
   const firstWeek = moment(startDate, dateFormatWithoutYear).isoWeek();
   const currentWeek = currentDate.isoWeek();
   const lastWeek = moment(endDate, dateFormatWithoutYear).isoWeek();
-
   const weeksAfterStart = currentWeek - firstWeek;
   const weeksTotal = lastWeek - firstWeek;
   const weeksBeforeEnd = lastWeek - currentWeek;
-
-  let currentWeekType: number;
 
   // calculate currentWeekType where,
   // 1 = odd week
@@ -66,7 +63,5 @@ const filterEvents = (currentDate: Moment, semesters?: Array<SemesterType>): Arr
   return [];
 };
 
-export {
-  filterEvents,
-};
+export { filterEvents };
 

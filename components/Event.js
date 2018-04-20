@@ -1,3 +1,5 @@
+// @flow
+
 import React, { Component } from 'react';
 import {
   StyleSheet,
@@ -12,6 +14,8 @@ import {
   isSameDay,
   isBeforeDay,
   isBetweenTime,
+  isBeforeTime,
+  timeFormat,
 } from '../helpers/helpers';
 import type { EventType } from '../types';
 import LayoutConstants from '../constants/Layout';
@@ -55,10 +59,50 @@ export default class Event extends Component<Props, State> {
 
   isDisabled = (event: EventType, currentDate: Moment): boolean => {
     const { currentTime } = this.state;
-    const { end, start } = event;
+    const { end } = event;
 
     return isBeforeDay(currentTime, currentDate)
-      || (isSameDay(currentTime, currentDate) && !isBetweenTime(currentTime, start, end));
+      || (isSameDay(currentTime, currentDate) && isBeforeTime(currentTime, end));
+  };
+
+  willBegin = (event: EventType): boolean => {
+    const { currentTime } = this.state;
+    const { currentDate } = this.props;
+    const { start } = event;
+
+    // 'ru' hardcore, should be i18n language
+    const { minutes } = this.calcTime(start, 'ru');
+
+    if (minutes) {
+      // if there are 20 minutes left before event begins
+      return (minutes >= 0 && minutes < 20) && isSameDay(currentTime, currentDate);
+    }
+
+    return false;
+  };
+
+  calcTime = (time: string, language: string): ?Object => {
+    const { currentTime } = this.state;
+
+    const ms = moment(time, timeFormat).diff(currentTime);
+    const duration = moment.duration(ms);
+    const hours = duration.hours();
+    const minutes = (hours * 60) + duration.minutes();
+
+    if (duration && (hours || minutes)) {
+      return {
+        hours,
+        minutes,
+        humanized: humanizeDuration(duration, {
+          language,
+          round: true,
+          // displayed units
+          units: ['h', 'm', minutes && minutes < 1 && 's'],
+        }),
+      };
+    }
+
+    return {};
   };
 
   render() {
@@ -75,15 +119,20 @@ export default class Event extends Component<Props, State> {
     // is no lesson render empty view
     if (isFreeTime) {
       return (
-        <View style={[styles.container]}>
+        <View style={[styles.container, this.isDisabled(event, currentDate) && styles.disabled]}>
           <Text>Free time</Text>
         </View>
       );
     }
 
     return (
-      <View style={[styles.container]}>
-        <Text>{name}</Text>
+      <View style={[styles.container, this.isDisabled(event, currentDate) && styles.disabled]}>
+
+        <Text style={styles.name}>{name}</Text>
+
+        {this.willBegin(event) && (
+          <Text>До начала: {this.calcTime(start, 'ru').humanized}</Text>
+        )}
       </View>
     );
   }

@@ -1,3 +1,5 @@
+// @flow
+
 import moment from 'moment';
 import type Moment from 'moment';
 
@@ -14,8 +16,12 @@ const isSameDay = (d1: Moment, d2: Moment): boolean => {
   return false;
 };
 
-const isBetweenTime = (current: (string|Moment), start: (string|Moment), end: (string|Moment)): boolean => {
-  if (start && end && current) {
+const isBetweenTime = (
+  current: Moment,
+  start: (string|Moment),
+  end: (string|Moment),
+): boolean => {
+  if (current && start && end) {
     return moment(current, timeFormat)
       .isBetween(moment(start, timeFormat), moment(end, timeFormat));
   }
@@ -23,7 +29,19 @@ const isBetweenTime = (current: (string|Moment), start: (string|Moment), end: (s
   return false;
 };
 
-const isBetweenMonth = (current: (string|Moment), start: (string|Moment), end: (string|Moment)) => {
+const isBeforeTime = (current: Moment, end: (string|Moment)): boolean => {
+  if (current && end) {
+    return moment(end, timeFormat).isBefore(current, 'seconds');
+  }
+
+  return false;
+};
+
+const isBetweenMonth = (
+  current: Moment,
+  start: (string|Moment),
+  end: (string|Moment),
+) => {
   if (start && end && current) {
     return current.isBetween(
       moment(moment(new Date(start)).format(dateFormat), dateFormatWithoutYear),
@@ -49,32 +67,9 @@ export {
   isSameDay,
   isBeforeDay,
   isBetweenTime,
+  isBeforeTime,
   isBetweenMonth,
   dateFormat,
   dateFormatWithoutYear,
   timeFormat,
 };
-
-// const isSameDay = (currentTime, date) => date.isSame(currentTime, 'day');
-
-// const isBeforeDay = (currentTime, date) => date.isBefore(currentTime, 'day');
-
-// const isBeforeTime = (currentTime, endTime) =>
-//   moment(endTime, 'H:mm:ss').isBefore(currentTime, 'seconds');
-
-// const isBetweenTime = (currentTime, startTime, endTime) => {
-//   const start = moment(startTime, 'H:mm:ss');
-//   const end = moment(endTime, 'H:mm:ss');
-
-//   return currentTime.isBetween(start, end);
-// };
-
-// export {
-//   isSameDay,
-//   isBeforeDay,
-//   isBeforeTime,
-//   isBetweenTime,
-//   dateFormat,
-//   dateFormatWithoutYear,
-//   timeFormat,
-// };
