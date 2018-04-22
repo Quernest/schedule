@@ -22,6 +22,7 @@ import {
   isBetweenTime,
   isBeforeTime,
   timeFormat,
+  parseSubjectType,
 } from '../helpers/helpers';
 import type { EventType } from '../types';
 
@@ -47,42 +48,11 @@ export default class Event extends Component<Props, State> {
     clearInterval(this.interval);
   }
 
-  tick = (): void => {
-    this.setState({
-      currentTime: moment(),
-    });
-  };
-
-  isActive = (event: EventType, currentDate: Moment): boolean => {
-    const { currentTime } = this.state;
-    const { start, end } = event;
-
-    return isSameDay(currentTime, currentDate) && isBetweenTime(currentTime, start, end);
-  }
-
-  isDisabled = (event: EventType, currentDate: Moment): boolean => {
-    const { currentTime } = this.state;
-    const { end } = event;
-
-    return isBeforeDay(currentTime, currentDate)
-      || (isSameDay(currentTime, currentDate) && isBeforeTime(currentTime, end));
-  };
-
-  willBegin = (event: EventType): boolean => {
-    const { currentTime } = this.state;
-    const { currentDate } = this.props;
-    const { start } = event;
-
-    // 'ru' hardcore, should be i18n language
-    const { minutes } = this.calcTime(start, 'ru');
-
-    if (minutes) {
-      // if there are 20 minutes left before event begins
-      return (minutes >= 0 && minutes < 20) && isSameDay(currentTime, currentDate);
-    }
-
-    return false;
-  };
+  getContainerStyle = (event: EventType, currentDate: Moment) => ([
+    styles.container,
+    this.isActive(event, currentDate) && styles.containerActive,
+    this.isDisabled(event, currentDate) && styles.containerDisabled,
+  ]);
 
   calcTime = (time: string, language: string): ?Object => {
     const { currentTime } = this.state;
@@ -108,6 +78,43 @@ export default class Event extends Component<Props, State> {
     return {};
   };
 
+  willBegin = (event: EventType): boolean => {
+    const { currentTime } = this.state;
+    const { currentDate } = this.props;
+    const { start } = event;
+
+    // 'ru' hardcore, should be i18n language
+    const { minutes } = this.calcTime(start, 'ru');
+
+    if (minutes) {
+      // if there are 20 minutes left before event begins
+      return (minutes >= 0 && minutes < 20) && isSameDay(currentTime, currentDate);
+    }
+
+    return false;
+  };
+
+  isActive = (event: EventType, currentDate: Moment): boolean => {
+    const { currentTime } = this.state;
+    const { start, end } = event;
+
+    return isSameDay(currentTime, currentDate) && isBetweenTime(currentTime, start, end);
+  }
+
+  isDisabled = (event: EventType, currentDate: Moment): boolean => {
+    const { currentTime } = this.state;
+    const { end } = event;
+
+    return isBeforeDay(currentTime, currentDate)
+      || (isSameDay(currentTime, currentDate) && isBeforeTime(currentTime, end));
+  };
+
+  tick = (): void => {
+    this.setState({
+      currentTime: moment(),
+    });
+  };
+
   render() {
     const { event, currentDate } = this.props;
     const {
@@ -123,7 +130,7 @@ export default class Event extends Component<Props, State> {
     // is no lesson render empty view
     if (isFreeTime) {
       return (
-        <View style={[styles.container, this.isDisabled(event, currentDate) && styles.disabled, this.isActive(event, currentDate) && styles.active]}>
+        <View style={this.getContainerStyle(event, currentDate)}>
           <Text style={styles.name}>-</Text>
         </View>
       );
@@ -132,11 +139,8 @@ export default class Event extends Component<Props, State> {
     /**
      * TODO:
      *
-     * - styles refactoring
-     * - event type from api
      * - new fonts
      * - display calcTime()
-     * - create getContainerStyle component
      */
 
     // {this.willBegin(event) && (
@@ -148,37 +152,43 @@ export default class Event extends Component<Props, State> {
     // )}
 
     return (
-      <View style={[styles.container, this.isDisabled(event, currentDate) && styles.disabled, this.isActive(event, currentDate) && styles.active]}>
-        <Grid>
-          <Row style={{ alignItems: 'center' }}>
-            <Col size={20} style={{ borderRightWidth: 1, borderRightColor: '#ddd' }}>
-              <Text style={styles.time}>
-                {moment(start, timeFormat).format('HH:mm')}
-              </Text>
-              <Text style={[styles.time, styles.timeEnd]}>
-                {moment(end, timeFormat).format('HH:mm')}
-              </Text>
-            </Col>
-            <Col size={80} style={{ paddingLeft: 10, paddingRight: 10 }}>
-              <Text style={styles.name}>{name}</Text>
-              <Text style={styles.type}>Практика</Text>
-              <Row style={{ marginTop: 10 }}>
-                <View style={styles.location}>
-                  <Ionicons
-                    name={Platform.OS === 'ios' ? 'ios-pin' : 'md-pin'}
-                    size={12}
-                    style={styles.locationIcon}
-                  />
-                  <Text style={styles.locationValue}>{location}</Text>
-                </View>
-                <View>
-                  <Text style={styles.teacher}>{teacher}</Text>
-                </View>
-              </Row>
-            </Col>
-          </Row>
-        </Grid>
-      </View>
+      <Grid style={this.getContainerStyle(event, currentDate)}>
+        <Row style={styles.row}>
+          <Col size={20} style={styles.timeWrap}>
+            <Text style={styles.time}>
+              {moment(start, timeFormat).format('HH:mm')}
+            </Text>
+            <Text style={[styles.time, styles.timeEnd]}>
+              {moment(end, timeFormat).format('HH:mm')}
+            </Text>
+          </Col>
+          <Col size={80} style={styles.infoWrap}>
+            <Text style={styles.name}>
+              {name}
+            </Text>
+            <Text style={styles.type}>
+              {parseSubjectType(type)}
+            </Text>
+            <Row style={styles.bottomInfo}>
+              <View style={styles.location}>
+                <Ionicons
+                  name={Platform.OS === 'ios' ? 'ios-pin' : 'md-pin'}
+                  size={12}
+                  style={styles.locationIcon}
+                />
+                <Text style={styles.locationValue}>
+                  {location}
+                </Text>
+              </View>
+              <View>
+                <Text style={styles.teacher}>
+                  {teacher}
+                </Text>
+              </View>
+            </Row>
+          </Col>
+        </Row>
+      </Grid>
     );
   }
 }
@@ -191,6 +201,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     marginBottom: 5,
     backgroundColor: '#fff',
+  },
+  row: {
+    alignItems: 'center',
+  },
+  infoWrap: {
+    paddingLeft: 10,
+    paddingRight: 10,
+  },
+  bottomInfo: {
+    marginTop: 10,
   },
   name: {
     fontWeight: 'bold',
@@ -214,6 +234,10 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#aeaeae',
   },
+  timeWrap: {
+    borderRightWidth: 1,
+    borderRightColor: '#ddd',
+  },
   time: {
     fontSize: 16,
     color: '#343434',
@@ -226,10 +250,10 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#aeaeae',
   },
-  disabled: {
+  containerDisabled: {
     backgroundColor: '#ddd',
   },
-  active: {
+  containerActive: {
     backgroundColor: '#d2f9e7',
   },
   notify: {

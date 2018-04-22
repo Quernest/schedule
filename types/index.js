@@ -3,6 +3,8 @@
 export type EventType = {
   id: number,
   name: string,
+  // subject type
+  type: number,
   teacher: string,
   start: string,
   end: string,

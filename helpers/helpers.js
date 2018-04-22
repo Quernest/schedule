@@ -63,6 +63,16 @@ const isBeforeDay = (d1: Moment, d2: Moment): boolean => {
   return false;
 };
 
+const parseSubjectType = (type: number): ?string => {
+  switch (type) {
+    case 1:
+      return 'Лекция';
+    case 2:
+      return 'Практика';
+    default: return null;
+  }
+};
+
 export {
   isSameDay,
   isBeforeDay,
@@ -72,4 +82,5 @@ export {
   dateFormat,
   dateFormatWithoutYear,
   timeFormat,
+  parseSubjectType,
 };
