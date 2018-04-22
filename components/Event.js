@@ -24,9 +24,6 @@ import {
   timeFormat,
 } from '../helpers/helpers';
 import type { EventType } from '../types';
-import LayoutConstants from '../constants/Layout';
-
-const { window: { width } } = LayoutConstants;
 
 type Props = {
   currentDate: Moment,

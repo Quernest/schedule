@@ -1,3 +1,5 @@
+// @flow
+
 import React, { Component } from 'react';
 import {
   Platform,
@@ -12,12 +14,17 @@ import {
 } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
 
-import ColorConstants from './constants/Colors';
 import RootNavigation from './navigation/RootNavigation';
 
-const { lightgrey } = ColorConstants;
+type Props = {
+  skipLoadingScreen: boolean,
+};
 
-export default class App extends Component {
+type State = {
+  isLoadingComplete: boolean,
+};
+
+export default class App extends Component<Props, State> {
   state = {
     isLoadingComplete: false,
   };
@@ -31,12 +38,14 @@ export default class App extends Component {
     ]);
   }
 
-  handleLoadingError(error) {
+  handleLoadingError = (error): void => {
     console.warn(error);
   }
 
-  handleFinishLoading = () => {
-    this.setState({ isLoadingComplete: true });
+  handleFinishLoading = (): void => {
+    this.setState({
+      isLoadingComplete: true,
+    });
   }
 
   render() {
@@ -66,10 +75,10 @@ export default class App extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: lightgrey,
+    backgroundColor: '#eeefef',
   },
   statusBarUnderlay: {
     height: 24,
-    backgroundColor: lightgrey,
+    backgroundColor: '#eeefef',
   },
 });
