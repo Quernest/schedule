@@ -5,7 +5,8 @@ import type Moment from 'moment';
 
 const dateFormat: string = 'DD/MM/YYYY';
 const dateFormatWithoutYear: string = 'DD/MM/____';
-const timeFormat: string = 'H:mm:ss';
+const timeFormat: string = 'HH:mm:ss';
+const timeFormatWithoutSeconds: string = 'HH:mm';
 
 const isSameDay = (d1: Moment, d2: Moment): boolean => {
   if (d1 && d2) {
@@ -82,5 +83,6 @@ export {
   dateFormat,
   dateFormatWithoutYear,
   timeFormat,
+  timeFormatWithoutSeconds,
   parseSubjectType,
 };

@@ -5,7 +5,7 @@ import type Moment from 'moment';
 import type { EventType, SemesterType } from '../types';
 import { dateFormat, dateFormatWithoutYear, isBetweenMonth } from './helpers';
 
-const filterEvents = (currentDate: Moment, semesters?: Array<SemesterType>): Array<EventType> => {
+const filterEvents = (selectedDate: Moment, semesters?: Array<SemesterType>): Array<EventType> => {
   let currentSemester: SemesterType;
   let currentWeekType: number;
 
@@ -14,7 +14,7 @@ const filterEvents = (currentDate: Moment, semesters?: Array<SemesterType>): Arr
     semesters.map((semester) => {
       const { start, end } = semester;
 
-      if (isBetweenMonth(currentDate, start, end)) {
+      if (isBetweenMonth(selectedDate, start, end)) {
         currentSemester = semester;
       }
 
@@ -32,7 +32,7 @@ const filterEvents = (currentDate: Moment, semesters?: Array<SemesterType>): Arr
   const startDate = moment(new Date(start)).format(dateFormat);
   const endDate = moment(new Date(end)).format(dateFormat);
   const firstWeek = moment(startDate, dateFormatWithoutYear).isoWeek();
-  const currentWeek = currentDate.isoWeek();
+  const currentWeek = selectedDate.isoWeek();
   const lastWeek = moment(endDate, dateFormatWithoutYear).isoWeek();
   const weeksAfterStart = currentWeek - firstWeek;
   const weeksTotal = lastWeek - firstWeek;
@@ -50,7 +50,7 @@ const filterEvents = (currentDate: Moment, semesters?: Array<SemesterType>): Arr
   if (schedule && schedule.length) {
     return schedule.filter((event) => {
       const isSameWeekType = event.weekType === currentWeekType;
-      const isSameWeekDay = event.weekDay === currentDate.isoWeekday();
+      const isSameWeekDay = event.weekDay === selectedDate.isoWeekday();
 
       if (isSameWeekType && isSameWeekDay) {
         return event;

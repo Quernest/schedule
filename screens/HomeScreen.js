@@ -27,7 +27,7 @@ type Props = {
 };
 
 type State = {
-  currentDate: string | Moment,
+  selectedDate: string | Moment,
   group?: {
     id: number,
     name: string,
@@ -44,7 +44,7 @@ export default class HomeScreen extends Component<Props, State> {
   };
 
   state = {
-    currentDate: moment(),
+    selectedDate: moment(),
     isLoading: true,
     events: [],
   }
@@ -60,7 +60,7 @@ export default class HomeScreen extends Component<Props, State> {
 
     this.setState({
       events: filterEvents(date, semesters),
-      currentDate: date,
+      selectedDate: date,
     });
   }
 
@@ -75,7 +75,7 @@ export default class HomeScreen extends Component<Props, State> {
   }
 
   getGroupAllData = async (id: number) => {
-    const { currentDate } = this.state;
+    const { selectedDate } = this.state;
 
     try {
       const data: DataType = await API.getGroupAllData(id);
@@ -84,7 +84,7 @@ export default class HomeScreen extends Component<Props, State> {
       this.setState({
         group,
         semesters,
-        events: filterEvents(currentDate, semesters),
+        events: filterEvents(selectedDate, semesters),
       });
     } catch (error) {
       console.error(error);
@@ -97,7 +97,7 @@ export default class HomeScreen extends Component<Props, State> {
 
   render() {
     const {
-      currentDate,
+      selectedDate,
       isLoading,
       events,
     } = this.state;
@@ -106,12 +106,12 @@ export default class HomeScreen extends Component<Props, State> {
       return (
         <View style={styles.container}>
           <Calendar
-            currentDate={currentDate}
+            selectedDate={selectedDate}
             onDatePress={this.onDatePress}
           />
           <Schedule
             events={events}
-            currentDate={currentDate}
+            selectedDate={selectedDate}
           />
         </View>
       );

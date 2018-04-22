@@ -1,43 +1,70 @@
 // @flow
 
-import React from 'react';
+import React, { Component } from 'react';
 import {
   ScrollView,
   StyleSheet,
   View,
 } from 'react-native';
+import moment from 'moment';
 import type Moment from 'moment';
 import Event from '../components/Event';
 import type { EventType } from '../types';
 
 type Props = {
   events: ?Array<EventType>,
-  currentDate: Moment,
+  selectedDate: Moment,
 };
 
-const Schedule = (props: Props) => {
-  const { events, currentDate } = props;
+type State = {
+  currentTime: Moment,
+};
 
-  return (
-    <View style={styles.container}>
-      <ScrollView>
-        <View style={styles.eventsContainer}>
-          {events && events.map((event) => {
-            const { id } = event;
+export default class Schedule extends Component<Props, State> {
+  state = {
+    currentTime: moment(),
+  }
 
-            return (
+  componentDidMount() {
+    const second = 1000;
+
+    this.interval = setInterval(this.tick, second);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
+
+  interval: IntervalID;
+
+  tick = (): void => {
+    this.setState({
+      currentTime: moment(),
+    });
+  }
+
+  render() {
+    const { events, selectedDate } = this.props;
+    const { currentTime } = this.state;
+
+    return (
+      <View style={styles.container}>
+        <ScrollView>
+          <View style={styles.eventsContainer}>
+            {events && events.map(event => (
               <Event
-                key={id}
+                key={event.id}
                 event={event}
-                currentDate={currentDate}
+                selectedDate={selectedDate}
+                currentTime={currentTime}
               />
-            );
-          })}
-        </View>
-      </ScrollView>
-    </View>
-  );
-};
+            ))}
+          </View>
+        </ScrollView>
+      </View>
+    );
+  }
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -49,6 +76,4 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
 });
-
-export default Schedule;
 

@@ -23,12 +23,12 @@ const conifg = {
 };
 
 type Props = {
-  currentDate: Moment,
+  selectedDate: Moment,
   onDatePress: (date: Moment) => void;
 };
 
 const Calendar = (props: Props) => {
-  const { currentDate, onDatePress } = props;
+  const { selectedDate, onDatePress } = props;
 
   return (
     <View>
@@ -45,7 +45,7 @@ const Calendar = (props: Props) => {
         weekendDateNameStyle={styles.weekendDateNameStyle}
         weekendDateNumberStyle={styles.weekendDateNumberStyle}
         iconContainer={styles.iconContainer}
-        selectedDate={currentDate}
+        selectedDate={selectedDate}
         onDateSelected={onDatePress}
         iconLeft={require('../assets/images/left-arrow.png')}
         iconRight={require('../assets/images/right-arrow.png')}
