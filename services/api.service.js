@@ -5,7 +5,7 @@ import fetchPonyfill from 'fetch-ponyfill';
 
 const { fetch } = fetchPonyfill();
 
-const API_URL: string = 'https://schedule-admin.herokuapp.com/api';
+const API_URL: string = 'http://schedule-admin.herokuapp.com/api';
 
 const getRequest = async (url: string): ?Object => {
   try {
@@ -37,11 +37,11 @@ class API {
   static getGroupAllData(id: number, isUseStore: boolean = false): ?Object {
     const url: string = `${API_URL}/group/${id}/alldata`;
 
-    if (!isUseStore && id) {
-      return getRequest(url);
-    }
+    // if (!isUseStore && id) {
+    return getRequest(url);
+    // }
 
-    return store.get('data');
+    // return store.get('data');
   }
 }
 

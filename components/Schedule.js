@@ -72,8 +72,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#eeefef',
   },
   eventsContainer: {
-    paddingTop: 10,
-    paddingHorizontal: 10,
+    paddingTop: 5,
+    paddingHorizontal: 5,
   },
 });
 

@@ -50,7 +50,7 @@ export default class WelcomeScreen extends Component<Props, State> {
             rounded
             title="Перейти к выбору группы"
             onPress={this.goToGroups}
-            backgroundColor="#38498C"
+            backgroundColor="#00c26b"
           />
           <View style={styles.copyWrap}>
             <Text h4 style={styles.copy}>

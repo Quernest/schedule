@@ -15,7 +15,7 @@
       "backgroundColor": "#eee"
     },
     "ios": {
-      "supportsTablet": false,
+      "supportsTablet": false
     },
     "android": {
       "package": "com.quernest.schedule"

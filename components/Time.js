@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
   },
   time: {
     textAlign: 'center',
-    fontSize: 21,
+    fontSize: 18,
     color: '#343434',
   },
   timeEnd: {

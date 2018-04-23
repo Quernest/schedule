@@ -149,8 +149,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   infoWrap: {
-    borderLeftWidth: 1,
-    borderLeftColor: '#ddd',
     padding: 10,
   },
   bottomInfo: {
@@ -180,11 +178,12 @@ const styles = StyleSheet.create({
     color: '#aeaeae',
   },
   teacherWrap: {
+    flexDirection: 'row',
     alignItems: 'flex-start',
-    flexWrap: 'wrap',
+    paddingHorizontal: 10,
   },
   teacher: {
-    marginRight: 5,
+    width: 200,
     fontSize: 12,
     color: '#aeaeae',
   },
