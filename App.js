@@ -30,19 +30,22 @@ export default class App extends Component<Props, State> {
   };
 
   loadResourcesAsync = async () => {
-    Promise.all([
-      Asset.loadAsync([]),
-      Font.loadAsync({
-        ...Ionicons.font,
-      }),
-    ]);
-  }
+    const fonts = {
+      ...Ionicons.font,
+      'Lato-Black': require('./assets/fonts/Lato-Black.ttf'),
+      'Lato-Light': require('./assets/fonts/Lato-Light.ttf'),
+      'Lato-Regular': require('./assets/fonts/Lato-Regular.ttf'),
+      'Lato-Bold': require('./assets/fonts/Lato-Bold.ttf'),
+    };
 
-  handleLoadingError = (error): void => {
-    console.warn(error);
-  }
+    console.log('start loading');
 
-  handleFinishLoading = (): void => {
+    await Font.loadAsync(fonts);
+  };
+
+  handleFinishLoading() {
+    console.log('finish loading');
+
     this.setState({
       isLoadingComplete: true,
     });
@@ -56,8 +59,8 @@ export default class App extends Component<Props, State> {
       return (
         <AppLoading
           startAsync={this.loadResourcesAsync}
-          onError={this.handleLoadingError}
-          onFinish={this.handleFinishLoading}
+          onError={console.error}
+          onFinish={() => this.handleFinishLoading()}
         />
       );
     }

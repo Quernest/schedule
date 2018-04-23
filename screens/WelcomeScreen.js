@@ -3,12 +3,10 @@
 import React, { Component } from 'react';
 import {
   View,
+  Text,
   StyleSheet,
 } from 'react-native';
-import {
-  Button,
-  Text,
-} from 'react-native-elements';
+import { Button } from 'react-native-elements';
 import Loading from '../components/Loading';
 
 type Props = {
@@ -42,7 +40,7 @@ export default class WelcomeScreen extends Component<Props, State> {
     if (!isLoading) {
       return (
         <View style={styles.container}>
-          <Text h1 style={styles.heading}>
+          <Text style={styles.heading}>
             Schedule
           </Text>
           <Button
@@ -73,6 +71,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#eeefef',
   },
   heading: {
+    fontFamily: 'Lato-Bold',
+    fontSize: 36,
     marginBottom: 10,
     color: '#343434',
   },
@@ -86,6 +86,7 @@ const styles = StyleSheet.create({
   },
   copy: {
     fontSize: 12,
+    fontFamily: 'Lato-Regular',
     color: '#b2bec3',
   },
 });

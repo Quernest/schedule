@@ -140,6 +140,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   time: {
+    fontFamily: 'Lato-Light',
     textAlign: 'center',
     fontSize: 18,
     color: '#343434',
@@ -148,8 +149,10 @@ const styles = StyleSheet.create({
     color: '#aeaeae',
   },
   label: {
+    paddingVertical: 3,
+    fontFamily: 'Lato-Light',
     textAlign: 'center',
     fontSize: 12,
-    color: '#aeaeae',
+    color: '#999',
   },
 });

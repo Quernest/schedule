@@ -37,6 +37,11 @@ export default class Event extends Component<Props> {
     this.isDisabled() && styles.containerDisabled,
   ]);
 
+  getLocationIconStyle = (): Array<any> => ([
+    styles.locationIcon,
+    this.isActive() && styles.locationIconActive,
+  ]);
+
   isActive = (): boolean => {
     const {
       event,
@@ -101,20 +106,20 @@ export default class Event extends Component<Props> {
             <Text style={styles.name}>
               {name}
             </Text>
-            <Text style={styles.type}>
-              {parseSubjectType(type)}
-            </Text>
+            <View style={styles.location}>
+              <Ionicons
+                name={Platform.OS === 'ios' ? 'ios-pin' : 'md-pin'}
+                size={12}
+                style={this.getLocationIconStyle()}
+              />
+              <Text style={styles.locationValue}>
+                {location}
+              </Text>
+              <Text style={styles.type}>
+                {parseSubjectType(type)}
+              </Text>
+            </View>
             <Row style={styles.bottomInfo}>
-              <View style={styles.location}>
-                <Ionicons
-                  name={Platform.OS === 'ios' ? 'ios-pin' : 'md-pin'}
-                  size={12}
-                  style={styles.locationIcon}
-                />
-                <Text style={styles.locationValue}>
-                  {location}
-                </Text>
-              </View>
               <View style={styles.teacherWrap}>
                 <Text style={styles.teacher}>
                   {teacher}
@@ -139,7 +144,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ddd',
   },
   containerActive: {
-    backgroundColor: '#d2f9e7',
+    // backgroundColor: '#d2f9e7',
   },
   freeTimeMessage: {
     textAlign: 'center',
@@ -156,13 +161,17 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   name: {
-    fontWeight: 'bold',
+    marginTop: 5,
+    marginBottom: 5,
+    fontFamily: 'Lato-Regular',
     fontSize: 16,
     color: '#242424',
   },
   type: {
+    marginLeft: 2.5,
+    fontFamily: 'Lato-Regular',
     fontSize: 12,
-    color: '#979797',
+    color: '#aeaeae',
   },
   location: {
     marginRight: 5,
@@ -170,20 +179,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   locationIcon: {
-    marginRight: 2.5,
+    marginRight: 1,
     color: '#aeaeae',
   },
+  locationIconActive: {
+    color: '#00c26b',
+  },
   locationValue: {
+    fontFamily: 'Lato-Regular',
     fontSize: 12,
     color: '#aeaeae',
   },
   teacherWrap: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    paddingHorizontal: 10,
   },
   teacher: {
     width: 200,
+    fontFamily: 'Lato-Regular',
     fontSize: 12,
     color: '#aeaeae',
   },
