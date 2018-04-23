@@ -38,14 +38,10 @@ export default class App extends Component<Props, State> {
       'Lato-Bold': require('./assets/fonts/Lato-Bold.ttf'),
     };
 
-    console.log('start loading');
-
     await Font.loadAsync(fonts);
   };
 
   handleFinishLoading() {
-    console.log('finish loading');
-
     this.setState({
       isLoadingComplete: true,
     });
