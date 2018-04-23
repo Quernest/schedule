@@ -10,6 +10,7 @@ import moment from 'moment';
 import type Moment from 'moment';
 import humanizeDuration from 'humanize-duration';
 import {
+  splitStringWhiteSpace,
   timeFormatWithoutSeconds,
   timeFormat,
   isSameDay,
@@ -20,6 +21,7 @@ const formatTime = (value: string): string => {
 };
 
 type Props = {
+  isActive: boolean,
   selectedDate: Moment,
   currentTime: Moment,
   start: string,
@@ -49,7 +51,7 @@ export default class Time extends Component<Props, State> {
     return false;
   };
 
-  calculate = (time: string, language: string): ?Object => {
+  calculate = (time: string, language: string): Object => {
     const { currentTime } = this.props;
 
     const ms = moment(time, timeFormat).diff(currentTime);
@@ -75,13 +77,12 @@ export default class Time extends Component<Props, State> {
 
   render() {
     const {
-      isActive,
-      willBegin,
       start,
       end,
+      isActive,
     } = this.props;
-  
-    if (!isActive && !willBegin) {
+
+    if (!isActive && !this.willBegin()) {
       return (
         <View style={styles.wrap}>
           <Text style={styles.time}>
@@ -93,39 +94,17 @@ export default class Time extends Component<Props, State> {
         </View>
       );
     }
-  
-    if (isActive) {
-      const time = calculateTime(end, currentTime);
-  
-      const value = o.humanized.split(/\s(.+)/)[0];
-      const label = o.humanized.split(/\s(.+)/)[1];
-  
-      return (
-        <View style={styles.wrap}>
-          <Text style={styles.label}>
-            до конца:
-          </Text>
-          <Text style={styles.time}>
-            {value}
-          </Text>
-          <Text style={styles.label}>
-            {label}
-          </Text>
-        </View>
-      );
-    }
-  
-    if (willBegin) {
-      const value = o.humanized.split(/\s(.+)/)[0];
-      const label = o.humanized.split(/\s(.+)/)[1];
-  
+
+    if (this.willBegin()) {
+      const [time, label] = splitStringWhiteSpace(this.calculate(start, 'ru').humanized);
+
       return (
         <View style={styles.wrap}>
           <Text style={styles.label}>
             до начала:
           </Text>
           <Text style={styles.time}>
-            {value}
+            {time}
           </Text>
           <Text style={styles.label}>
             {label}
@@ -133,13 +112,31 @@ export default class Time extends Component<Props, State> {
         </View>
       );
     }
-  
+
+    if (isActive) {
+      const [time, label] = splitStringWhiteSpace(this.calculate(end, 'ru').humanized);
+
+      return (
+        <View style={styles.wrap}>
+          <Text style={styles.label}>
+            до конца:
+          </Text>
+          <Text style={styles.time}>
+            {time}
+          </Text>
+          <Text style={styles.label}>
+            {label}
+          </Text>
+        </View>
+      );
+    }
+
     return null;
   }
 }
 
 const styles = StyleSheet.create({
-  timeWrap: {
+  wrap: {
     padding: 10,
   },
   time: {

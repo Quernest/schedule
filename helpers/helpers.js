@@ -74,6 +74,8 @@ const parseSubjectType = (type: number): ?string => {
   }
 };
 
+const splitStringWhiteSpace = (str: string) => str.match(/^(\S+)\s(.*)/).slice(1);
+
 export {
   isSameDay,
   isBeforeDay,
@@ -85,4 +87,5 @@ export {
   timeFormat,
   timeFormatWithoutSeconds,
   parseSubjectType,
+  splitStringWhiteSpace,
 };

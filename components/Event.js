@@ -22,6 +22,7 @@ import {
   parseSubjectType,
 } from '../helpers/helpers';
 import type { EventType } from '../types';
+import Time from './Time';
 
 type Props = {
   currentTime: Moment,
@@ -60,7 +61,11 @@ export default class Event extends Component<Props> {
   };
 
   render() {
-    const { event } = this.props;
+    const {
+      event,
+      selectedDate,
+      currentTime,
+    } = this.props;
     const {
       name,
       location,
@@ -75,7 +80,7 @@ export default class Event extends Component<Props> {
     if (isFreeTime) {
       return (
         <View style={this.getContainerStyle()}>
-          <Text style={styles.name}>-</Text>
+          <Text style={[styles.name, styles.freeTimeMessage]}>-</Text>
         </View>
       );
     }
@@ -84,7 +89,13 @@ export default class Event extends Component<Props> {
       <Grid style={this.getContainerStyle()}>
         <Row style={styles.row}>
           <Col size={25}>
-
+            <Time
+              isActive={this.isActive()}
+              currentTime={currentTime}
+              selectedDate={selectedDate}
+              start={start}
+              end={end}
+            />
           </Col>
           <Col size={75} style={styles.infoWrap}>
             <Text style={styles.name}>
@@ -129,6 +140,10 @@ const styles = StyleSheet.create({
   },
   containerActive: {
     backgroundColor: '#d2f9e7',
+  },
+  freeTimeMessage: {
+    textAlign: 'center',
+    padding: 10,
   },
   row: {
     alignItems: 'center',
