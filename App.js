@@ -32,10 +32,10 @@ export default class App extends Component<Props, State> {
   loadResourcesAsync = async () => {
     const fonts = {
       ...Ionicons.font,
-      'Lato-Black': require('./assets/fonts/Lato-Black.ttf'),
-      'Lato-Light': require('./assets/fonts/Lato-Light.ttf'),
-      'Lato-Regular': require('./assets/fonts/Lato-Regular.ttf'),
-      'Lato-Bold': require('./assets/fonts/Lato-Bold.ttf'),
+      'Muli-ExtraBold': require('./assets/fonts/Muli-ExtraBold.ttf'),
+      'Muli-Light': require('./assets/fonts/Muli-Light.ttf'),
+      'Muli-Regular': require('./assets/fonts/Muli-Regular.ttf'),
+      'Muli-Bold': require('./assets/fonts/Muli-Bold.ttf'),
     };
 
     await Font.loadAsync(fonts);
@@ -63,7 +63,10 @@ export default class App extends Component<Props, State> {
 
     return (
       <View style={styles.container}>
-        {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+        <StatusBar
+          barStyle="dark-content"
+          backgroundColor="#38498c"
+        />
         {Platform.OS === 'android' && <View style={styles.statusBarUnderlay} />}
         <RootNavigation />
       </View>
@@ -78,6 +81,6 @@ const styles = StyleSheet.create({
   },
   statusBarUnderlay: {
     height: 24,
-    backgroundColor: '#00c26b',
+    backgroundColor: '#38498c',
   },
 });

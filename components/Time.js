@@ -137,10 +137,12 @@ export default class Time extends Component<Props, State> {
 
 const styles = StyleSheet.create({
   wrap: {
+    borderRightWidth: 1,
+    borderRightColor: '#aeaeae',
     padding: 10,
   },
   time: {
-    fontFamily: 'Lato-Light',
+    fontFamily: 'Muli-Regular',
     textAlign: 'center',
     fontSize: 18,
     color: '#343434',
@@ -150,7 +152,7 @@ const styles = StyleSheet.create({
   },
   label: {
     paddingVertical: 3,
-    fontFamily: 'Lato-Light',
+    fontFamily: 'Muli-Regular',
     textAlign: 'center',
     fontSize: 12,
     color: '#999',

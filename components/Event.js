@@ -106,20 +106,20 @@ export default class Event extends Component<Props> {
             <Text style={styles.name}>
               {name}
             </Text>
-            <View style={styles.location}>
-              <Ionicons
-                name={Platform.OS === 'ios' ? 'ios-pin' : 'md-pin'}
-                size={12}
-                style={this.getLocationIconStyle()}
-              />
-              <Text style={styles.locationValue}>
-                {location}
-              </Text>
-              <Text style={styles.type}>
-                {parseSubjectType(type)}
-              </Text>
-            </View>
+            <Text style={styles.type}>
+              {parseSubjectType(type)}
+            </Text>
             <Row style={styles.bottomInfo}>
+              <View style={styles.location}>
+                <Ionicons
+                  name={Platform.OS === 'ios' ? 'ios-pin' : 'md-pin'}
+                  size={12}
+                  style={this.getLocationIconStyle()}
+                />
+                <Text style={styles.locationValue}>
+                  {location}
+                </Text>
+              </View>
               <View style={styles.teacherWrap}>
                 <Text style={styles.teacher}>
                   {teacher}
@@ -157,19 +157,17 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   bottomInfo: {
+    width: 200,
     alignItems: 'flex-start',
     marginTop: 10,
   },
   name: {
-    marginTop: 5,
-    marginBottom: 5,
-    fontFamily: 'Lato-Regular',
+    fontFamily: 'Muli-Bold',
     fontSize: 16,
     color: '#242424',
   },
   type: {
-    marginLeft: 2.5,
-    fontFamily: 'Lato-Regular',
+    fontFamily: 'Muli-Regular',
     fontSize: 12,
     color: '#aeaeae',
   },
@@ -186,7 +184,7 @@ const styles = StyleSheet.create({
     color: '#00c26b',
   },
   locationValue: {
-    fontFamily: 'Lato-Regular',
+    fontFamily: 'Muli-Regular',
     fontSize: 12,
     color: '#aeaeae',
   },
@@ -195,8 +193,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
   },
   teacher: {
-    width: 200,
-    fontFamily: 'Lato-Regular',
+    fontFamily: 'Muli-Regular',
     fontSize: 12,
     color: '#aeaeae',
   },

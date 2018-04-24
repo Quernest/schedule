@@ -32,7 +32,7 @@ export default class SettingsScreen extends Component<Props> {
             rounded
             title="Сменить группу"
             onPress={this.goToGroups}
-            backgroundColor="#00c26b"
+            backgroundColor="#38498c"
           />
         </View>
       </View>

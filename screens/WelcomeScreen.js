@@ -48,7 +48,7 @@ export default class WelcomeScreen extends Component<Props, State> {
             rounded
             title="Перейти к выбору группы"
             onPress={this.goToGroups}
-            backgroundColor="#00c26b"
+            backgroundColor="#38498c"
           />
           <View style={styles.copyWrap}>
             <Text h4 style={styles.copy}>
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#eeefef',
   },
   heading: {
-    fontFamily: 'Lato-Bold',
+    fontFamily: 'Muli-ExtraBold',
     fontSize: 36,
     marginBottom: 10,
     color: '#343434',
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
   },
   copy: {
     fontSize: 12,
-    fontFamily: 'Lato-Regular',
+    fontFamily: 'Muli-Regular',
     color: '#b2bec3',
   },
 });

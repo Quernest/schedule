@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     height: 120,
     paddingTop: 20,
     paddingBottom: 10,
-    backgroundColor: '#00c26b',
+    backgroundColor: '#38498c',
   },
   calendarHeaderStyle: {
     marginBottom: 15,
@@ -67,16 +67,16 @@ const styles = StyleSheet.create({
     color: '#f9ffff',
   },
   dateNameStyle: {
-    color: '#39d58e',
+    color: '#f9ffff',
   },
   dateNumberStyle: {
-    color: '#39d58e',
+    color: '#f9ffff',
   },
   highlightDateNumberStyle: {
-    color: '#f9ffff',
+    color: '#39d58e',
   },
   highlightDateNameStyle: {
-    color: '#f9ffff',
+    color: '#39d58e',
   },
   disabledDateNameStyle: {
     color: '#39d58e',
@@ -85,10 +85,10 @@ const styles = StyleSheet.create({
     color: '#39d58e',
   },
   weekendDateNameStyle: {
-    color: '#39d58e',
+    color: '#f9ffff',
   },
   weekendDateNumberStyle: {
-    color: '#39d58e',
+    color: '#f9ffff',
   },
   iconContainer: {
     flex: 0.1,
