@@ -5,6 +5,7 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
+import store from 'react-native-simple-store';
 import moment from 'moment';
 import type Moment from 'moment';
 import Loading from '../components/Loading';
@@ -21,9 +22,9 @@ type Props = {
   navigation: {
     state: Object,
     params: Object,
+    getParam: () => void,
   },
-  id?: number,
-  schedule?: Array<EventType>,
+  screenProps: Object,
 };
 
 type State = {
@@ -50,9 +51,14 @@ export default class HomeScreen extends Component<Props, State> {
   }
 
   componentDidMount() {
-    const { id } = this.getParamsFromNavigatorProps(this.props);
+    const id = this.props.navigation.getParam('id');
+    const { screenProps } = this.props;
 
-    this.getGroupAllData(id);
+    if (screenProps) {
+      const { data } = screenProps;
+
+      this.getGroupAllData(id, data);
+    }
   }
 
   onDatePress = (date: Moment): void => {
@@ -64,22 +70,14 @@ export default class HomeScreen extends Component<Props, State> {
     });
   }
 
-  getParamsFromNavigatorProps = (props: Object): Object => {
-    const { navigation } = props;
-    const { state } = navigation;
-    const { params } = state;
-
-    return {
-      ...params,
-    };
-  }
-
-  getGroupAllData = async (id: number) => {
+  getGroupAllData = async (id: number, cache: DataType) => {
     const { selectedDate } = this.state;
 
     try {
-      const data: DataType = await API.getGroupAllData(id);
+      const data: DataType = cache || await API.getGroupAllData(id);
       const { group, semesters } = data;
+
+      store.save('data', data);
 
       this.setState({
         group,
