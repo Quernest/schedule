@@ -49,8 +49,6 @@ type Props = {
 const RootStackNavigator = ({ screenProps }: Props) => {
   const CustomNavigator = StackNavigator(screens, options);
 
-  console.log('hi');
-
   return <CustomNavigator screenProps={{
     ...screenProps,
     ...options.screenProps,
