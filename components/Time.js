@@ -140,7 +140,7 @@ export default class Time extends Component<Props, State> {
 const styles = StyleSheet.create({
   wrap: {
     borderRightWidth: 1,
-    borderRightColor: '#aeaeae',
+    borderRightColor: '#dfe4ea',
     padding: 10,
   },
   time: {
@@ -150,12 +150,12 @@ const styles = StyleSheet.create({
     color: '#343434',
   },
   timeEnd: {
-    color: '#aeaeae',
+    color: '#747d8c',
   },
   label: {
     fontFamily: 'Muli-Regular',
     textAlign: 'center',
     fontSize: 10,
-    color: '#999',
+    color: '#747d8c',
   },
 });

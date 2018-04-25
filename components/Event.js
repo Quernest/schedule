@@ -103,13 +103,10 @@ export default class Event extends Component<Props> {
             />
           </Col>
           <Col size={75} style={styles.infoWrap}>
-            <Text style={styles.name}>
-              {name}
-            </Text>
-            <Text style={styles.type}>
-              {parseSubjectType(type)}
-            </Text>
-            <Row style={styles.bottomInfo}>
+            <Row style={styles.topInfo}>
+              <Text style={styles.name}>
+                {name}
+              </Text>
               <View style={styles.location}>
                 <Ionicons
                   name={Platform.OS === 'ios' ? 'ios-pin' : 'md-pin'}
@@ -120,6 +117,11 @@ export default class Event extends Component<Props> {
                   {location}
                 </Text>
               </View>
+            </Row>
+            <Text style={styles.type}>
+              {parseSubjectType(type)}
+            </Text>
+            <Row style={styles.bottomInfo}>
               <View style={styles.teacherWrap}>
                 <Text style={styles.teacher}>
                   {teacher}
@@ -156,45 +158,54 @@ const styles = StyleSheet.create({
   infoWrap: {
     padding: 10,
   },
+  topInfo: {
+    flexDirection: 'row',
+    flex: 1,
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+  },
   bottomInfo: {
-    width: 200,
     alignItems: 'flex-start',
     marginTop: 10,
   },
   name: {
+    flexWrap: 'wrap',
+    flex: 1,
     fontFamily: 'Muli-Bold',
-    fontSize: 16,
+    fontSize: 18,
     color: '#242424',
   },
   type: {
-    fontFamily: 'Muli-Regular',
-    fontSize: 12,
-    color: '#aeaeae',
+    fontFamily: 'Muli-Bold',
+    fontSize: 14,
+    color: '#747d8c',
   },
   location: {
-    marginRight: 5,
     flexDirection: 'row',
     alignItems: 'center',
   },
   locationIcon: {
-    marginRight: 1,
-    color: '#aeaeae',
+    marginLeft: 5,
+    marginRight: 2.5,
+    color: '#747d8c',
   },
   locationIconActive: {
     color: '#00c26b',
   },
   locationValue: {
-    fontFamily: 'Muli-Regular',
+    fontFamily: 'Muli-Bold',
     fontSize: 12,
-    color: '#aeaeae',
+    color: '#747d8c',
   },
   teacherWrap: {
     flexDirection: 'row',
     alignItems: 'flex-start',
   },
   teacher: {
-    fontFamily: 'Muli-Regular',
+    flexWrap: 'wrap',
+    flex: 1,
+    fontFamily: 'Muli-Bold',
     fontSize: 12,
-    color: '#aeaeae',
+    color: '#747d8c',
   },
 });
