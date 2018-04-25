@@ -43,7 +43,7 @@ export default class Time extends Component<Props, State> {
     // 'ru' hardcore, should be i18n language
     const { minutes } = this.calculate(start, 'ru');
 
-    if (minutes) {
+    if (typeof minutes !== 'undefined') {
       // if there are 20 minutes left before event begins
       return (minutes >= 0 && minutes <= 20) && isSameDay(currentTime, selectedDate);
     }
@@ -59,7 +59,7 @@ export default class Time extends Component<Props, State> {
     const hours = duration.hours();
     const minutes = (hours * 60) + duration.minutes();
 
-    if (duration && (hours || minutes)) {
+    if (duration && (typeof hours !== 'undefined' || typeof minutes !== 'undefined')) {
       return {
         hours,
         minutes,
@@ -67,7 +67,9 @@ export default class Time extends Component<Props, State> {
           language,
           round: true,
           // displayed units
-          units: ['m'],
+          // m - minutes
+          // s - seconds
+          units: [minutes === 0 ? 's' : 'm'],
         }),
       };
     }
@@ -95,7 +97,7 @@ export default class Time extends Component<Props, State> {
       );
     }
 
-    if (this.willBegin()) {
+    if (!isActive && this.willBegin()) {
       const [time, label] = splitStringWhiteSpace(this.calculate(start, 'ru').humanized);
 
       return (
@@ -151,10 +153,9 @@ const styles = StyleSheet.create({
     color: '#aeaeae',
   },
   label: {
-    paddingVertical: 3,
     fontFamily: 'Muli-Regular',
     textAlign: 'center',
-    fontSize: 12,
+    fontSize: 10,
     color: '#999',
   },
 });
