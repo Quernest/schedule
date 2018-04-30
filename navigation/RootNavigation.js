@@ -43,16 +43,22 @@ type Props = {
     options.screenProps = {
       data,
     };
+  } else {
+    options.initialRouteName = 'Welcome';
+    options.screenProps = {};
   }
 })();
 
 const RootStackNavigator = ({ screenProps }: Props) => {
   const CustomNavigator = StackNavigator(screens, options);
 
-  return <CustomNavigator screenProps={{
-    ...screenProps,
-    ...options.screenProps,
-  }} />;
+  return (
+    <CustomNavigator screenProps={{
+        ...screenProps,
+        ...options.screenProps,
+      }}
+    />
+  );
 };
 
 const RootNavigator = ({ screenProps }: Props) => (

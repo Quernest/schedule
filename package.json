@@ -13,7 +13,7 @@
     "@expo/vector-icons": "^6.3.1",
     "eslint": "^4.19.0",
     "eslint-plugin-flowtype": "^2.46.2",
-    "exp": "^53.1.1",
+    "exp": "^53.1.0",
     "expo": "^25.0.0",
     "fetch-ponyfill": "^6.0.1",
     "humanize-duration": "^3.13.0",

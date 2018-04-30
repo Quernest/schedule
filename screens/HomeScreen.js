@@ -84,7 +84,7 @@ export default class HomeScreen extends Component<Props, State> {
         // TODO: display error in modal window
         console.error(error);
       }
-    } else if (screenProps && screenProps.data) {
+    } else if (!id && screenProps && screenProps.data) {
       const { data } = screenProps;
 
       this.setGroupAllDataToState(data);

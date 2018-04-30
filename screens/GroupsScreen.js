@@ -87,9 +87,7 @@ export default class GroupsScreen extends Component<Props, State> {
     const { id } = group;
 
     // remove data from store before navigate
-    store.delete('data');
-
-    navigate('Home', { id });
+    store.delete('data').then(() => navigate('Home', { id }));
   }
 
   render() {
