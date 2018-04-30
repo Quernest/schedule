@@ -22,7 +22,7 @@ type Props = {
   navigation: {
     state: Object,
     params: Object,
-    getParam: () => void,
+    getParam: (key: string) => void,
   },
   screenProps: Object,
 };
@@ -47,18 +47,13 @@ export default class HomeScreen extends Component<Props, State> {
   state = {
     selectedDate: moment(),
     isLoading: true,
+    semesters: [],
     events: [],
+    group: {},
   }
 
   componentDidMount() {
-    const id = this.props.navigation.getParam('id');
-    const { screenProps } = this.props;
-
-    if (screenProps) {
-      const { data } = screenProps;
-
-      this.getGroupAllData(id, data);
-    }
+    this.getGroupAllData();
   }
 
   onDatePress = (date: Moment): void => {
@@ -70,28 +65,51 @@ export default class HomeScreen extends Component<Props, State> {
     });
   }
 
-  getGroupAllData = async (id: number, cache: DataType) => {
-    const { selectedDate } = this.state;
+  getGroupAllData = async () => {
+    const id: ?number = this.props.navigation.getParam('id');
 
-    try {
-      const data: DataType = cache || await API.getGroupAllData(id);
-      const { group, semesters } = data;
+    const { screenProps } = this.props;
 
-      store.save('data', data);
+    // if home screen has id in navigation props
+    // get data from API
+    if (id) {
+      try {
+        const data: ?DataType = await API.getGroupAllData(id);
 
-      this.setState({
-        group,
-        semesters,
-        events: filterEvents(selectedDate, semesters),
-      });
-    } catch (error) {
-      console.error(error);
-    } finally {
+        // save to AsyncStorage
+        store.update('data', data);
+
+        this.setGroupAllDataToState(data);
+      } catch (error) {
+        // TODO: display error in modal window
+        console.error(error);
+      }
+    } else if (screenProps && screenProps.data) {
+      const { data } = screenProps;
+
+      this.setGroupAllDataToState(data);
+    } else {
+      // TODO: display error in modal window
       this.setState({
         isLoading: false,
       });
     }
   }
+
+  setGroupAllDataToState = (data: ?DataType) => {
+    const { selectedDate } = this.state;
+
+    if (data) {
+      const { group, semesters } = data;
+
+      this.setState({
+        group,
+        semesters,
+        events: filterEvents(selectedDate, semesters),
+        isLoading: false,
+      });
+    }
+  };
 
   render() {
     const {

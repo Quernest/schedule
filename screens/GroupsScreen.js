@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { SearchBar } from 'react-native-elements';
+import store from 'react-native-simple-store';
 import Loading from '../components/Loading';
 import API from '../services/api.service';
 import type { GroupType } from '../types';
@@ -84,6 +85,9 @@ export default class GroupsScreen extends Component<Props, State> {
   goToHomeScreen = (group: GroupType): void => {
     const { navigate } = this.props.navigation;
     const { id } = group;
+
+    // remove data from store before navigate
+    store.delete('data');
 
     navigate('Home', { id });
   }
