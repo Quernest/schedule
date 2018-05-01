@@ -13,8 +13,9 @@ import {
   Font,
 } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
-
-import RootNavigation from './navigation/RootNavigation';
+import store from 'react-native-simple-store';
+import createRootNavigator from './navigation/RootNavigation';
+import type { DataType } from './types';
 
 type Props = {
   skipLoadingScreen: boolean,
@@ -22,12 +23,29 @@ type Props = {
 
 type State = {
   isLoadingComplete: boolean,
+  // data with group, semesters, schedule etc.
+  data: DataType,
 };
 
 export default class App extends Component<Props, State> {
   state = {
     isLoadingComplete: false,
+    data: {}, // saved schedule, group, semesters etc.
   };
+
+  componentDidMount() {
+    this.checkDataInStore();
+  }
+
+  checkDataInStore = async (): void => {
+    const data: DataType = await store.get('data');
+
+    if (data !== null) {
+      this.setState({
+        data,
+      });
+    }
+  }
 
   loadResourcesAsync = async () => {
     const fonts = {
@@ -48,7 +66,7 @@ export default class App extends Component<Props, State> {
   }
 
   render() {
-    const { isLoadingComplete } = this.state;
+    const { isLoadingComplete, data } = this.state;
     const { skipLoadingScreen } = this.props;
 
     if (!isLoadingComplete && !skipLoadingScreen) {
@@ -61,6 +79,8 @@ export default class App extends Component<Props, State> {
       );
     }
 
+    const Layout = createRootNavigator(data);
+
     return (
       <View style={styles.container}>
         <StatusBar
@@ -68,7 +88,7 @@ export default class App extends Component<Props, State> {
           backgroundColor="#38498c"
         />
         {Platform.OS === 'android' && <View style={styles.statusBarUnderlay} />}
-        <RootNavigation />
+        <Layout screenProps={{ data }} />
       </View>
     );
   }
