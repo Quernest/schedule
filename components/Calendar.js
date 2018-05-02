@@ -57,12 +57,10 @@ const Calendar = (props: Props) => {
 const styles = StyleSheet.create({
   calendarStyle: {
     height: 120,
-    paddingTop: 20,
-    paddingBottom: 10,
+    paddingTop: 5,
     backgroundColor: '#38498c',
   },
   calendarHeaderStyle: {
-    marginBottom: 15,
     fontSize: 18,
     color: '#f9ffff',
   },

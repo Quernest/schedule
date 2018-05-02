@@ -11,6 +11,7 @@ import type Moment from 'moment';
 import Loading from '../components/Loading';
 import Schedule from '../components/Schedule';
 import Calendar from '../components/Calendar';
+import Header from '../components/Header';
 import type {
   EventType,
   DataType,
@@ -53,7 +54,9 @@ export default class HomeScreen extends Component<Props, State> {
   }
 
   componentDidMount() {
-    this.getGroupAllData();
+    const id: ?number = this.props.navigation.getParam('id');
+
+    this.getGroupAllData(id);
   }
 
   onDatePress = (date: Moment): void => {
@@ -65,23 +68,31 @@ export default class HomeScreen extends Component<Props, State> {
     });
   }
 
-  getGroupAllData = async () => {
-    const id: ?number = this.props.navigation.getParam('id');
+  onUpdate = () => {
+    const { group } = this.state;
 
+    if (group) {
+      const { id } = group;
+
+      this.setState({
+        isLoading: true,
+      });
+
+      this.getGroupAllData(id);
+    }
+  }
+
+  getGroupAllData = async (id?: ?number) => {
     const { screenProps } = this.props;
 
-    // if home screen has id in navigation props
-    // get data from API
     if (id) {
       try {
         const data: ?DataType = await API.getGroupAllData(id);
 
-        // save to AsyncStorage
         store.update('data', data);
 
         this.setGroupAllDataToState(data);
       } catch (error) {
-        // TODO: display error in modal window
         console.error(error);
       }
     } else if (!id && screenProps && screenProps.data) {
@@ -89,7 +100,6 @@ export default class HomeScreen extends Component<Props, State> {
 
       this.setGroupAllDataToState(data);
     } else {
-      // TODO: display error in modal window
       this.setState({
         isLoading: false,
       });
@@ -124,6 +134,9 @@ export default class HomeScreen extends Component<Props, State> {
           <Calendar
             selectedDate={selectedDate}
             onDatePress={this.onDatePress}
+          />
+          <Header
+            onUpdate={this.onUpdate}
           />
           <Schedule
             events={events}
