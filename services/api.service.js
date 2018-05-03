@@ -5,7 +5,7 @@ import fetchPonyfill from 'fetch-ponyfill';
 
 const { fetch } = fetchPonyfill();
 
-const API_URL: string = 'https://schedule-admin.herokuapp.com/api';
+const API_URL: string = 'http://schedule-admin.herokuapp.com/api';
 
 const getRequest = async (url: string): ?Object => {
   try {

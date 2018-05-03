@@ -34,6 +34,11 @@ type State = {
     id: number,
     name: string,
   },
+  weeks?: {
+    currentWeekType: number,
+    total: number,
+    current: number,
+  },
   semesters?: Array<Object>,
   events?: Array<EventType>,
   isLoading: boolean,
@@ -51,6 +56,7 @@ export default class HomeScreen extends Component<Props, State> {
     semesters: [],
     events: [],
     group: {},
+    weeks: {},
   }
 
   componentDidMount() {
@@ -61,9 +67,11 @@ export default class HomeScreen extends Component<Props, State> {
 
   onDatePress = (date: Moment): void => {
     const { semesters } = this.state;
+    const { events, weeks } = filterEvents(date, semesters);
 
     this.setState({
-      events: filterEvents(date, semesters),
+      weeks,
+      events,
       selectedDate: date,
     });
   }
@@ -111,11 +119,13 @@ export default class HomeScreen extends Component<Props, State> {
 
     if (data) {
       const { group, semesters } = data;
+      const { events, weeks } = filterEvents(selectedDate, semesters);
 
       this.setState({
         group,
         semesters,
-        events: filterEvents(selectedDate, semesters),
+        events,
+        weeks,
         isLoading: false,
       });
     }
@@ -126,6 +136,7 @@ export default class HomeScreen extends Component<Props, State> {
       selectedDate,
       isLoading,
       events,
+      weeks,
     } = this.state;
 
     if (!isLoading) {
@@ -137,6 +148,7 @@ export default class HomeScreen extends Component<Props, State> {
           />
           <Header
             onUpdate={this.onUpdate}
+            weeks={weeks}
           />
           <Schedule
             events={events}

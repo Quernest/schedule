@@ -17,19 +17,30 @@ import { Ionicons } from '@expo/vector-icons';
 
 type Props = {
   onUpdate: () => void,
+  weeks?: {
+    total: number,
+    current: number,
+    currentWeekType: number,
+  },
 };
 
 export default class Header extends PureComponent<Props> {
   render() {
-    const { onUpdate } = this.props;
+    const { onUpdate, weeks } = this.props;
+
+    const isVisibleWeeks = Object.keys(weeks || {}).length > 0;
 
     return (
       <View style={styles.container}>
         <Grid>
           <Row>
-            <Col>
-              {/* <Text style={styles.week}>7/8</Text> */}
-            </Col>
+            {isVisibleWeeks && (
+              <Col>
+                <Text style={styles.week}>
+                  {weeks.current} / {weeks.total}
+                </Text>
+              </Col>
+            )}
             <Col>
               <TouchableOpacity onPress={onUpdate}>
                 <Ionicons

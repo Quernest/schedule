@@ -19,6 +19,7 @@
     "humanize-duration": "^3.13.0",
     "isomorphic-fetch": "^2.2.1",
     "moment": "^2.21.0",
+    "moment-weekdaysin": "^1.0.1",
     "prop-types": "^15.6.1",
     "react": "16.2.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-25.0.0.tar.gz",
