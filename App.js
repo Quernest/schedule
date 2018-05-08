@@ -1,5 +1,4 @@
 // @flow
-
 import React, { Component } from 'react';
 import {
   Platform,
@@ -12,10 +11,12 @@ import {
   Asset,
   Font,
 } from 'expo';
+import { I18nextProvider, translate } from 'react-i18next';
 import { Ionicons } from '@expo/vector-icons';
 import store from 'react-native-simple-store';
 import createRootNavigator from './navigation/RootNavigation';
 import type { DataType } from './types';
+import i18n from './i18n';
 
 type Props = {
   skipLoadingScreen: boolean,
@@ -79,7 +80,20 @@ export default class App extends Component<Props, State> {
       );
     }
 
-    const Layout = createRootNavigator(data);
+    const RootNavigation = createRootNavigator(data);
+
+    const WrappedRootNavigation = () => (
+      <RootNavigation screenProps={{
+          data,
+          t: i18n.getFixedT(),
+        }}
+      />
+    );
+
+    const ReloadAppOnLanguageChange = translate('translation', {
+      bindI18n: 'languageChanged',
+      bindStore: false,
+    })(WrappedRootNavigation);
 
     return (
       <View style={styles.container}>
@@ -88,7 +102,9 @@ export default class App extends Component<Props, State> {
           backgroundColor="#38498c"
         />
         {Platform.OS === 'android' && <View style={styles.statusBarUnderlay} />}
-        <Layout screenProps={{ data }} />
+        <I18nextProvider i18n={i18n}>
+          <ReloadAppOnLanguageChange />
+        </I18nextProvider>
       </View>
     );
   }

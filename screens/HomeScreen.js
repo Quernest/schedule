@@ -1,5 +1,4 @@
 // @flow
-
 import React, { Component } from 'react';
 import {
   StyleSheet,
@@ -47,7 +46,7 @@ type State = {
 export default class HomeScreen extends Component<Props, State> {
   static navigationOptions = {
     header: null,
-    title: 'Расписание',
+    title: 'Schedule',
   };
 
   state = {

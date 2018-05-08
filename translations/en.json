@@ -1,0 +1,8 @@
+{
+  "settings": {
+    "title": "Settings",
+    "buttons": {
+      "changeGroup": "Change group"
+    }
+  }
+}
