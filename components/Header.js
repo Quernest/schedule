@@ -28,16 +28,14 @@ export default class Header extends PureComponent<Props> {
   render() {
     const { onUpdate, weeks } = this.props;
 
-    const isVisibleWeeks = Object.keys(weeks || {}).length > 0;
-
     return (
       <View style={styles.container}>
         <Grid>
           <Row>
-            {isVisibleWeeks && (
+            {weeks && Object.keys(weeks).length > 0 && (
               <Col>
                 <Text style={styles.week}>
-                  {weeks.current} / {weeks.total}
+                  Неделя: {weeks.current} / {weeks.total}
                 </Text>
               </Col>
             )}
@@ -71,6 +69,7 @@ const styles = StyleSheet.create({
     color: '#f9ffff',
   },
   week: {
+    fontSize: 16,
     color: '#f9ffff',
   },
 });

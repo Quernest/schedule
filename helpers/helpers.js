@@ -4,25 +4,14 @@ import moment from 'moment';
 import type Moment from 'moment';
 
 const dateFormat: string = 'DD/MM/YYYY';
-const dateFormatWithoutYear: string = 'DD/MM/____';
 const dateFormatMySQL: string = 'YYYY-MM-DD';
-const dateFormatMySQLWithoutYear: string = '____-MM-DD';
 const timeFormat: string = 'HH:mm:ss';
 const timeFormatWithoutSeconds: string = 'HH:mm';
 
-const isCurrentSemester = (current: Moment, start: string, end: string): boolean => {
-  const now = moment(current.format(dateFormatMySQLWithoutYear), dateFormatMySQLWithoutYear);
-  const begin = moment(moment(start, dateFormatMySQL).format(dateFormatMySQLWithoutYear), dateFormatMySQLWithoutYear);
-  const final = moment(moment(end, dateFormatMySQL).format(dateFormatMySQLWithoutYear), dateFormatMySQLWithoutYear);
-
-  return now.isBetween(begin, final, 'days', '[]');
-};
-
 const isSameDay = (d1: Moment, d2: Moment): boolean => {
   if (d1 && d2) {
-    return moment(d2.format(dateFormat), dateFormatWithoutYear)
-      .isSame(moment(d1.format(dateFormat), dateFormatWithoutYear), 'day');
-  };
+    return d2.isSame(d1, 'day');
+  }
 
   return false;
 };
@@ -50,8 +39,7 @@ const isBeforeTime = (current: Moment, end: (string|Moment)): boolean => {
 
 const isBeforeDay = (d1: Moment, d2: Moment): boolean => {
   if (d1 && d2) {
-    return moment(d2.format(dateFormat), dateFormatWithoutYear)
-      .isBefore(moment(d1.format(dateFormat), dateFormatWithoutYear), 'day');
+    return d2.isBefore(d1, 'day');
   }
 
   return false;
@@ -79,14 +67,11 @@ export {
   isBetweenTime,
   isBeforeTime,
   dateFormat,
-  dateFormatWithoutYear,
   dateFormatMySQL,
-  dateFormatMySQLWithoutYear,
   timeFormat,
   timeFormatWithoutSeconds,
   parseSubjectType,
   splitStringWhiteSpace,
-  isCurrentSemester,
   isOdd,
   isEven,
 };
