@@ -35,7 +35,7 @@ export default class Header extends PureComponent<Props> {
             {weeks && Object.keys(weeks).length > 0 && (
               <Col>
                 <Text style={styles.week}>
-                  Неделя: {weeks.current} / {weeks.total}
+                  Тиждень: {weeks.current} / {weeks.total}
                 </Text>
               </Col>
             )}
@@ -60,8 +60,8 @@ const styles = StyleSheet.create({
     height: 42,
     paddingHorizontal: 7.5,
     paddingVertical: 5,
-    borderTopWidth: 1,
-    borderTopColor: 'rgba(255,255,255,0.5)',
+    // borderTopWidth: 1,
+    // borderTopColor: 'rgba(255,255,255,0.5)',
     backgroundColor: '#38498c',
   },
   update: {
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     color: '#f9ffff',
   },
   week: {
-    fontSize: 16,
+    fontSize: 14,
     color: '#f9ffff',
   },
 });

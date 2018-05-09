@@ -46,7 +46,7 @@ export default class WelcomeScreen extends Component<Props, State> {
           <Button
             large
             rounded
-            title="Перейти к выбору группы"
+            title="Перейти до вибору групи"
             onPress={this.goToGroups}
             backgroundColor="#38498c"
           />

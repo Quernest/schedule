@@ -1,4 +1,5 @@
 // @flow
+
 import React, { Component } from 'react';
 import {
   StyleSheet,
@@ -46,7 +47,7 @@ type State = {
 export default class HomeScreen extends Component<Props, State> {
   static navigationOptions = {
     header: null,
-    title: 'Schedule',
+    title: 'Розклад',
   };
 
   state = {
@@ -83,6 +84,7 @@ export default class HomeScreen extends Component<Props, State> {
 
       this.setState({
         isLoading: true,
+        selectedDate: moment(),
       });
 
       this.getGroupAllData(id);
@@ -144,6 +146,7 @@ export default class HomeScreen extends Component<Props, State> {
           <Calendar
             selectedDate={selectedDate}
             onDatePress={this.onDatePress}
+            showDaysAfterCurrent={30}
           />
           <Header
             onUpdate={this.onUpdate}

@@ -29,7 +29,7 @@ type State = {
 
 export default class GroupsScreen extends Component<Props, State> {
   static navigationOptions = {
-    title: 'Выбор группы',
+    title: 'Вибір групи',
   };
 
   state = {
@@ -107,7 +107,7 @@ export default class GroupsScreen extends Component<Props, State> {
               onChangeText={searchText => this.handleSearchInputChange(searchText)}
               onClearText={this.onClearSearchInput}
               clearIcon
-              placeholder="Поиск группы"
+              placeholder="Пошук групи"
             />
             <View containerStyle={styles.groupsContainer}>
               {filteredGroups &&

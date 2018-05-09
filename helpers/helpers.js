@@ -48,7 +48,7 @@ const isBeforeDay = (d1: Moment, d2: Moment): boolean => {
 const parseSubjectType = (type: number): ?string => {
   switch (type) {
     case 1:
-      return 'Лекция';
+      return 'Лекція';
     case 2:
       return 'Практика';
     default: return null;
@@ -75,3 +75,4 @@ export {
   isOdd,
   isEven,
 };
+

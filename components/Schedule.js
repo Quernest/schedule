@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
   },
   eventsContainer: {
     paddingTop: 5,
-    paddingHorizontal: 5,
+    paddingHorizontal: 7.5,
   },
 });
 

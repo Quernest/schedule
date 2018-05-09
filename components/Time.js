@@ -41,7 +41,7 @@ export default class Time extends Component<Props, State> {
     } = this.props;
 
     // 'ru' hardcore, should be i18n language
-    const { minutes } = this.calculate(start, 'ru');
+    const { minutes } = this.calculate(start, 'uk');
 
     if (typeof minutes !== 'undefined') {
       // if there are 20 minutes left before event begins
@@ -98,7 +98,7 @@ export default class Time extends Component<Props, State> {
     }
 
     if (!isActive && this.willBegin()) {
-      const [time, label] = splitStringWhiteSpace(this.calculate(start, 'ru').humanized);
+      const [time, label] = splitStringWhiteSpace(this.calculate(start, 'uk').humanized);
 
       return (
         <View style={styles.wrap}>
@@ -116,12 +116,12 @@ export default class Time extends Component<Props, State> {
     }
 
     if (isActive) {
-      const [time, label] = splitStringWhiteSpace(this.calculate(end, 'ru').humanized);
+      const [time, label] = splitStringWhiteSpace(this.calculate(end, 'uk').humanized);
 
       return (
         <View style={styles.wrap}>
           <Text style={styles.label}>
-            до конца:
+            до кінця:
           </Text>
           <Text style={styles.time}>
             {time}
