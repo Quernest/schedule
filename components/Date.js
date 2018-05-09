@@ -84,9 +84,11 @@ const styles = {
   },
   day: {
     fontSize: 12,
+    fontFamily: 'Muli-Regular',
   },
   date: {
     fontSize: 22,
+    fontFamily: 'Muli-Regular',
   },
   text: {
     color: 'rgba(255, 255, 255, 0.5)',

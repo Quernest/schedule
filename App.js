@@ -17,6 +17,7 @@ import ukLocale from 'moment/locale/uk';
 import createRootNavigator from './navigation/RootNavigation';
 import type { DataType } from './types';
 
+// set uk locale as default
 moment.locale('uk', ukLocale);
 
 type Props = {
@@ -32,7 +33,7 @@ type State = {
 export default class App extends Component<Props, State> {
   state = {
     isLoadingComplete: false,
-    data: {}, // saved schedule, group, semesters etc.
+    data: null,
   };
 
   componentDidMount() {

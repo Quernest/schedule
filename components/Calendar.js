@@ -320,6 +320,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#38498c',
   },
   visibleMonthAndYear: {
+    fontFamily: 'Muli-Regular',
     color: 'rgba(255, 255, 255, 0.5)',
     paddingHorizontal: 7.5,
     textAlign: 'left',

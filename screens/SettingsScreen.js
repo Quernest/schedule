@@ -16,7 +16,7 @@ type Props = {
 
 export default class SettingsScreen extends Component<Props> {
   static navigationOptions = {
-    title: 'Настройки',
+    title: 'Налаштування',
   }
 
   goToGroups = (): void => {

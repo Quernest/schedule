@@ -86,9 +86,8 @@ export default class GroupsScreen extends Component<Props, State> {
     const { navigate } = this.props.navigation;
     const { id } = group;
 
-    // remove data from store before navigate
-    store.delete('data').then(() => navigate('Home', { id }));
-  }
+    store.delete('data').then(_ => navigate('Home', { id }));
+  };
 
   render() {
     const { isLoading } = this.state;
