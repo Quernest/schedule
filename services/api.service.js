@@ -1,6 +1,5 @@
 // @flow
 
-import store from 'react-native-simple-store';
 import fetchPonyfill from 'fetch-ponyfill';
 
 const { fetch } = fetchPonyfill();
@@ -12,19 +11,15 @@ const getRequest = async (url: string): ?Object => {
     const response = await fetch(url);
 
     if (!response.ok) {
-      return Promise.reject(new Error('Server connection error'));
+      return Promise.reject(response.status);
     }
 
     const json = await response.json();
 
     return json;
   } catch (error) {
-    if (error) {
-      return error;
-    }
+    return error;
   }
-
-  return {};
 };
 
 class API {

@@ -45,3 +45,7 @@ export type GroupType = {
   name: string,
 };
 
+export type ErrorType = {
+  error: string | Object,
+};
+

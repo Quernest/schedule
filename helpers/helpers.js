@@ -2,6 +2,7 @@
 
 import moment from 'moment';
 import type Moment from 'moment';
+import type { ErrorType } from '../types';
 
 const dateFormat: string = 'DD/MM/YYYY';
 const dateFormatMySQL: string = 'YYYY-MM-DD';

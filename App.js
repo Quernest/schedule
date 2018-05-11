@@ -18,7 +18,7 @@ import createRootNavigator from './navigation/RootNavigation';
 import type { DataType } from './types';
 
 // set uk locale as default
-moment.locale('uk', ukLocale);
+moment.updateLocale('uk', ukLocale);
 
 type Props = {
   skipLoadingScreen: boolean,
