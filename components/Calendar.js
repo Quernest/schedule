@@ -6,7 +6,10 @@ import {
   StyleSheet,
   Text,
   View,
+  Platform,
+  TouchableOpacity,
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import moment from 'moment';
 import type Moment from 'moment';
 import Dates from './Dates';
@@ -24,7 +27,17 @@ type Props = {
   showDaysAfterCurrent?: number,
   // Number of days to show after
   showDaysBeforeCurrent?: number,
-
+  // function for updating schedule
+  onScheduleUpdate: () => void,
+  weeks?: {
+    total: number,
+    current: number,
+    currentWeekType: number,
+  },
+  group?: {
+    id: number,
+    name: string,
+  },
 }
 
 type State = {
@@ -185,7 +198,7 @@ export default class Calendar extends PureComponent<Props, State> {
 
     // One or two months withing the same year
     if (visibleYears.length === 1) {
-      return `${visibleMonths.join(' – ')},  ${visibleYears[0]}`;
+      return `${visibleMonths.join(' – ')}, ${visibleYears[0]}`;
     }
 
     // Two months within different years
@@ -288,16 +301,45 @@ export default class Calendar extends PureComponent<Props, State> {
       dates,
       currentDateIndex,
     } = this.state;
+    const {
+      onScheduleUpdate,
+      weeks,
+      group,
+    } = this.props;
+
     const visibleMonthAndYear = this.getVisibleMonthAndYear();
 
     return (
       <View style={styles.container}>
-        <Text style={styles.visibleMonthAndYear}>
-          {visibleMonthAndYear}
-        </Text>
+        <View style={styles.visibleMonthAndYearWrap}>
+          <View>
+            <Text style={styles.visibleMonthAndYear}>
+              {visibleMonthAndYear}
+            </Text>
+            {weeks && Object.keys(weeks).length > 0 && (
+              <Text style={styles.weekLabel}>
+                тиждень: {weeks.current} / {weeks.total}
+              </Text>
+            )}
+          </View>
+          <View style={styles.groupWrap}>
+            <TouchableOpacity onPress={onScheduleUpdate}>
+              <Ionicons
+                name={Platform.OS === 'ios' ? 'ios-refresh' : 'md-refresh'}
+                size={28}
+                style={styles.refreshIcon}
+              />
+            </TouchableOpacity>
+            {group && (
+              <Text style={styles.groupLabel}>
+                {group.name}
+              </Text>
+            )}
+          </View>
+        </View>
         <ScrollView
           ref={scrollView => this._scrollView = scrollView}
-          horizontal={true} // Enable horizontal scrolling
+          horizontal // Enable horizontal scrolling
           showsHorizontalScrollIndicator={false} // Hide horizontal scroll indicators
           automaticallyAdjustContentInsets={false} // Do not adjust content automatically
           scrollEventThrottle={100}
@@ -321,8 +363,33 @@ const styles = StyleSheet.create({
   },
   visibleMonthAndYear: {
     fontFamily: 'Muli-Regular',
-    color: 'rgba(255, 255, 255, 0.5)',
-    paddingHorizontal: 7.5,
+    fontSize: 16,
+    color: '#fff',
     textAlign: 'left',
+  },
+  visibleMonthAndYearWrap: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    flexWrap: 'wrap',
+    alignItems: 'center',
+    paddingHorizontal: 7.5,
+  },
+  refreshIcon: {
+    marginLeft: 'auto',
+    color: '#fff',
+  },
+  weekLabel: {
+    fontFamily: 'Muli-Regular',
+    fontSize: 12,
+    color: '#fff',
+  },
+  // groupWrap: {
+  //   flexDirection: 'row',
+  //   alignItems: 'center',
+  // },
+  groupLabel: {
+    fontFamily: 'Muli-Regular',
+    fontSize: 12,
+    color: '#fff',
   },
 });

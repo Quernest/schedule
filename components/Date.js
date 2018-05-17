@@ -42,7 +42,7 @@ export default class Date extends PureComponent<Props> {
 
   getContainerStyle = () => ({
     ...styles.container,
-    ...(this.props.isActive ? styles.containerActive : {})
+    ...(this.props.isActive ? styles.containerActive : {}),
   });
 
   getDayStyle = () => ({
@@ -75,19 +75,19 @@ export default class Date extends PureComponent<Props> {
 const styles = {
   container: {
     borderBottomColor: 'transparent',
-    borderBottomWidth: 2,
+    // borderBottomWidth: 2,
     paddingHorizontal: 15,
     paddingVertical: 10,
   },
   containerActive: {
-    borderBottomColor: '#f9ffff',
+    // borderBottomColor: '#f9ffff',
   },
   day: {
     fontSize: 12,
     fontFamily: 'Muli-Regular',
   },
   date: {
-    fontSize: 22,
+    fontSize: 18,
     fontFamily: 'Muli-Regular',
   },
   text: {

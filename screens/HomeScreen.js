@@ -11,7 +11,6 @@ import type Moment from 'moment';
 import Loading from '../components/Loading';
 import Schedule from '../components/Schedule';
 import Calendar from '../components/Calendar';
-import Header from '../components/Header';
 import type {
   EventType,
   DataType,
@@ -138,6 +137,7 @@ export default class HomeScreen extends Component<Props, State> {
       isLoading,
       events,
       weeks,
+      group,
     } = this.state;
 
     if (!isLoading) {
@@ -146,11 +146,11 @@ export default class HomeScreen extends Component<Props, State> {
           <Calendar
             selectedDate={selectedDate}
             onDatePress={this.onDatePress}
-            showDaysAfterCurrent={30}
-          />
-          <Header
-            onUpdate={this.onUpdate}
+            onScheduleUpdate={this.onUpdate}
+            group={group}
             weeks={weeks}
+            showDaysAfterCurrent={300}
+            showDaysBeforeCurrent={5}
           />
           <Schedule
             events={events}
