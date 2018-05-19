@@ -17,6 +17,7 @@ import type { GroupType } from '../types';
 type Props = {
   navigation: {
     navigate: () => void,
+    replace: () => void,
   }
 };
 
@@ -83,10 +84,10 @@ export default class GroupsScreen extends Component<Props, State> {
   }
 
   goToHomeScreen = (group: GroupType): void => {
-    const { navigate } = this.props.navigation;
+    const { replace } = this.props.navigation;
     const { id } = group;
 
-    store.delete('data').then(_ => navigate('Home', { id }));
+    store.delete('data').then(() => replace('Main', { id }));
   };
 
   render() {

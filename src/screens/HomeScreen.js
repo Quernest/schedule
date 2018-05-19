@@ -146,7 +146,7 @@ export default class HomeScreen extends Component<Props, State> {
             onScheduleUpdate={this.onUpdate}
             group={group}
             weeks={weeks}
-            showDaysAfterCurrent={14}
+            showDaysAfterCurrent={90}
             showDaysBeforeCurrent={5}
           />
           <Schedule

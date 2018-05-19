@@ -1,6 +1,6 @@
 // @flow
 
-import moment from 'moment-weekdaysin';
+import moment from 'moment';
 import type Moment from 'moment';
 import type { EventType, SemesterType } from '../types';
 import { dateFormatMySQL, isOdd, isEven } from './helpers';
@@ -32,47 +32,47 @@ const filterEvents = (selectedDate: Moment, semesters?: Array<SemesterType>) => 
 
     const start: Moment = moment(currentSemester.start, dateFormatMySQL);
     const end: Moment = moment(currentSemester.end, dateFormatMySQL);
+    const allMondaysInSemester: Array<Moment> = [];
+    const day = 1; // 1 = Monday
+    const cloned = start.clone();
 
-    const allSundaysInSemester: Array<Moment> = start.weekdaysInBetween(end, 'Sunday');
+    while (cloned.day(7 + day).isBefore(end)) {
+      allMondaysInSemester.push(cloned.clone());
+    }
 
-    if (allSundaysInSemester && allSundaysInSemester.length) {
-      const firstSunday = start.startOf('week');
-      const lastSunday = end.startOf('week');
+    if (allMondaysInSemester && allMondaysInSemester.length) {
+      const firstMonday = start.startOf('week').isoWeekday(1);
 
       let currentWeekType: number = firstWeekType;
       let current: number = 0;
       let total: number = 0;
 
-      if (firstSunday.isBefore(allSundaysInSemester[0])) {
-        allSundaysInSemester.unshift(firstSunday);
-      }
-
-      if (lastSunday.isAfter(allSundaysInSemester[allSundaysInSemester.length - 1])) {
-        allSundaysInSemester.push(lastSunday);
+      if (firstMonday.isBefore(allMondaysInSemester[0])) {
+        allMondaysInSemester.unshift(firstMonday);
       }
 
       let index: number = 0;
-      total = allSundaysInSemester.length;
+      total = allMondaysInSemester.length;
 
       for (index; index < total; index += 1) {
-        if (allSundaysInSemester[index]) {
+        if (allMondaysInSemester[index]) {
           // current week
           if (selectedDate.isBetween(
-            allSundaysInSemester[index],
-            allSundaysInSemester[index + 1],
+            allMondaysInSemester[index],
+            allMondaysInSemester[index + 1],
             null,
-            '[]', // all inclusive
+            '[]',
           )) {
             current = index + 1;
           }
 
           // first week
-          if (selectedDate.isBefore(firstSunday)) {
+          if (selectedDate.isBefore(firstMonday)) {
             current = 1;
           }
 
           // last week
-          if (selectedDate.isAfter(lastSunday)) {
+          if (selectedDate.isAfter(allMondaysInSemester[allMondaysInSemester.length - 1])) {
             current = total;
           }
         }
