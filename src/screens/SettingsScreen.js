@@ -6,8 +6,13 @@ import {
   StyleSheet,
 } from 'react-native';
 import { Button } from 'react-native-elements';
+import type { DataType } from '../types';
 
 type Props = {
+  screenProps: {
+    isConnected: boolean,
+    data: DataType,
+  },
   navigation: {
     navigate: () => void,
   },
@@ -25,6 +30,9 @@ export default class SettingsScreen extends Component<Props> {
   }
 
   render() {
+    const { screenProps } = this.props;
+    const { isConnected } = screenProps;
+
     return (
       <View style={styles.container}>
         <View style={styles.swtichGroup}>
@@ -33,6 +41,7 @@ export default class SettingsScreen extends Component<Props> {
             title="Змінити групу"
             onPress={this.goToGroups}
             backgroundColor="#38498c"
+            disabled={!isConnected}
           />
         </View>
       </View>

@@ -362,7 +362,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#38498c',
   },
   visibleMonthAndYear: {
-    // fontFamily: 'Muli-Regular',
     fontSize: 16,
     color: '#fff',
     textAlign: 'left',
@@ -379,16 +378,10 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   weekLabel: {
-    // fontFamily: 'Muli-Regular',
     fontSize: 12,
     color: '#fff',
   },
-  // groupWrap: {
-  //   flexDirection: 'row',
-  //   alignItems: 'center',
-  // },
   groupLabel: {
-    // fontFamily: 'Muli-Regular',
     fontSize: 12,
     color: '#fff',
   },

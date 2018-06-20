@@ -6,15 +6,11 @@
 
 import React, { Component } from 'react';
 import {
-  Platform,
   StyleSheet,
-  Text,
   View,
   StatusBar,
   NetInfo,
-  Alert,
 } from 'react-native';
-// import { Ionicons } from '@expo/vector-icons';
 import store from 'react-native-simple-store';
 import moment from 'moment';
 import ukLocale from 'moment/locale/uk';
@@ -26,24 +22,50 @@ import type { DataType } from './types';
 moment.updateLocale('uk', ukLocale);
 
 type State = {
+  isConnected: boolean,
   isLoading: boolean,
   data: DataType,
 };
 
 export default class App extends Component<State> {
   state = {
+    isConnected: true,
     isLoading: true,
     data: null,
   };
 
   componentDidMount() {
     this.checkDataInStore();
+
+    NetInfo.isConnected.addEventListener('connectionChange', this.handleConnectionChange);
+  }
+
+  componentWillUnmount() {
+    NetInfo.isConnected.removeEventListener('connectionChange', this.handleConnectionChange);
+  }
+
+  rootNavigation = createRootNavigator();
+
+  handleConnectionChange = (isConnected: boolean): void => {
+    if (isConnected) {
+      setTimeout(() => {
+        this.setState({
+          isConnected,
+        });
+      }, 2500);
+    } else {
+      this.setState({
+        isConnected,
+      });
+    }
   }
 
   checkDataInStore = async (): void => {
     const data: DataType = await store.get('data');
 
     if (data !== null) {
+      this.rootNavigation = createRootNavigator(data);
+
       this.setState({
         data,
       });
@@ -55,18 +77,19 @@ export default class App extends Component<State> {
   }
 
   render() {
-    const { isLoading, data } = this.state;
+    const { isConnected, isLoading, data } = this.state;
+
+    // HOC
+    const RootNavigation = this.rootNavigation;
 
     if (!isLoading) {
-      const RootNavigation = createRootNavigator(data);
-
       return (
         <View style={styles.container}>
           <StatusBar
             backgroundColor="#38498c"
             barStyle="light-content"
           />
-          <RootNavigation screenProps={{ data }} />
+          <RootNavigation screenProps={{ isConnected, data }} />
         </View>
       );
     }

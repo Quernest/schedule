@@ -5,6 +5,7 @@ import {
   StyleSheet,
   View,
   Alert,
+  NetInfo,
 } from 'react-native';
 import store from 'react-native-simple-store';
 import moment from 'moment';
@@ -73,10 +74,10 @@ export default class HomeScreen extends Component<Props, State> {
   }
 
   onUpdate = () => {
-    const { group } = this.state;
+    const { isConnected } = this.props.screenProps;
 
-    if (group) {
-      const { id } = group;
+    if (isConnected) {
+      const { id } = this.state.group;
 
       this.setState({
         isLoading: true,
@@ -84,6 +85,8 @@ export default class HomeScreen extends Component<Props, State> {
       });
 
       this.getGroupAllData(id);
+    } else {
+      Alert.alert('Помилка', 'Для оновлення розкладу занять необхідно інтернет-з\'єднання');
     }
   }
 

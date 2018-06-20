@@ -5,11 +5,17 @@ import {
   View,
   Text,
   StyleSheet,
+  Alert,
 } from 'react-native';
 import { Button } from 'react-native-elements';
+import type { DataType } from '../types';
 import Loading from '../components/Loading';
 
 type Props = {
+  screenProps: {
+    isConnected: boolean,
+    data: DataType,
+  },
   navigation: {
     navigate: () => void,
   }
@@ -29,9 +35,14 @@ export default class WelcomeScreen extends Component<Props, State> {
   };
 
   goToGroups = (): void => {
+    const { isConnected } = this.props.screenProps;
     const { navigate } = this.props.navigation;
 
-    navigate('Groups');
+    if (isConnected) {
+      navigate('Groups');
+    } else {
+      Alert.alert('Помилка', 'Необхідно інтернет з\'єднання');
+    }
   }
 
   render() {

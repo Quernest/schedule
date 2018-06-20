@@ -7,14 +7,19 @@ import {
   ScrollView,
   Text,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import store from 'react-native-simple-store';
 import Loading from '../components/Loading';
 import API from '../services/api.service';
-import type { GroupType } from '../types';
+import type { GroupType, DataType } from '../types';
 
 type Props = {
+  screenProps: {
+    isConnected: boolean,
+    data: DataType,
+  },
   navigation: {
     navigate: () => void,
     replace: () => void,
@@ -41,7 +46,15 @@ export default class GroupsScreen extends Component<Props, State> {
   };
 
   componentDidMount() {
-    this.getGroups();
+    const { isConnected } = this.props.screenProps;
+
+    if (isConnected) {
+      this.getGroups();
+    } else {
+      this.setState({
+        isLoading: false,
+      });
+    }
   }
 
   onClearSearchInput = (): void => {
@@ -51,6 +64,10 @@ export default class GroupsScreen extends Component<Props, State> {
   }
 
   getGroups = async (): void => {
+    this.setState({
+      isLoading: true,
+    });
+
     try {
       const groups = await API.getGroups();
 
@@ -84,11 +101,30 @@ export default class GroupsScreen extends Component<Props, State> {
   }
 
   goToHomeScreen = (group: GroupType): void => {
+    const { isConnected } = this.props.screenProps;
     const { replace } = this.props.navigation;
     const { id } = group;
 
-    store.delete('data').then(() => replace('Main', { id }));
+    if (isConnected) {
+      store.delete('data').then(() => replace('Main', { id }));
+    } else {
+      Alert.alert('Помилка', 'Для вибору групи необхідно інтернет-з\'єднання');
+    }
   };
+
+  renderGroupsList = (group: GroupType) => {
+    const { id, name } = group;
+
+    return (
+      <TouchableOpacity
+        key={id}
+        style={styles.group}
+        onPress={() => this.goToHomeScreen(group)}
+      >
+        <Text style={styles.groupName}>{name}</Text>
+      </TouchableOpacity>
+    );
+  }
 
   render() {
     const { isLoading } = this.state;
@@ -110,20 +146,7 @@ export default class GroupsScreen extends Component<Props, State> {
               placeholder="Пошук групи"
             />
             <View containerStyle={styles.groupsContainer}>
-              {filteredGroups &&
-                filteredGroups.map((group) => {
-                  const { id, name } = group;
-
-                  return (
-                    <TouchableOpacity
-                      key={id}
-                      style={styles.group}
-                      onPress={() => this.goToHomeScreen(group)}
-                    >
-                      <Text style={styles.groupName}>{name}</Text>
-                    </TouchableOpacity>
-                  );
-                })}
+              {filteredGroups && filteredGroups.map(this.renderGroupsList)}
             </View>
           </ScrollView>
         </View>

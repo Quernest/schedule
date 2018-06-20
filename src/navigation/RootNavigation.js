@@ -21,7 +21,7 @@ const createRootNavigator = (data: DataType) => {
   };
 
   const options = {
-    initialRouteName: data === null ? 'Welcome' : 'Main',
+    initialRouteName: !data ? 'Welcome' : 'Main',
     navigationOptions: () => ({
       headerTintColor: '#f9ffff',
       headerTitleStyle: {
