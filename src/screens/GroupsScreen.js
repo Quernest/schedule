@@ -108,7 +108,7 @@ export default class GroupsScreen extends Component<Props, State> {
     if (isConnected) {
       store.delete('data').then(() => replace('Main', { id }));
     } else {
-      Alert.alert('Помилка', 'Для вибору групи необхідно інтернет-з\'єднання');
+      Alert.alert('Помилка', 'Для вибору групи необхідне інтернет-з\'єднання');
     }
   };
 

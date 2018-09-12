@@ -103,7 +103,7 @@ export default class Time extends Component<Props, State> {
       return (
         <View style={styles.wrap}>
           <Text style={styles.label}>
-            до начала:
+            до початку
           </Text>
           <Text style={styles.time}>
             {time}
@@ -121,7 +121,7 @@ export default class Time extends Component<Props, State> {
       return (
         <View style={styles.wrap}>
           <Text style={styles.label}>
-            до кінця:
+            до кінця
           </Text>
           <Text style={styles.time}>
             {time}

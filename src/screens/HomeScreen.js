@@ -86,7 +86,7 @@ export default class HomeScreen extends Component<Props, State> {
 
       this.getGroupAllData(id);
     } else {
-      Alert.alert('Помилка', 'Для оновлення розкладу занять необхідно інтернет-з\'єднання');
+      Alert.alert('Помилка', 'Для оновлення розкладу занять необхідне інтернет-з\'єднання');
     }
   }
 
