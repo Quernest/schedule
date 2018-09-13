@@ -5,9 +5,8 @@ import {
   StyleSheet,
   View,
   Alert,
-  NetInfo,
+  AsyncStorage,
 } from 'react-native';
-import store from 'react-native-simple-store';
 import moment from 'moment';
 import type Moment from 'moment';
 import Loading from '../components/Loading';
@@ -23,7 +22,9 @@ type Props = {
     params: Object,
     getParam: (key: string) => void,
   },
-  screenProps: Object,
+  screenProps: {
+    isConnected: boolean,
+  },
 };
 
 type State = {
@@ -91,26 +92,24 @@ export default class HomeScreen extends Component<Props, State> {
   }
 
   getGroupAllData = async (id?: ?number) => {
-    const { screenProps } = this.props;
-
     if (id) {
       try {
         const data: ?DataType = await API.getGroupAllData(id);
 
-        store.update('data', data);
+        await AsyncStorage.setItem('data', JSON.stringify(data));
 
         this.setGroupAllDataToState(data);
       } catch (error) {
         Alert.alert(JSON.stringify(error));
       }
-    } else if (!id && screenProps && screenProps.data) {
-      const { data } = screenProps;
-
-      this.setGroupAllDataToState(data);
     } else {
-      this.setState({
-        isLoading: false,
-      });
+      try {
+        const data: ?DataType = await AsyncStorage.getItem('data');
+
+        this.setGroupAllDataToState(JSON.parse(data));
+      } catch (error) {
+        Alert.alert(JSON.stringify(error));
+      }
     }
   }
 

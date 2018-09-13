@@ -1,9 +1,15 @@
 // @flow
-
 import React from 'react';
 import { Platform } from 'react-native';
+import {
+  createSwitchNavigator,
+  createStackNavigator,
+  createBottomTabNavigator,
+} from 'react-navigation';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { createBottomTabNavigator } from 'react-navigation';
+import BootstrapScreen from '../screens/BootstrapScreen';
+import WelcomeScreen from '../screens/WelcomeScreen';
+import GroupsScreen from '../screens/GroupsScreen';
 import HomeScreen from '../screens/HomeScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 
@@ -15,16 +21,35 @@ type Props = {
   },
 }
 
-const screens = {
+const AuthStackNavigator = createStackNavigator({
+  Welcome: WelcomeScreen,
+  Groups: {
+    screen: GroupsScreen,
+    navigationOptions: () => ({
+      headerTintColor: '#f9ffff',
+      headerTitleStyle: {
+        fontSize: 18,
+        fontWeight: 'normal',
+        color: '#f9ffff',
+      },
+      headerStyle: {
+        backgroundColor: '#38498c',
+      },
+    }),
+  },
+});
+
+const AppStackNavigator = createBottomTabNavigator({
   Home: {
     screen: HomeScreen,
+    navigationOptions: {
+      header: null,
+    },
   },
   Settings: {
     screen: SettingsScreen,
   },
-};
-
-const options = {
+}, {
   navigationOptions: (props: Props) => {
     const { navigation } = props;
 
@@ -62,6 +87,14 @@ const options = {
   },
   animationEnabled: true,
   swipeEnabled: false,
-};
+});
 
-export default createBottomTabNavigator(screens, options);
+const Navigator = createSwitchNavigator({
+  Bootstrap: BootstrapScreen,
+  Auth: AuthStackNavigator,
+  App: AppStackNavigator,
+}, {
+  initialRouteName: 'Bootstrap',
+});
+
+export default Navigator;

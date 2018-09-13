@@ -8,9 +8,10 @@ import {
   Text,
   TouchableOpacity,
   Alert,
+  AsyncStorage,
 } from 'react-native';
 import { SearchBar } from 'react-native-elements';
-import store from 'react-native-simple-store';
+// import store from 'react-native-simple-store';
 import Loading from '../components/Loading';
 import API from '../services/api.service';
 import type { GroupType, DataType } from '../types';
@@ -18,7 +19,6 @@ import type { GroupType, DataType } from '../types';
 type Props = {
   screenProps: {
     isConnected: boolean,
-    data: DataType,
   },
   navigation: {
     navigate: () => void,
@@ -73,7 +73,7 @@ export default class GroupsScreen extends Component<Props, State> {
 
       this.setGroupsToState(groups);
     } catch (error) {
-      console.error(error);
+      Alert.alert(JSON.stringify(error));
     } finally {
       this.setState({
         isLoading: false,
@@ -102,11 +102,10 @@ export default class GroupsScreen extends Component<Props, State> {
 
   goToHomeScreen = (group: GroupType): void => {
     const { isConnected } = this.props.screenProps;
-    const { replace } = this.props.navigation;
     const { id } = group;
 
     if (isConnected) {
-      store.delete('data').then(() => replace('Main', { id }));
+      AsyncStorage.clear().then(() => this.props.navigation.navigate('Home', { id }));
     } else {
       Alert.alert('Помилка', 'Для вибору групи необхідне інтернет-з\'єднання');
     }

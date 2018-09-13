@@ -36,10 +36,9 @@ export default class WelcomeScreen extends Component<Props, State> {
 
   goToGroups = (): void => {
     const { isConnected } = this.props.screenProps;
-    const { navigate } = this.props.navigation;
 
     if (isConnected) {
-      navigate('Groups');
+      this.props.navigation.navigate('Groups');
     } else {
       Alert.alert('Помилка', 'Необхідно інтернет з\'єднання');
     }

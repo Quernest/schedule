@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ddd',
   },
   containerActive: {
-    // backgroundColor: '#d2f9e7',
+    backgroundColor: '#e0f9ee',
   },
   freeTimeMessage: {
     textAlign: 'center',
