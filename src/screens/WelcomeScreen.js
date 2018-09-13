@@ -40,7 +40,7 @@ export default class WelcomeScreen extends Component<Props, State> {
     if (isConnected) {
       this.props.navigation.navigate('Groups');
     } else {
-      Alert.alert('Помилка', 'Необхідно інтернет з\'єднання');
+      Alert.alert('Помилка', 'Необхідне інтернет з\'єднання');
     }
   }
 
