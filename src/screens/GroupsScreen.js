@@ -11,10 +11,9 @@ import {
   AsyncStorage,
 } from 'react-native';
 import { SearchBar } from 'react-native-elements';
-// import store from 'react-native-simple-store';
 import Loading from '../components/Loading';
 import API from '../services/api.service';
-import type { GroupType, DataType } from '../types';
+import type { GroupType } from '../types';
 
 type Props = {
   screenProps: {

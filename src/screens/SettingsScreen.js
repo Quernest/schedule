@@ -28,6 +28,7 @@ export default class SettingsScreen extends Component<Props> {
 
   state = {
     group: {
+      id: undefined,
       name: '',
     },
   }

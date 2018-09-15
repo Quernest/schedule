@@ -5,15 +5,21 @@
  */
 
 import React, { Component } from 'react';
-import { NetInfo, View, StatusBar, StyleSheet } from 'react-native';
+import {
+  NetInfo,
+  View,
+  StatusBar,
+  StyleSheet,
+} from 'react-native';
 import moment from 'moment';
 import ukLocale from 'moment/locale/uk';
 import Navigator from './navigation/Navigator';
 
-// set uk locale as default
+// set ukrainian language as default
 moment.updateLocale('uk', ukLocale);
 
 type State = {
+  // the internet connection
   isConnected: boolean,
 }
 
@@ -32,6 +38,7 @@ class App extends Component<State> {
 
   handleConnectionChange = (isConnected: boolean): void => {
     if (isConnected) {
+      // delay to prevent errors
       setTimeout(() => {
         this.setState({
           isConnected,
